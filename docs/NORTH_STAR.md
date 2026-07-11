@@ -8,7 +8,7 @@ Owner: project maintainer
 
 - Mode: continuous
 - Next-task mode: activate
-- Terminal condition: T-019 proves the credential-free M1 preview -> saved PlanArtifact -> local branch -> mocked PR -> exact-SHA checks -> merge-decision workflow; live GitHub remains separately gated.
+- Terminal condition: T-020 exposes a stable agent-facing M1 prepare/review/execute protocol and a truthful completion report that keeps live GitHub deferred.
 - Progress signal: active-task acceptance items and passing fresh verification increase without scope violations.
 - Retry budget: 3
 - No-progress limit: 2
@@ -72,7 +72,7 @@ Milestone: M1 Repository Ready, local effectful PR execution track.
 - The public CLI now provides the versioned read-only `inspect -> plan -> apply --dry-run -> verify` path over local context and analysis.
 - Plans are durable, identity-bound local artifacts; the M0 public CLI remains validation-only.
 - Read-only dogfood evidence exists for this repository.
-- T-015 and T-016 complete the executable M0 kernel evidence. T-017 completes the M1 read-only profile preview and T-018 proves artifact-bound local/mock execution. T-019 is active to connect them through a visible externally saved plan; live GitHub remains separately gated.
+- T-015 and T-016 complete M0. T-017 through T-019 prove the credential-free M1 preview, saved-plan, and local/mock execution chain. T-020 is active to expose that chain to coding agents without enabling the public CLI or overstating live GitHub readiness.
 
 ## Legacy Cutoff
 

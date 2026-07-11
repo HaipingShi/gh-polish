@@ -140,6 +140,44 @@ Decision: proceed
 Notes:
 - T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
 
+## CD-009 Agent-facing M1 protocol and completion report
+
+Status: accepted
+Created at: 2026-07-11
+Source: user goal activation
+Trace: T-020 intent trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- Give coding agents a stable prepare/review/execute contract without claiming that local/mock evidence is a live GitHub Repository Ready outcome.
+
+T — Task:
+- Task ID: T-020
+- Define serializable prepare, review, and execute responses over T-019.
+- Bind review to the saved artifact digest and the exact confirmed effect IDs.
+- Produce an M1 report where credential-free capability can be `achieved`, live GitHub remains `deferred`, and overall M1 remains `deferred` until live evidence exists.
+
+S — Scope:
+- Allowed: new agent protocol/completion-report module, `test/t020*.test.ts`, minimal T-019 reuse, and T-020 docs/trace/state.
+- Forbidden: public CLI mutation activation, live GitHub adapter or credentials, default-branch writes, automatic merge, persistent review sessions, protocol v1 breakage, dependencies, hosted infrastructure, and M2-M6.
+
+V — Verify:
+- TDD mode: required.
+- Prepare and review report no inspected-repository mutation; prepare may write only the external plan store.
+- Review rejects missing/extra confirmations and emits a deterministic artifact/confirmation-bound token.
+- Execute rejects a mismatched token before adapters, then reports local/mock evidence without upgrading overall M1 to live achieved.
+- Focused tests, full CI, credential-free dogfood, and CodeRail Full Rail gates pass.
+
+X — Stop:
+- Stop if implementation requires real credentials/repositories, a public mutation command, a breaking protocol change, persistent sessions, or a new API/persistence decision.
+
+P — Persist:
+- CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
+
+Decision:
+- proceed autonomously as a library-level agent contract; the public CLI remains M0 validation-only and live GitHub remains deferred.
+
 ## CD-008 Credential-free Repository Ready end-to-end workflow
 
 Status: accepted

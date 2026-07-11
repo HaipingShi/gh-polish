@@ -132,6 +132,20 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - Node and generic fixtures complete the local bare-remote, mocked PR, exact-SHA check, and merge-decision chain; retry reuses the existing commit and PR.
 - No credentials, live network, default-branch mutation, or automatic merge are permitted.
 
+### Agent Protocol Gate
+
+| Operation | Inspected repository | Plan store | Execution ports | Required output |
+|---|---|---|---|---|
+| `repository-ready.prepare` | no mutation | write external artifact | none | preview, plan reference, exact confirmation IDs, `awaiting-review` |
+| `repository-ready.review` | no mutation | read only | none | exact-confirmation validation, deterministic review token, `ready-to-execute` |
+| `repository-ready.execute` | confirmed non-default branch only | read only | injected local bare-remote, PR, and check ports | execution evidence and truthful M1 report |
+
+- The review token binds the saved artifact digest and sorted exact confirmations; it is correlation evidence, not an authentication secret or persistent approval session.
+- Invalid tokens and missing/extra confirmations fail before local, PR, or check adapters.
+- Credential-free M1 is `achieved` only when execution completes with a PR result, exact-SHA successful checks, and `ready-for-review`.
+- Without separately authorized live evidence, `liveGitHub` and overall M1 remain `deferred`; pending or failed credential-free evidence makes overall M1 `not-ready`.
+- The public CLI remains the M0 `inspect/plan/apply --dry-run/verify` contract and exposes no T-020 mutation command.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.

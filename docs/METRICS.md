@@ -48,6 +48,9 @@ Reviewed: 2026-07-11
 - M1 preview-create effects represented in saved artifact: target 100%;
 - manual-review or unknown preview items entering execution: target 0;
 - first-execution stale artifact acceptance: target 0.
+- agent review token/artifact/confirmation binding: target 100%;
+- invalid review token reaching an effect adapter: target 0;
+- credential-free evidence misreported as live M1 achieved: target 0.
 
 ## M4 Web, M5 App, and M6 Growth/Portfolio/Team Metrics
 

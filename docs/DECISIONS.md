@@ -340,3 +340,24 @@ T-019 has two phases. `prepare` compiles only evidence-backed `create` preview i
 - Repository drift, expiry, tamper, missing confirmation, and in-repository plan storage fail before effect adapters.
 - Retry may reuse plan-bound prior evidence without duplicating commits or pull requests.
 - This credential-free workflow still does not authorize a live GitHub adapter or public mutation CLI.
+
+## ADR-018: Expose M1 through a library-level three-phase agent protocol
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+T-019 provides domain functions, but an agent needs stable phases, effect declarations, confirmation binding, and a completion report. Adding effectful public CLI commands now would blur the existing M0 validation-only contract and imply a live GitHub capability that does not exist.
+
+### Decision
+
+Expose library-level `repository-ready.prepare`, `repository-ready.review`, and `repository-ready.execute` responses. Prepare writes only the external plan store; review is read-only and emits a deterministic digest/confirmation-bound correlation token; execute requires that token and uses injected local/mock ports. The token is not an authentication secret or durable approval session.
+
+### Consequences
+
+- Coding agents receive serializable phases, effects, next actions, and exact confirmation requirements.
+- Invalid review binding fails before adapters.
+- Complete local/mock evidence reports credential-free capability `achieved`, while live GitHub and overall M1 remain `deferred`.
+- Pending local/mock checks report `not-ready`, never achieved.
+- Public CLI v1 and real GitHub boundaries remain unchanged.
