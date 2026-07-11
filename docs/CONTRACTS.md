@@ -140,6 +140,87 @@ Decision: proceed
 Notes:
 - T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
 
+## CD-007 Effectful Repository Ready PR execution
+
+Status: proposed
+Created at: 2026-07-11
+Source: continuous-roadmap handoff
+Trace: future T-018 review/intent trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Turn an accepted Repository Ready preview into a branch and pull request without overwriting customized work or bypassing confirmation.
+- Outcome served: The builder receives one reviewable PR and a truthful merge decision.
+- Why now: T-017 proves read-only previews; effectful execution crosses the user-repository and live GitHub boundary and requires explicit review.
+
+T — Task:
+- Task ID: T-018
+- Exact task: Apply confirmed preview effects on a non-default branch, push, create one PR through a write-only adapter, bind checks/evidence, and remain idempotent.
+- What this task must not become: direct default-branch mutation, automatic merge, license/security decisions, metadata/settings mutation, release/deploy/publish, or M2-M6 work.
+
+S — Scope:
+- Allowed only after acceptance: explicit file-effect, Git branch/push, PR adapter, evidence, tests, and relevant docs.
+- Forbidden: default-branch writes, automatic merge, unrelated repository files, settings mutation, release/deploy/publish, hosted infrastructure, `G:\codeRail\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Local bare-remote and mocked PR adapter are mandatory; any allowlisted live dogfood needs separate explicit repository/credential approval.
+- Project CI, branch isolation, overwrite refusal, idempotency, partial failure, and CodeRail Full Rail gates must pass.
+
+X — Stop:
+- Stop until the user explicitly accepts this effectful boundary and identifies any live dogfood repository/permission authority.
+
+P — Persist:
+- TASKS, HANDOFF, DECISIONS, ASSETS, TRACE/index/status and plan-bound evidence.
+
+Decision:
+- review required; not authorized by the read-only continuous goal.
+
+## CD-006 M1 profile-aware Repository Ready preview
+
+Status: accepted
+Created at: 2026-07-11
+Source: user continuous-roadmap goal
+Trace: T-017 intent trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Let an agent produce a truthful, profile-aware Repository Ready plan and preview without overwriting customized content or inventing project facts.
+- Outcome served: A builder can see what repository presentation work is appropriate for their project type before any PR is created.
+- Why now: M0 evidence is complete; M1 begins with read-only profile and artifact decisions, not live mutation.
+
+T — Task:
+- Task ID: T-017
+- Exact task: Define six repository profiles, derive profile-aware artifact requirements from local analysis, and produce deterministic create/manual-review/unknown previews for Node and generic fixtures.
+- What this task must not become: effectful PR creation, license selection, security-contact invention, GitHub mutation, hosted UI, or M2 Trust claims.
+
+S — Scope:
+- Allowed:
+  - new profile/preview domain modules under `src/`, minimal `src/templateRegistry.ts` reuse
+  - `test/t017*.test.ts`, T-017-relevant docs/trace/state
+- Forbidden:
+  - repository/GitHub writes, PR creation, dependencies/build/workflow changes, invented commands/contacts/licenses, M2-M6 implementation, `G:\codeRail\coderail/**`
+
+V — Verify:
+- TDD mode: required
+- Red check: six-profile requirement, existing-content preservation, observed-command, and unknown-evidence tests fail before implementation.
+- Green check: Node/generic fixtures produce deterministic profile-aware previews with no writes.
+- Refactor check: profile policy, evidence extraction, template rendering, and preview serialization remain separate.
+- Regression check: all M0 tests and GET-only boundaries remain green.
+- CI check: project CI and CodeRail Full Rail gates plus no-mutation dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Stop if profile behavior needs builder intent not safely defaultable, or implementation requires license/security claims, mutation, dependencies, or hosted scope.
+
+P — Persist:
+- TASKS, HANDOFF, NORTH_STAR/HARNESS/METRICS, ASSETS, TRACE/index/status.
+
+Decision:
+- proceed autonomously as a read-only M1 thin slice; default mandatory dogfood profile is `public-project`.
+
 ## CD-005 Remote verification and M0 completion hardening
 
 Status: accepted

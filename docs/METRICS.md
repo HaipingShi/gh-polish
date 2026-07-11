@@ -20,7 +20,7 @@ Reviewed: 2026-07-11
 - autonomous task transition count: not yet instrumented;
 - no-progress exhaustion count: not yet instrumented;
 - unsafe decision crossing count: 0 observed since cutoff;
-- drive scenario agreement: not applicable until a continuous Drive Contract is authorized.
+- drive scenario agreement: continuous mode active; T-015 -> T-016 -> T-017 autonomous transitions are tracked through finish/trace evidence.
 
 ## M0 Activation Metrics
 
@@ -39,6 +39,8 @@ Reviewed: 2026-07-11
 - median time and number of builder decisions required per stage;
 - generated-claim evidence violations: target 0;
 - plan-to-merged-PR and launch-preview-to-approved-launch conversion.
+- M1 preview preservation violations: target 0;
+- generated command claims without observed evidence: target 0.
 
 ## M4 Web, M5 App, and M6 Growth/Portfolio/Team Metrics
 

@@ -105,6 +105,14 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - Existing customized content produces patch/manual-review behavior.
 - A Repository Ready PR passes its detected checks and presents one merge decision to the builder.
 
+### Read-Only Preview Gate
+
+- Six profiles have explicit artifact requirements.
+- Existing customized files are manual-review items and never receive generated overwrite content.
+- Commands are observed from analysis or marked unknown; unknown commands cannot produce fake CI.
+- Node/generic preview fixtures and public-project repository dogfood are deterministic and mutation-free.
+- Effectful branch/PR execution requires the separately reviewed T-018 contract.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.

@@ -8,7 +8,7 @@ Owner: project maintainer
 
 - Mode: continuous
 - Next-task mode: activate
-- Terminal condition: T-016 is done with M0 completion evidence and M1 Repository Ready has an accepted executable contract.
+- Terminal condition: The M1 read-only Repository Ready profile/plan/preview thin slice is done and any effectful PR contract is ready for explicit review.
 - Progress signal: active-task acceptance items and passing fresh verification increase without scope violations.
 - Retry budget: 3
 - No-progress limit: 2
@@ -72,7 +72,7 @@ Milestone: M0 Agent-Native Deterministic Kernel, integration and dogfood track.
 - The public CLI now provides the versioned read-only `inspect -> plan -> apply --dry-run -> verify` path over local context and analysis.
 - Plans are durable, identity-bound local artifacts; the M0 public CLI remains validation-only.
 - Read-only dogfood evidence exists for this repository.
-- T-015 and T-016 complete the executable M0 kernel evidence. The next authorized step is an M1 Repository Ready contract; M1 implementation must remain profile-aware and evidence-backed.
+- T-015 and T-016 complete the executable M0 kernel evidence. T-017 is the active M1 read-only profile/plan/preview slice; effectful PR execution remains separately gated.
 
 ## Legacy Cutoff
 
