@@ -1260,7 +1260,7 @@ Priority: P1
 Owner: project maintainer
 Branch: master
 Autonomy: allowed
-Execution state: CD-007 accepted; Red TR-20260711-080500-t018r and Green TR-20260711-080856-t018g captured; focused 6/6 and full CI 55/55 pass. Final CodeRail gates pending.
+Execution state: Reopened gap closed with second Red TR-20260711-081500-t018r and Green TR-20260711-081735-t018g; focused 8/8 and full CI 57/57 pass.
 
 ### CodeRail Coordinate
 
@@ -1305,10 +1305,11 @@ Blocks:
 Acceptance:
 - [x] Only confirmed create effects execute on a non-default branch; customized content is never overwritten.
 - [x] One idempotent mocked PR is bound to repository, plan, base branch, head branch, and pushed head SHA.
+- [x] Exact plan/branch/head-SHA check evidence produces a truthful ready-for-review, not-ready, or unknown merge decision.
 - [x] Retry after local or PR partial failure does not duplicate commits, pushes, effects, or PRs.
 - [x] Default branch remains unchanged in Node and generic local bare-remote dogfood.
 - [x] Failures provide truthful per-stage evidence and one executable recovery action.
-- [~] Project CI passes without credentials or live network access; final CodeRail Full Rail gates pending.
+- [x] Project CI and CodeRail Full Rail gates pass without credentials or live network access.
 
 ### Critical Check
 
