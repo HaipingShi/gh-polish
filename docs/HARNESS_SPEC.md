@@ -124,6 +124,14 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - A stale base SHA fails before file effects; live GitHub dogfood requires a separate repository and credential approval.
 - Exact plan/branch/head-SHA check evidence maps success to `ready-for-review`, non-success to `not-ready`, and unreadable or mismatched evidence to `unknown`; none of these states performs merge.
 
+### Credential-Free End-to-End Gate
+
+- `prepare` produces a profile-aware preview and digest-valid PlanArtifact in an external local store without changing the inspected repository.
+- Only evidence-backed `create` items become confirmation-gated effects; `manual_review` and `unknown` remain visible but non-executable.
+- First execution reloads the saved artifact and revalidates expiry, repository identity, base SHA, and relevant content hashes before adapters.
+- Node and generic fixtures complete the local bare-remote, mocked PR, exact-SHA check, and merge-decision chain; retry reuses the existing commit and PR.
+- No credentials, live network, default-branch mutation, or automatic merge are permitted.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.

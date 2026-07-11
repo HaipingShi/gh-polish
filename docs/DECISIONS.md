@@ -320,3 +320,23 @@ T-018 uses a digest-validated saved PlanArtifact, temporary repositories, local 
 - Branch isolation, overwrite refusal, partial failure, recovery, and deduplication are executable without network access.
 - A mocked PR result is verification evidence for the port contract, not evidence that a live GitHub PR exists.
 - Live GitHub dogfood remains a separate approval boundary requiring a named repository and credential authority.
+
+## ADR-017: Separate Repository Ready preparation from saved-plan execution
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+Connecting T-017 previews directly to T-018 effects in one call would hide the visible-plan and explicit-confirmation boundary. Caller-reconstructed operations would also weaken the saved-artifact invariant.
+
+### Decision
+
+T-019 has two phases. `prepare` compiles only evidence-backed `create` preview items into confirmation-gated effects and saves a digest-valid PlanArtifact outside the repository. `executeSaved` reloads and revalidates that artifact before invoking T-018. Manual-review and unknown items never become effects.
+
+### Consequences
+
+- Builders and agents can inspect the preview and saved plan before any project mutation.
+- Repository drift, expiry, tamper, missing confirmation, and in-repository plan storage fail before effect adapters.
+- Retry may reuse plan-bound prior evidence without duplicating commits or pull requests.
+- This credential-free workflow still does not authorize a live GitHub adapter or public mutation CLI.

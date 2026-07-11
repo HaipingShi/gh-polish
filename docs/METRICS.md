@@ -45,6 +45,9 @@ Reviewed: 2026-07-11
 - M1 customized-content overwrite violations: target 0;
 - duplicate commits, pushes, or PRs during retry: target 0;
 - plan/branch/head-SHA/PR evidence binding: target 100%.
+- M1 preview-create effects represented in saved artifact: target 100%;
+- manual-review or unknown preview items entering execution: target 0;
+- first-execution stale artifact acceptance: target 0.
 
 ## M4 Web, M5 App, and M6 Growth/Portfolio/Team Metrics
 

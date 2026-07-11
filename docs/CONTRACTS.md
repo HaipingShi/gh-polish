@@ -140,6 +140,41 @@ Decision: proceed
 Notes:
 - T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
 
+## CD-008 Credential-free Repository Ready end-to-end workflow
+
+Status: accepted
+Created at: 2026-07-11
+Source: user goal activation
+Trace: T-019 intent trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- Complete the M1 credential-free Repository Ready evidence chain from profile-aware preview through a truthful merge decision.
+
+T — Task:
+- Task ID: T-019
+- Prepare a visible preview and digest-validated saved PlanArtifact, then execute explicitly confirmed effects through the T-018 local branch, mocked PR, exact-SHA checks, and merge-decision ports.
+- Keep prepare read-only for the inspected repository and keep execution separately confirmation-gated.
+
+S — Scope:
+- Allowed: `src/repositoryReadyWorkflow.ts`, `test/t019*.test.ts`, minimal reuse of T-017/T-018 domain APIs, and T-019 docs/trace/state.
+- Forbidden: live GitHub/user-repository mutation, default-branch writes, automatic merge, public CLI write activation, dependencies/build/workflow changes, hosted persistence, and M2-M6.
+
+V — Verify:
+- TDD mode: required.
+- Node and generic temporary repositories must exercise preview -> external saved artifact -> reload -> non-default branch -> local bare remote -> mocked PR -> exact-SHA checks -> merge decision.
+- Manual-review and unknown preview items cannot become effects; explicit confirmation is mandatory; retry stays idempotent; project CI and CodeRail Full Rail gates pass without credentials/network.
+
+X — Stop:
+- Stop if the flow requires real credentials/repositories, implicit confirmation, automatic merge, a public mutation command, or a new persistence/API decision.
+
+P — Persist:
+- CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
+
+Decision:
+- proceed autonomously; live GitHub dogfood remains deferred.
+
 ## CD-007 Effectful Repository Ready PR execution
 
 Status: accepted
