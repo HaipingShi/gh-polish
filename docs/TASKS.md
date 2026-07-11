@@ -977,13 +977,13 @@ Notes: M0 plan artifacts deliberately live outside the inspected repository unde
 
 ## T-015 Mutation-ready apply and evidence hardening
 
-Status: [ ]
+Status: [~]
 Type: feature
 Rail: full
 Priority: P1
 Owner: project maintainer
 Branch: master
-Execution state: contract draft CD-004 is proposed; implementation is not authorized.
+Execution state: CD-004 accepted; artifact payload revision and Green TR-20260711-051000-t015g now bind local execution to saved effects. Retry/idempotency, dogfood, CodeRail Full Rail gates, and closeout remain.
 
 ### CodeRail Coordinate
 
@@ -1014,7 +1014,7 @@ V — Verify:
   - Required only before a follow-on contract enables user-facing or live GitHub execution.
 
 X — Stop:
-- CD-004's unresolved confirmation/execution/evidence decision needs user direction, or any forbidden effect/dependency/hosted scope is required.
+- CD-004 needs revision to define the immutable effect-payload schema and confirmation/digest rules; do not reconstruct operations. Also stop if any forbidden effect/dependency/hosted scope is required.
 
 P — Persist:
 - TASKS, HANDOFF, DECISIONS if durable, LESSONS if repeated, ASSETS, and append-only TRACE/index.
@@ -1040,9 +1040,27 @@ Acceptance:
 
 ### Start Gate
 
-- Do not implement until the user accepts or revises CD-004.
-- A future execution turn must inspect current state, append a T-015 intent trace, capture Red evidence, and keep all effects inside test-owned temporary repositories.
+- CD-004 is accepted by the user.
+- This execution turn must capture Red evidence before implementation and keep all effects inside test-owned temporary repositories.
 
+
+Task result: stage-complete
+
+Harness result: skipped
+
+Handoff level: H1
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-015
+
+Next executable step: Continue in manual mode; no dependency-ready autonomous task is available to recommend.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

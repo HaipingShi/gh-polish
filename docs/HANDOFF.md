@@ -4,20 +4,20 @@ Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
 Completed task: T-014
-Next task: T-015 contract draft CD-004 proposed; implementation not authorized
+Next task: T-015 active under accepted CD-004
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: CD-004-review
+Resume anchor: T-015-artifact-payload-decision
 
 ## Coordinate Summary
 
 Rail: full
 G: Make M0 apply trustworthy through explicit authorization, branch isolation, plan-bound evidence, and recoverable partial failure.
-T: Draft CD-004 and T-015; do not execute implementation before user acceptance.
-S: `docs/CONTRACTS.md`, `docs/TASKS.md`, `docs/HANDOFF.md`, and append-only trace only; no source/tests, live GitHub mutation, user-repository effects, dependency/build/workflow changes, hosted infrastructure, or local CodeRail source.
-V: Contract and Coordinate checks, trace/index refresh, and manual contract review.
-X: Stop on an unaccepted execution boundary, any live/user-repository effect, or an unresolved product decision.
-P: TASKS, HANDOFF, TRACE, generated index, and runtime status.
+T: Repair T-015 CodeRail state, audit mutation boundaries, and continue only after the saved-plan effect-payload boundary is contractually defined.
+S: T-015 source/tests/docs only; no live GitHub mutation, user-repository effects, dependency/build/workflow changes, hosted infrastructure, or local CodeRail source.
+V: Boundary scan, existing Red/Green evidence, artifact/schema review, and later project/CodeRail gates.
+X: Stop at the missing immutable effect payload in the saved plan or any live/user-repository effect.
+P: TASKS, HANDOFF, DECISIONS/CONTRACTS if revised, TRACE/index, and runtime status.
 
 ## Direction
 
@@ -31,7 +31,8 @@ Trust Ready is deliberately separate from repository presentation and launch vis
 
 - CD-004 proposes a Full Rail local-only mutation-ready executor and evidence lifecycle.
 - It permits real Git effects only inside temporary test repositories and local bare remotes; it keeps the public CLI validation-only and forbids live GitHub/user-repository mutation.
-- User acceptance or revision of CD-004 is the start gate for T-015.
+- CD-004 is accepted; T-015 has entered its Red-first execution turn.
+- Boundary audit found the T-014 plan artifact contains recommendation metadata but no immutable file path/content payload. T-015 cannot execute directly from that artifact without reconstructing operations, which CD-004 forbids. A contract revision is required before artifact integration.
 
 ## Completed T-014 Work
 
@@ -67,4 +68,4 @@ Trust Ready is deliberately separate from repository presentation and launch vis
 
 ## Next Executable Step
 
-Review CD-004. On acceptance, start T-015 in an independent Full Rail execution turn; first inspect state, append intent trace, add Red tests, and keep effects inside temporary repositories/local bare remotes. Do not enable live GitHub or user-repository mutation without a later contract.
+Revise CD-004 to define the immutable effect-payload schema and its confirmation/digest rules. Then resume T-015 with artifact-bound local execution; do not enable live GitHub or user-repository mutation.
