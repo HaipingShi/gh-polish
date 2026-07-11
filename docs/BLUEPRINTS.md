@@ -25,7 +25,7 @@ Lifecycle status values:
 | DEP | Deployment Topology | planned | future M4/M5 contract | project | | CLI is local; hosted and App topology intentionally vendor-neutral. |
 | APP | GitHub App Event and Permission Flow | planned | future M5 contract | project | | Required before App registration or webhook implementation. |
 | CICD | Product CI/CD Pipeline | planned | docs/HARNESS_SPEC.md | project | | Current npm gates exist; release/deployment flow is not contracted. |
-| SEC | Threat and Trust Boundary Model | planned | future T-015/M4/M5 contracts | project | | Required before live mutation, hosted secrets, OAuth, or App tokens. |
+| SEC | Threat and Trust Boundary Model | planned | docs/CONTRACTS.md, CD-010 | project | 2026-07-11 | CD-010 proposes the first live token/allowlist/PR threat boundary; it must be accepted and verified before status becomes current or any live mutation begins. |
 
 ## Stage Rules
 

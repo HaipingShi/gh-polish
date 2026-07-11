@@ -146,6 +146,17 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - Without separately authorized live evidence, `liveGitHub` and overall M1 remain `deferred`; pending or failed credential-free evidence makes overall M1 `not-ready`.
 - The public CLI remains the M0 `inspect/plan/apply --dry-run/verify` contract and exposes no T-020 mutation command.
 
+### Proposed Live GitHub Dogfood Gate
+
+This gate is not authorized until CD-010 is explicitly accepted and one repository is allowlisted.
+
+- Use a short-lived fine-grained token for exactly one repository with `Contents: write`, `Pull requests: write`, and `Actions: read`; do not request `Workflows: write` in the initial slice.
+- Require the global live-mutation flag, exact repository allowlist, fetched numeric repository identity, local remote agreement, saved artifact, review token, and exact live confirmation.
+- Permit create-only non-workflow files on a deterministic non-default branch and one draft PR; forbid overwrite, force push, default-branch mutation, merge, settings, release, deployment, publication, and automatic cleanup.
+- Bind idempotency to repository ID, plan digest, base branch/SHA, and head branch; reuse exact branch/PR matches and stop on conflicts.
+- Verify only the pushed head SHA, scan all evidence for secrets, and record before/after default-branch state.
+- Live completion requires repository-bound branch, PR, check, retry, and no-secret evidence; pending checks remain not-ready.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.
