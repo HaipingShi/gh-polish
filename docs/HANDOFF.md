@@ -3,8 +3,8 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Current task: T-022 non-live adapter implementation stage complete
-Next task: prepare the exact reviewed artifact/effect confirmation for the separately gated `HaipingShi/coderail` live dogfood
+Current task: T-022 stage complete; read-only artifact proves zero allowed create effects for `HaipingShi/coderail`
+Next task: decision required between a dedicated sandbox repository (recommended) and a new patch-existing-content contract
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
 Resume anchor: docs/CONTRACTS.md#CD-010-Live-GitHub-adapter-and-dogfood-boundary
@@ -13,8 +13,8 @@ Resume anchor: docs/CONTRACTS.md#CD-010-Live-GitHub-adapter-and-dogfood-boundary
 
 Rail: full
 Goal: Implement the accepted least-privilege, exact-repository, idempotent GitHub adapter boundary with non-live evidence.
-Boundary: Injected HTTP/Git doubles only; no ambient credential access, real network, public CLI mutation, or user-repository effect.
-Acceptance: Red preceded implementation; focused 8/8 and full CI 72/72 prove credential redaction, exact allowlisting/preflight, authorization-bound push/PR idempotency/reconciliation, and exact-SHA checks without network.
+Boundary: Read-only access to `G:\\codeRail\\coderail` is explicitly allowed for artifact preparation; no target write, ambient credential access, network mutation, or public CLI mutation.
+Acceptance: Red preceded implementation; focused 8/8 and full CI 72/72 prove the adapter. Read-only prepare produced artifact digest `26c1d12d...e9ef9e` at base `c699fb0...`, with integrity/binding passed and zero executable effects.
 Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Contract State
@@ -38,4 +38,4 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Next Executable Step
 
-Prepare and review the repository-bound PlanArtifact and exact effect IDs for `HaipingShi/coderail`; do not paste the token into chat or run live mutation before the separate confirmation gate.
+User names a dedicated non-sensitive sandbox `owner/repository` with a missing README, gitignore, contributing guide, or PR template. Alternatively, request a separate contract draft for patching existing content; do not run live mutation under CD-010 as written.

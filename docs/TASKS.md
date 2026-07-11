@@ -1611,10 +1611,13 @@ S — Scope:
   - `test/t022*.test.ts` with injected fetch/Git doubles and local bare remotes only;
   - minimal existing port wiring needed to keep live behavior behind injection and explicit authorization;
   - T-022-relevant `docs/TASKS.md`, `docs/BLUEPRINTS.md`, `docs/HARNESS_SPEC.md`, `docs/HANDOFF.md`, append-only trace, index, and generated status.
+  - user-authorized read-only inspection of `G:\\codeRail\\coderail/**` and its Git metadata solely to prepare/review a repository-bound PlanArtifact for `HaipingShi/coderail`;
+  - writing that PlanArtifact only to an external gh-polish plan store outside `G:\\codeRail\\coderail`, plus non-secret artifact/effect evidence.
 - Forbidden:
   - real network access, reading the actual process `GH_TOKEN`, or any write to `HaipingShi/coderail` during mandatory implementation/verification;
   - default-branch writes, force push, merge, PR close, cleanup, workflows, settings, rulesets, secrets, releases, deploys, Pages, or publication;
-  - public CLI live-mutation enablement, dependencies/package/build/workflow changes, hosted credentials, GitHub App work, or `G:\\codeRail\\coderail/**`.
+  - any write, checkout, branch, commit, push, clean, reset, generated file, or configuration change under `G:\\codeRail\\coderail/**`;
+  - public CLI live-mutation enablement, dependencies/package/build/workflow changes, hosted credentials, or GitHub App work.
 
 V — Verify:
 - TDD mode: required
@@ -1660,6 +1663,21 @@ Acceptance:
 - [x] `422` reconciliation and partial-failure retry do not duplicate PR mutation.
 - [x] Exact-SHA checks and all existing CI pass without network or ambient credentials.
 - [x] Live GitHub dogfood remains explicitly deferred at this closeout unless separately confirmed after non-live completion.
+- [x] Read-only T-020 prepare binds an external artifact to `HaipingShi/coderail`, `main`, and base SHA `c699fb0d286196caba7e145f95195140c6916ba5` without changing the target repository.
+- [x] Artifact review truthfully reports zero create effects because all four CD-010 allowlisted paths already exist; review refuses an empty confirmation set instead of inventing a mutation.
+
+### Read-Only Artifact Evidence
+
+- Artifact ID: `repository-ready-public-project-2026-07-11T10-00-00-000Z`
+- Artifact digest: `26c1d12de8ec91dd4a7f87790ea486288c0b4cc7aef5e6a5d0bbd08cb8e9ef9e`
+- External path: `C:\\Users\\geesh\\AppData\\Local\\gh-polish\\plans\\t022-coderail\\repository-ready-public-project-2026-07-11T10-00-00-000Z.json`
+- Artifact file SHA-256: `5bacf14d23f4f1b4487ee52dad59a1108fda5170bc23e6481ec673a16cbf36bd`
+- Preview: `README.md`, `.gitignore`, `CONTRIBUTING.md`, and `.github/pull_request_template.md` are all `manual_review` because they already exist.
+- Exact effect IDs: none.
+- Integrity/repository binding: passed.
+- Target before/after: HEAD and tracked diff unchanged; worktree remains clean on `main`.
+- Review outcome: `Saved plan contains no executable effects to review.`
+- Live decision: stopped. CD-010 forbids overwriting these files, so `HaipingShi/coderail` cannot produce the contracted create-only live dogfood without a new repository choice or a separately reviewed contract revision.
 
 ### Critical Check
 
@@ -1672,6 +1690,7 @@ Acceptance:
 
 - User explicitly activated T-022 on 2026-07-11.
 - Capture Red before implementation; do not run live dogfood.
+- User explicitly authorized read-only inspection of `G:\\codeRail\\coderail` for artifact/effect review on 2026-07-11; live mutation remains forbidden.
 
 Task result: stage-complete
 Harness result: passed
