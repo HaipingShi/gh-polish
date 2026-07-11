@@ -1518,6 +1518,72 @@ Resume anchor: docs/TASKS.md#T-020
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-021 Draft live GitHub adapter and dogfood contract
+
+Status: [~]
+Type: docs
+Rail: light
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: review-required
+Execution state: CD-010 drafted from current project boundaries and official GitHub permission documentation; manual acceptance pending.
+
+### CodeRail Coordinate
+
+G — Goal:
+- Establish the decision-grade safety contract required before any real GitHub write adapter or live dogfood.
+
+T — Task:
+- Draft CD-010 with explicit credential, permission, allowlist, effect, idempotency, threat, verification, Stop, and user-decision boundaries; do not implement it.
+
+S — Scope:
+- Allowed:
+  - `docs/CONTRACTS.md`, `docs/TASKS.md`, `docs/BLUEPRINTS.md`, `docs/HARNESS_SPEC.md`, `docs/HANDOFF.md`, `docs/TRACELOG.jsonl`, generated trace/status files.
+- Forbidden:
+  - `src/**`, `test/**`, package/build/workflow files, credentials, real GitHub mutation, user repositories, and `G:\\codeRail\\coderail/**`.
+
+V — Verify:
+- TDD mode: waived.
+- Contract, coordinate, Blueprint, trace, and Light Rail closeout checks pass; official GitHub references support permission claims; manual acceptance remains explicit.
+- Waiver reason: contract drafting changes no executable behavior.
+
+X — Stop:
+- Stop before T-022 activation, credentials, or live mutation until CD-010 is accepted and an exact dogfood repository is supplied.
+
+P — Persist:
+- CD-010 proposed contract, T-021 state, SEC blueprint backlink, proposed live harness, H1 handoff, trace/index/status.
+
+### Acceptance / Trace
+- [x] Credential source, minimum permissions, expiry/redaction, and revocation policy are explicit.
+- [x] Exact single-repository allowlist and independent mutation gates are explicit.
+- [x] Initial effect/path restrictions and forbidden mutation surfaces are explicit.
+- [x] Branch/PR/check idempotency, conflict, partial-failure, and recovery states are explicit.
+- [x] Threats, tests, live dogfood evidence, and Stop conditions are explicit.
+- [x] Official GitHub references support the permission and credential recommendations.
+- [ ] User accepts or revises the four Required User Decisions in CD-010.
+
+Next step:
+- Review CD-010; do not activate T-022 until explicit acceptance and an exact dogfood repository are supplied.
+
+
+Task result: stage-complete
+
+Harness result: passed
+
+Handoff level: H1
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-021
+
+Next executable step: Request the human gate for T-021 or mark a separately authorized task autonomous.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

@@ -1,45 +1,40 @@
 # Handoff
 
 Updated at: 2026-07-11
-Handoff Level: H0
+Handoff Level: H1
 Current branch: master
-Current task: T-020 final CodeRail closeout
-Next task: separately contract any live GitHub adapter; do not infer it from credential-free M1 evidence
+Current task: T-021 CD-010 contract review
+Next task: T-022 live GitHub adapter implementation remains unactivated
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: docs/TASKS.md#T-020
+Resume anchor: docs/CONTRACTS.md#CD-010-Live-GitHub-adapter-and-dogfood-boundary
 
 ## Coordinate Summary
 
-Rail: full
-G: Expose the credential-free M1 workflow safely to coding agents without false live-GitHub claims.
-T: Define serializable prepare/review/execute phases, exact review binding, and a truthful M1 completion report.
-S: Agent protocol module/tests/docs and injected local/mock ports only; no public CLI mutation, live GitHub, credentials, default branch, automatic merge, persistent sessions, dependencies, hosted infrastructure, or M2-M6.
-V: Required Red-Green, exact confirmations/token, invalid-token fail-before-adapters, pending-check reporting, full CI, current-repository read-only dogfood, and CodeRail gates.
-X: Any real credential/repository, public mutation command, breaking protocol, durable session, or new persistence/API boundary.
-P: CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
+Rail: light
+Goal: Establish the least-privilege, exact-repository, idempotent safety contract required before live GitHub mutation.
+Boundary: Documentation only; no source/tests/dependencies, credential access, user-repository effects, or GitHub mutation.
+Acceptance: CD-010 covers credentials, permissions, allowlist, live effects, idempotency, recovery, threats, verification, Stop conditions, persistence, and four user decisions.
+Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
-## Current Evidence
+## Contract State
 
-- Focused T-020: 2/2 passed.
-- Full CI: 64/64 passed.
-- Current-repository prepare/review dogfood: before/after Git status identical.
-- Invalid review token reaches zero effect adapters.
-- Exact confirmations are order-independent but reject missing, extra, or duplicate IDs.
-- Successful local/mock evidence reports credential-free `achieved`, live GitHub `deferred`, overall M1 `deferred`.
-- Pending checks report credential-free and overall `not-ready`.
-- Public CLI remains M0 validation-only.
+- CD-010 status: proposed, review required.
+- Future implementation task: T-022, not activated.
+- SEC blueprint remains planned until CD-010 is accepted and implementation evidence exists.
+- Initial recommended credential: short-lived fine-grained PAT, one repository, `Contents: write`, `Pull requests: write`, `Actions: read`.
+- Initial live effects: create-only README, gitignore, contributing guide, and PR template; no workflows.
+- Default PR policy: deterministic branch, draft PR, reuse exact matches, no merge or cleanup.
 
 ## Handoff Trigger Check
 
-- H0: no blocker, context loss, or operator transition.
+- H1: decision-grade credential, repository authority, and external mutation boundary requires explicit user review.
 
 ## Auto Commit
 
-- CodeRail state commit: `12bcd50`.
-- Exact-path implementation/docs commit: `8cb1f39`.
-- `git add .` was not used.
+- CodeRail state files may auto-commit during finish.
+- Remaining contract docs use exact-path staging only; never `git add .`.
 
 ## Next Executable Step
 
-Run blueprint and `python .coderail/coderail.py finish --task T-020 --task-result done --next-task-mode activate`.
+User accepts or revises CD-010 Required User Decisions and provides the exact dogfood `owner/repository`; do not activate T-022 beforehand.
