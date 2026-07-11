@@ -115,6 +115,7 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 
 ### Local Effectful PR Gate
 
+- The production-facing coordinator derives confirmed file effects only from a digest-validated saved PlanArtifact; tampered, missing, repeated, or non-file payloads fail before adapters.
 - Mandatory verification remains credential-free: temporary Node/generic repositories, local bare remotes, and a mocked idempotent PR adapter.
 - The default branch SHA must remain unchanged; the pushed head SHA must bind the repository, plan, base branch, head branch, and PR evidence.
 - Existing customized content is refused before push or PR creation.

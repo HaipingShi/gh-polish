@@ -5,6 +5,7 @@ import {
   type LocalEffectExecutor
 } from "./localApply.js";
 import type { RemoteVerificationEvidence, RemoteVerificationTarget } from "./remoteVerification.js";
+import { validateArtifactIntegrity, type PlanArtifact } from "./planArtifact.js";
 
 export interface PullRequestInput {
   repositoryRoot: string;
@@ -31,6 +32,13 @@ export interface RevisionCheckAdapter {
 }
 
 export interface RepositoryReadyExecutionRequest extends Omit<LocalApplyRequest, "completedOperationIds"> {
+  pullRequest: { title: string; body: string };
+  previousEvidence?: RepositoryReadyExecutionEvidence;
+}
+
+export interface ArtifactRepositoryReadyExecutionOptions {
+  branchName: string;
+  confirmations: readonly string[];
   pullRequest: { title: string; body: string };
   previousEvidence?: RepositoryReadyExecutionEvidence;
 }
@@ -157,6 +165,49 @@ export async function executeRepositoryReadyPullRequest(
       action: "Retry PR creation with this evidence; completed local effects and the pushed commit will be reused."
     });
   }
+}
+
+export async function executeArtifactRepositoryReadyPullRequest(
+  artifact: PlanArtifact,
+  options: ArtifactRepositoryReadyExecutionOptions,
+  executor: LocalEffectExecutor,
+  pullRequests: PullRequestAdapter,
+  revisionChecks: RevisionCheckAdapter
+): Promise<RepositoryReadyExecutionEvidence> {
+  validateArtifactIntegrity(artifact);
+  if (artifact.effects.length === 0) {
+    throw new Error("Saved plan contains no executable Repository Ready effect payloads.");
+  }
+  const seen = new Set<string>();
+  const operations = artifact.effects.map((effect) => {
+    const operation = artifact.operations.find((candidate) => candidate.id === effect.operationId);
+    if (!operation || operation.surface !== "file" || !operation.mutation) {
+      throw new Error(`Effect ${effect.operationId} is not an executable file operation in the saved plan.`);
+    }
+    if (seen.has(effect.operationId)) throw new Error(`Saved plan repeats effect ${effect.operationId}.`);
+    seen.add(effect.operationId);
+    if (!options.confirmations.includes(effect.operationId)) {
+      throw new Error(`Effect ${effect.operationId} requires explicit confirmation for Repository Ready execution.`);
+    }
+    return {
+      id: effect.operationId,
+      path: effect.path,
+      content: effect.content,
+      risk: operation.risk,
+      requiresConfirmation: true
+    };
+  });
+  return executeRepositoryReadyPullRequest({
+    planId: artifact.id,
+    repositoryRoot: artifact.repository.root,
+    baseSha: artifact.baseSha,
+    baseBranch: artifact.repository.defaultBranch,
+    branchName: options.branchName,
+    operations,
+    confirmations: options.confirmations,
+    pullRequest: options.pullRequest,
+    previousEvidence: options.previousEvidence
+  }, executor, pullRequests, revisionChecks);
 }
 
 function validateCheckIdentity(request: RepositoryReadyExecutionRequest, headSha: string, result: RemoteVerificationEvidence): void {

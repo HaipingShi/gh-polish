@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -6,7 +7,12 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { createLocalGitExecutor } from "../src/localGitExecutor.js";
 import type { LocalEffectExecutor } from "../src/localApply.js";
+import { analyzeLocalRepository } from "../src/localAnalyzer.js";
+import { createPlanArtifact } from "../src/planArtifact.js";
+import { createPolishPlan } from "../src/planner.js";
+import { detectRepositoryContext } from "../src/repositoryContext.js";
 import {
+  executeArtifactRepositoryReadyPullRequest,
   executeRepositoryReadyPullRequest,
   type PullRequestAdapter,
   type PullRequestInput,
@@ -285,6 +291,57 @@ describe("T-018 Repository Ready PR execution", () => {
       assert.equal(git(fixture.root, ["rev-list", "--count", request.branchName]), commitCount);
       assert.equal(adapter.pullRequests.size, 1);
       assert.equal(checks.requests.length, 2);
+    } finally {
+      fixture.dispose();
+    }
+  });
+
+  it("executes only integrity-checked saved artifact effects", async () => {
+    const fixture = createFixture("node");
+    const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
+    try {
+      const context = await detectRepositoryContext(fixture.root);
+      const local = await analyzeLocalRepository(fixture.root);
+      const plan = createPolishPlan(local, undefined, new Date("2026-07-11T00:00:00Z"));
+      const content = "# Contributing from artifact\n";
+      const artifact = await createPlanArtifact({
+        context,
+        local,
+        plan,
+        effects: [{
+          operationId: "contributing",
+          path: "CONTRIBUTING.md",
+          content,
+          contentSha256: createHash("sha256").update(content).digest("hex"),
+          requiresConfirmation: true
+        }],
+        now: new Date("2026-07-11T00:00:00Z")
+      });
+
+      const result = await executeArtifactRepositoryReadyPullRequest(artifact, {
+        branchName: "gh-polish/artifact-plan",
+        confirmations: ["contributing"],
+        pullRequest: { title: "Artifact plan", body: "Apply saved artifact" }
+      }, createLocalGitExecutor(fixture.root), adapter, checks);
+
+      assert.equal(result.status, "completed");
+      assert.equal(result.planId, artifact.id);
+      assert.equal(readFileSync(join(fixture.root, "CONTRIBUTING.md"), "utf8"), content);
+
+      const tampered = structuredClone(artifact);
+      tampered.effects[0].content = "tampered\n";
+      await assert.rejects(() => executeArtifactRepositoryReadyPullRequest(tampered, {
+        branchName: "gh-polish/tampered",
+        confirmations: ["contributing"],
+        pullRequest: { title: "Tampered", body: "must not run" }
+      }, createLocalGitExecutor(fixture.root), adapter, checks), /digest/i);
+      await assert.rejects(() => executeArtifactRepositoryReadyPullRequest({ ...artifact, effects: [] }, {
+        branchName: "gh-polish/missing",
+        confirmations: [],
+        pullRequest: { title: "Missing", body: "must not run" }
+      }, createLocalGitExecutor(fixture.root), adapter, checks), /digest|no executable/i);
+      assert.equal(adapter.pullRequests.size, 1);
     } finally {
       fixture.dispose();
     }
