@@ -142,7 +142,7 @@ Notes:
 
 ## CD-004 Mutation-ready apply and evidence hardening
 
-Status: proposed
+Status: accepted
 Created at: 2026-07-11
 Source: user
 Trace: TR-20260711-041635-t015
@@ -211,7 +211,13 @@ P — Persist:
 - ASSETS: register canonical lifecycle/evidence modules, fixtures, and generated-artifact boundaries.
 - TRACE: append intent, Red, Green, local-effect, dogfood, verify, and closeout events; regenerate index.
 
-Decision: proposed for user acceptance. It authorizes local test-owned effects only; live GitHub/user-repository mutation remains out of scope.
+Decision:
+- accepted by the user; local test-owned effects only, with live GitHub/user-repository mutation out of scope.
+
+Revision accepted at 2026-07-11:
+- An executable local file operation must carry an immutable effect payload: operation ID, relative path, content, content SHA-256, confirmation requirement, and inclusion in the artifact digest.
+- Recommendation-only operations may omit an effect payload and are not executable by T-015.
+- T-015 may execute only a payload already present in the loaded, validated artifact; it must refuse reconstructed, missing, or digest-mismatched payloads.
 
 Notes:
 - T-016 owns remote PR/check verification and M0 completion evidence; T-015 must not claim those outcomes.

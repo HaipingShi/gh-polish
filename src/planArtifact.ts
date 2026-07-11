@@ -26,6 +26,7 @@ export interface PlanArtifact {
   createdAt: string;
   expiresAt: string;
   operations: PolishPlan["operations"];
+  effects: EffectPayload[];
   risk: {
     highest: PolishPlan["operations"][number]["risk"];
     confirmations: string[];
@@ -39,10 +40,19 @@ export interface PlanArtifact {
   digest: string;
 }
 
+export interface EffectPayload {
+  operationId: string;
+  path: string;
+  content: string;
+  contentSha256: string;
+  requiresConfirmation: boolean;
+}
+
 export interface PlanArtifactInput {
   context: RepositoryContext;
   local: LocalAnalysis;
   plan: PolishPlan;
+  effects?: EffectPayload[];
   now?: Date;
 }
 
@@ -65,6 +75,7 @@ export async function createPlanArtifact(input: PlanArtifactInput): Promise<Plan
     createdAt: now.toISOString(),
     expiresAt: new Date(now.getTime() + PLAN_TTL_MS).toISOString(),
     operations: input.plan.operations,
+    effects: input.effects ?? [],
     risk: { highest, confirmations },
     verification: input.plan.operations.map((operation) => operation.verification),
     evidence: {
@@ -133,7 +144,7 @@ export async function validatePlanForRepository(artifact: PlanArtifact, context:
 }
 
 export function validateArtifactIntegrity(artifact: PlanArtifact): void {
-  if (!artifact || artifact.schemaVersion !== PLAN_SCHEMA_VERSION || !artifact.id || !artifact.repository?.root || !artifact.baseSha || !artifact.digest) {
+  if (!artifact || artifact.schemaVersion !== PLAN_SCHEMA_VERSION || !artifact.id || !artifact.repository?.root || !artifact.baseSha || !artifact.digest || !Array.isArray(artifact.effects)) {
     throw new ProtocolError("PLAN_INVALID", "Plan does not match the supported schema.");
   }
   const { digest: actual, ...unsigned } = artifact;
@@ -141,6 +152,11 @@ export function validateArtifactIntegrity(artifact: PlanArtifact): void {
     throw new ProtocolError("PLAN_TAMPERED", "Plan digest does not match its immutable contents.", [
       { action: "Generate a replacement plan.", command: "gh-polish plan --json" }
     ]);
+  }
+  for (const effect of artifact.effects) {
+    if (!artifact.operations.some((operation) => operation.id === effect.operationId) || effect.contentSha256 !== createHash("sha256").update(effect.content).digest("hex")) {
+      throw new ProtocolError("PLAN_TAMPERED", "Plan effect payload does not match its immutable contents.");
+    }
   }
 }
 

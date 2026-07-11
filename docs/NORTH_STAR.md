@@ -4,6 +4,17 @@ Status: current
 Last reviewed: 2026-07-11
 Owner: project maintainer
 
+Next-task mode: activate
+
+## Drive Contract
+
+- Mode: continuous
+- Terminal condition: T-016 is done with M0 completion evidence and M1 Repository Ready has an accepted executable contract.
+- Progress signal: active-task acceptance items and passing fresh verification increase without scope violations.
+- Retry budget: 3
+- No-progress limit: 2
+- Human gates: only CodeRail Stop conditions or decision-grade product/security/persistence/API changes.
+
 ## Outcome
 
 gh-polish helps people with little or no software-development or GitHub knowledge move an AI-built idea from working code to a credible, visible, launch-ready, and sustainably maintained project.
@@ -59,10 +70,10 @@ Later stages are planned but not authorized in the current implementation slice.
 Milestone: M0 Agent-Native Deterministic Kernel, integration and dogfood track.
 
 - First-pass modules exist for repository context, GitHub reads, analysis, policy, planning, templates, guarded apply, monitoring, and tests.
-- The public CLI is still a stub and is not wired into those modules.
-- Plans are not durable, identity-bound execution artifacts.
-- No real-repository read-only dogfood evidence exists.
-- T-013 refactors product direction; T-014 is the next implementation task for agent-native `inspect`/`plan`, versioned plans, and read-only dogfood.
+- The public CLI now provides the versioned read-only `inspect -> plan -> apply --dry-run -> verify` path over local context and analysis.
+- Plans are durable, identity-bound local artifacts; the M0 public CLI remains validation-only.
+- Read-only dogfood evidence exists for this repository.
+- T-015 is hardening artifact-bound local execution, retry/idempotency, and per-operation evidence under the accepted immutable effect-payload contract.
 
 ## Legacy Cutoff
 
