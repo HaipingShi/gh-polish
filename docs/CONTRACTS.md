@@ -140,6 +140,57 @@ Decision: proceed
 Notes:
 - T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
 
+## CD-005 Remote verification and M0 completion hardening
+
+Status: accepted
+Created at: 2026-07-11
+Source: user continuous-roadmap goal
+Trace: T-016 intent trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Complete M0 with verification evidence bound to the intended repository, branch, plan, and revision.
+- Outcome served: An agent can distinguish pending, success, failure, missing, and permission-limited remote evidence and give one truthful next action.
+- Why now: T-015 proves safe local effect/evidence behavior; M0 cannot complete until remote checks are filtered to the target revision instead of unrelated history.
+
+T — Task:
+- Task ID: T-016
+- Exact task: Add a read-only plan-bound remote verifier over the existing GitHub read adapter, cover degraded states and repair guidance, expose stable evidence output, and define M0 exit/M1 entry evidence.
+- What this task must not become: PR creation, merge, GitHub mutation, live credential requirement, M1 artifact generation, hosted infrastructure, or Web/App work.
+
+S — Scope:
+- Allowed:
+  - `src/monitor.ts`, `src/githubAdapter.ts`, `src/protocol.ts`, and new narrowly scoped read-only verification modules under `src/`
+  - `test/t016*.test.ts` and minimal existing monitor/adapter test updates
+  - T-016-relevant `docs/*.md`, append-only trace, generated index/status
+- Forbidden:
+  - POST/PUT/PATCH/DELETE GitHub endpoints, PR creation/merge, user-repository writes, credentials in mandatory tests
+  - dependencies, package/build/workflow changes, hosted infrastructure, M1-M6 implementation, `G:\codeRail\coderail/**`
+
+V — Verify:
+- TDD mode: required
+- Red check: failing tests for exact SHA/branch filtering, unrelated-run rejection, pending/success/failure/missing/permission-limited evidence, and repair/next-step output.
+- Green check: mocked remote runs produce deterministic plan-bound evidence without credentials or network.
+- Refactor check: GitHub transport, target filtering, evidence classification, and protocol orchestration remain separate.
+- Regression check: GitHub adapter stays GET-only; T-014/T-015 tests and mutation guards remain green.
+- CI check: project CI, CodeRail TDD/Blueprint/CI/Done/Closeout, and read-only dogfood.
+- Waiver reason: none.
+- Harness:
+  - Mocked GitHub runs for every state and mismatched branch/SHA.
+  - Existing no-write harness and local repository dogfood.
+- Manual acceptance:
+  - Not required unless remote completion semantics require a new product decision.
+
+X — Stop:
+- Stop if trustworthy completion requires PR/merge mutation, live credentials, a new dependency, or ambiguous evidence semantics.
+
+P — Persist:
+- TASKS, HANDOFF, NORTH_STAR current slice, HARNESS/METRICS if M0 evidence changes, ASSETS, TRACE/index/status.
+
+Decision:
+- proceed autonomously as a read-only Full Rail task under the user's continuous-roadmap goal.
+
 ## CD-004 Mutation-ready apply and evidence hardening
 
 Status: accepted

@@ -4,11 +4,10 @@ Status: current
 Last reviewed: 2026-07-11
 Owner: project maintainer
 
-Next-task mode: activate
-
 ## Drive Contract
 
 - Mode: continuous
+- Next-task mode: activate
 - Terminal condition: T-016 is done with M0 completion evidence and M1 Repository Ready has an accepted executable contract.
 - Progress signal: active-task acceptance items and passing fresh verification increase without scope violations.
 - Retry budget: 3
@@ -73,7 +72,7 @@ Milestone: M0 Agent-Native Deterministic Kernel, integration and dogfood track.
 - The public CLI now provides the versioned read-only `inspect -> plan -> apply --dry-run -> verify` path over local context and analysis.
 - Plans are durable, identity-bound local artifacts; the M0 public CLI remains validation-only.
 - Read-only dogfood evidence exists for this repository.
-- T-015 is hardening artifact-bound local execution, retry/idempotency, and per-operation evidence under the accepted immutable effect-payload contract.
+- T-015 and T-016 complete the executable M0 kernel evidence. The next authorized step is an M1 Repository Ready contract; M1 implementation must remain profile-aware and evidence-backed.
 
 ## Legacy Cutoff
 

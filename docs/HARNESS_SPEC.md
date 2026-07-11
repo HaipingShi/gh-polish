@@ -87,6 +87,14 @@ gh-polish verify --plan <plan-id-or-returned-path> --json
 - Prove no project-file or GitHub mutation.
 - Live remote reads require an explicitly available user credential; missing credentials must degrade rather than block local inspection.
 
+### M0 Exit Gate
+
+- T-014 proves a durable repository-bound plan and read-only command protocol.
+- T-015 proves immutable local effect payloads, explicit confirmation, non-default-branch isolation, partial-failure evidence, and idempotent retry in test-owned repositories.
+- T-016 proves exact branch/SHA remote-run filtering and deterministic pending, success, failure, missing, and permission-limited evidence.
+- Mandatory evidence is credential-free, the GitHub adapter remains GET-only, project CI passes, and repository dogfood reports `mutation: none`.
+- M1 may begin only from an accepted profile-aware Repository Ready contract; M0 completion does not authorize live GitHub mutation.
+
 ## M1 Repository Ready Harness
 
 Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
