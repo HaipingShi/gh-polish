@@ -1046,7 +1046,7 @@ Acceptance:
 
 Task result: stage-complete
 
-Harness result: skipped
+Harness result: passed
 
 Handoff level: H1
 
