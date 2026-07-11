@@ -762,6 +762,187 @@ Notes:
 - Local CodeRail standard initialization skipped existing files and doctor reported healthy before this task began.
 - T-013 used the local runtime at `G:\codeRail\coderail`; no clone, package installation, wholesale copy, or local CodeRail source modification occurred.
 
+## T-013F Residual Light Rail normalization
+
+Status: [x]
+Type: design
+Rail: light
+Priority: P1
+Owner: project maintainer
+Branch: master
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Complete the unfulfilled parts of the merged product-direction Prompt without repeating T-013.
+- Outcome served: Align the current CodeRail standard, maturity model, staged harness, governance metrics, and next Full Rail contract with the agent-native launch and stewardship direction.
+
+T — Task:
+- Incrementally merge missing local-standard entry rules, add the Trust Ready maturity boundary, evolve Harness/Metrics for CLI-to-Web/App stages, and create but do not execute the next Full Rail M0 contract.
+
+S — Scope:
+- Allowed:
+  - AGENTS.md
+  - CLAUDE.md
+  - README.md
+  - docs/**
+- Forbidden:
+  - src/**
+  - test/**
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - dist/**
+  - node_modules/**
+  - .github/**
+  - G:\codeRail\coderail/**
+  - real GitHub mutation
+
+V — Verify:
+- TDD mode: waived
+- Red check: not applicable for Light Rail documents and governance entries.
+- Green check: compatibility evidence, M0-M6 maturity, staged Harness, measurable Metrics, and unexecuted T-014 Full Rail contract are complete and consistent.
+- Refactor check: T-013 work is not repeated and future delivery surfaces remain planned rather than implemented.
+- Regression check: no implementation/config changes and `npm run ci` passes.
+- CI check: local CodeRail doctor, contract, coordinate, blueprint, trace, done, inspect, CI, and closeout gates.
+- Waiver reason: No code path, schema, dependency, runner, or external interface changes.
+- Harness:
+  - Template semantic diff, terminology scan, Mermaid/scope check, `npm run ci`, and local CodeRail scripts.
+- Manual acceptance:
+  - Automated Light Rail evidence accepted; T-014 execution requires its own Full Rail start.
+
+X — Stop:
+- Compatibility needs destructive overwrite or local CodeRail source changes.
+- Work expands into implementation, dependencies, workflows, live GitHub state, or hosted-vendor selection.
+- Target documents contain conflicting user changes that cannot be merged safely.
+
+P — Persist:
+- TASKS: T-013F closeout and T-014 future task anchor.
+- HANDOFF: resume at T-014 activation.
+- DECISIONS: only if a new durable decision appears.
+- LESSONS: only for reusable failure evidence.
+- ASSETS: retain the local CodeRail boundary.
+- TRACE: T-013F intent/change/verify and refreshed index.
+
+### Acceptance
+
+- [x] Local standard entry differences are reviewed and missing Drive rules are incrementally merged.
+- [x] Maturity stages explicitly distinguish Repository Ready, Trust Ready, and Demo/Launch Ready.
+- [x] Harness covers current CLI kernel plus entry gates for future Web UI and GitHub App stages.
+- [x] Metrics contain concrete current values and staged product/governance measures.
+- [x] T-014 Full Rail Coordinate/Contract Draft is complete and explicitly unexecuted.
+- [x] CodeRail and project-native verification evidence is fresh.
+
+### Completion
+
+Task result: done
+Done gate: pass
+Completed at: 2026-07-11
+Commit: task-scoped closeout commit
+Harness result: passed template compatibility, M0-M6 terminology, scope, code-fence, project CI, contract, coordinate, blueprint, and preliminary doctor checks
+Manual acceptance: automated Light Rail evidence accepted
+Handoff level: H1
+Handoff updated: yes
+Trace: docs/TRACELOG.jsonl
+Inspect status: docs/CODERAIL_STATUS.md
+Resume anchor: T-014-start-gate
+Next executable step: In a new Full Rail turn, inspect state, confirm CD-003/T-014, append the T-014 intent trace, and capture Red evidence before implementation.
+Auto commit:
+- Eligible: yes
+- Action: committed by CodeRail closeout check
+- Commit: task-scoped closeout commit
+- Exact files staged:
+- Safe to stage: T-013F-scoped governance and product documents only
+- Do not stage: implementation, tests, package/build/workflow files, local CodeRail source, or unrelated changes
+- Ignored/generated artifacts: `node_modules/`, `dist/`
+- Avoid git add .: yes
+
+## T-014 Trusted agent-native M0 thin slice
+
+Status: [ ]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Execution state: contract accepted; not started by T-013F
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Prove the M0 Agent-Native Deterministic Kernel through a trusted `inspect -> plan -> apply -> verify` path.
+- Outcome served: Let a coding agent operate and explain a repository-bound workflow with deterministic plans, errors, recovery, and evidence while real GitHub mutation stays impossible.
+
+T — Task:
+- Wire the CLI to real context/analyzer modules, implement a versioned persisted plan contract, load and validate it in dry-run apply, and return plan-bound read-only verification for Node/generic fixtures and repository dogfood.
+
+S — Scope:
+- Allowed:
+  - existing M0 CLI, context, GitHub-read, analyzer, planner, policy, applier, and monitor modules under src/**
+  - new narrowly scoped M0 protocol, plan, error, evidence, store, and verification modules under src/**
+  - corresponding tests and Node/generic fixtures under test/**
+  - T-014-relevant README/docs and append-only trace
+- Forbidden:
+  - real GitHub mutation and write endpoints
+  - writes to the user's project during inspect, plan, dry-run apply, verify, or dogfood
+  - M1-M6 feature expansion
+  - Web UI, GitHub App, hosted persistence, database, queue, billing, tenancy, OAuth, or deployment implementation
+  - dependency/package/build/TypeScript/workflow changes without a revised contract
+  - G:\codeRail\coderail/**
+
+V — Verify:
+- TDD mode: required
+- Red check: failing tests for CLI integration, versioned plan schema/store, identity/base SHA/content hashes/digest/expiry, tamper/mismatch/stale rejection, JSON/exit contracts, and no-mutation dogfood.
+- Green check: Node and generic fixtures complete `inspect -> plan -> apply --dry-run -> verify` deterministically with actionable errors and recovery.
+- Refactor check: protocol, validation, persistence, verification, and orchestration ownership remain separate.
+- Regression check: existing tests remain green, read adapter stays GET-only, mutation guard stays closed, and public protocol snapshots are reviewed.
+- CI check: project-native lint/typecheck/test/build/ci plus local CodeRail TDD, CI, Done, Inspect, Trace, and Closeout gates.
+- Waiver reason: none.
+- Harness:
+  - Unit, CLI integration/snapshot, temporary repository, local bare remote, Node/generic fixture, and read-only dogfood evidence defined in `docs/HARNESS_SPEC.md`.
+- Manual acceptance:
+  - Only for unresolved public command/JSON product tradeoffs; otherwise executable evidence is required.
+
+X — Stop:
+- Schema, persistence, or public protocol needs a new product decision.
+- Required work crosses into mutation, dependencies/build, hosted infrastructure, M1-M6 breadth, or high-risk permissions.
+- No-mutation dogfood cannot be proven or repeated gate failures have no clear cause.
+- User changes conflict with required files and cannot be safely merged.
+
+P — Persist:
+- TASKS: Red/Green/Refactor evidence, acceptance, closeout, and next hardening step.
+- HANDOFF: exact H1/H2/H3 resume anchor.
+- DECISIONS: only durable plan/protocol/persistence decisions.
+- LESSONS: repeated correctness or safety failures.
+- ASSETS: schema/protocol/fixture inventory and generated boundary.
+- TRACE: intent, Red, Green, change, dogfood, verify, and closeout events plus regenerated index.
+
+### Task Contract
+
+Depends on:
+- T-013 agent-native product direction.
+- T-013F staged harness, metrics, standard compatibility, and CD-003.
+
+Blocks:
+- T-015 effectful apply/evidence hardening.
+- T-016 remote plan-bound verification and completion.
+- M1 Repository Ready feature work.
+
+Acceptance:
+- [ ] Stable agent-facing JSON envelope and exit-code contract for all four commands.
+- [ ] Versioned plan includes repository identity, base SHA, relevant content hashes, created/expiry data, immutable operation payloads/digest, risk, confirmations, verification, evidence, and recovery.
+- [ ] Plan is saved and reloaded rather than reconstructed for apply.
+- [ ] Dry-run apply rejects stale, tampered, expired, or repository-mismatched plans before effects.
+- [ ] Verify reports plan-bound read-only evidence and one executable next step.
+- [ ] Node and generic fixtures complete the thin slice with Red/Green evidence.
+- [ ] Read-only dogfood on this repository proves no project or GitHub mutation.
+- [ ] Project CI and CodeRail Full Rail gates pass.
+
+### Start Gate
+
+- Execution is intentionally not started by T-013F.
+- A future turn must inspect current state, confirm CD-003/T-014 scope, record a T-014 intent trace, and capture Red evidence before implementation.
+
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

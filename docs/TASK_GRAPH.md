@@ -16,16 +16,16 @@ flowchart TD
     T014 --> T015["T-015 Trustworthy apply and evidence"]
     T015 --> T016["T-016 Plan-bound verification"]
 
-    T016 --> P1["P1 Repository Ready"]
-    P1 --> P2["P2 Launch Ready"]
-    P2 --> P3["P3 Web Workspace"]
-    P3 --> P4["P4 GitHub App Stewardship"]
-    P4 --> P5["P5 Growth Loop"]
-    P5 --> P6["P6 Portfolio and Team"]
+    T016 --> M1["M1 Repository Ready"]
+    M1 --> M2["M2 Trust Ready"]
+    M2 --> M3["M3 Demo and Launch Ready"]
+    M3 --> M4["M4 Web Workspace"]
+    M4 --> M5["M5 GitHub App Continuous Stewardship"]
+    M5 --> M6["M6 Growth, Portfolio, and Team"]
 ```
 
 ## Current Critical Path
 
-`T-013 -> T-014 -> T-015 -> T-016 -> P1`
+`T-013F -> T-014 -> T-015 -> T-016 -> M1`
 
 Web UI, GitHub App, growth, and portfolio work remain planned product stages. They are not parallel implementation tracks until the preceding stage gate has evidence.

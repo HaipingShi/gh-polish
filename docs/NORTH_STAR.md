@@ -29,13 +29,13 @@ AI coding agents have made implementation accessible, but launch and stewardship
 
 ## Maturity Path
 
-1. **P0 Deterministic Foundation:** safe inspect, plan, apply, verify, evidence, and recovery.
-2. **P1 Repository Ready:** understandable, runnable, professionally presented, and appropriately safe.
-3. **P2 Launch Ready:** verified demo, visuals, release, feedback path, and truthful launch assets.
-4. **P3 Web Workspace:** novice-friendly decisions, previews, plans, evidence, and execution control.
-5. **P4 GitHub App Stewardship:** installation-scoped event and scheduled maintenance through plans and PRs.
-6. **P5 Growth Loop:** explicit distribution, feedback signals, and evidence-backed improvement cycles.
-7. **P6 Portfolio and Team:** multi-project, collaborator, policy, and organization stewardship.
+1. **M0 Agent-Native Deterministic Kernel:** safe inspect, plan, apply, verify, evidence, and recovery.
+2. **M1 Repository Ready:** understandable, runnable, and professionally presented repository basics.
+3. **M2 Trust Ready:** explicit license, support, security, CI, dependency, and permission evidence.
+4. **M3 Demo and Launch Ready:** verified demo, visuals, release, feedback path, and truthful launch assets.
+5. **M4 Web Workspace:** novice-friendly decisions, previews, plans, evidence, and execution control.
+6. **M5 GitHub App Continuous Stewardship:** installation-scoped event and scheduled maintenance through plans and PRs.
+7. **M6 Growth, Portfolio, and Team:** distribution, feedback, multi-project, collaborator, policy, and organization stewardship.
 
 Later stages are planned but not authorized in the current implementation slice. Deferred means sequenced, not removed.
 
@@ -56,7 +56,7 @@ Later stages are planned but not authorized in the current implementation slice.
 
 ## Current Slice
 
-Milestone: P0 Deterministic Foundation, integration and dogfood track.
+Milestone: M0 Agent-Native Deterministic Kernel, integration and dogfood track.
 
 - First-pass modules exist for repository context, GitHub reads, analysis, policy, planning, templates, guarded apply, monitoring, and tests.
 - The public CLI is still a stub and is not wired into those modules.
@@ -72,16 +72,16 @@ Earlier tasks remain historical evidence. T-013 is the first task verified again
 
 ## Current Non-Goals
 
-- No hosted service, Web UI, or GitHub App before P0 is trustworthy, and no hosted-vendor decision in T-013.
+- No hosted service, Web UI, or GitHub App before M0 is trustworthy, and no hosted-vendor decision in the current Light Rail work.
 - No competing general-purpose agent loop, code-refactoring platform, or proprietary replacement for commodity GitHub tooling.
-- No automatic high-risk ruleset, Actions-policy, Pages, security, release, or default-branch mutation in P0.
+- No automatic high-risk ruleset, Actions-policy, Pages, security, release, or default-branch mutation in M0.
 - No single opaque repository score as the primary builder experience.
 
 ## Known Unknowns and Decision Debt
 
 - Best coding-agent integration/discovery format and boundary between agent creation and kernel validation.
 - Evidence that reliably defines Repository Ready and Launch Ready for different project profiles.
-- Trusted permission/confirmation experience and hosted persistence, tenancy, billing, and vendors, deferred to P3/P4 contracts.
+- Trusted permission/confirmation experience and hosted persistence, tenancy, billing, and vendors, deferred to M4/M5 contracts.
 
 ## First Principles
 
@@ -96,5 +96,5 @@ Earlier tasks remain historical evidence. T-013 is the first task verified again
 
 - Stop when work cannot map to maturity/evidence, or a later stage enters without prerequisites and a new contract.
 - Stop when mutation lacks plan identity, confirmation, or recovery, or generated claims lack evidence.
-- Drift exists when the product becomes only a linter/template/API wrapper, claims hosted capability before P0, or makes users configure routine GitHub mechanics.
+- Drift exists when the product becomes only a linter/template/API wrapper, claims hosted capability before M0, or makes users configure routine GitHub mechanics.
 - Drift exists when delivery adapters duplicate policy, deferred stages disappear, or `plan` and `apply` blend.

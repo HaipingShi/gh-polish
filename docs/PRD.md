@@ -49,7 +49,7 @@ The builder can say, "Help me publish and prepare this project," and the coding 
 
 ## Maturity Model
 
-### P0 Deterministic Foundation
+### M0 Agent-Native Deterministic Kernel
 
 - Agent-facing CLI with stable JSON and exit codes.
 - Local and GitHub context preflight.
@@ -58,17 +58,23 @@ The builder can say, "Help me publish and prepare this project," and the coding 
 - Idempotent apply, per-operation evidence, recovery, and verification.
 - Read-only dogfood and then allowlisted mutation dogfood.
 
-### P1 Repository Ready
+### M1 Repository Ready
 
 - Project-type profiles: public project, private project, demo, library, application, and commercial product.
 - Context-aware README and repository metadata.
-- License decision guidance rather than silent license selection.
-- Accurate install, run, test, build, contribution, support, and security information.
-- Evidence-backed CI recommendations; no fake green workflows.
-- Community files, issue/PR templates, dependency automation, and basic security posture.
+- Accurate install, run, test, build, contribution, and project-status information.
+- Community, issue, and pull-request entry points appropriate to the project profile.
 - Guided pull-request checks and merge completion.
 
-### P2 Launch Ready
+### M2 Trust Ready
+
+- License intent and selection are explicit rather than silently generated.
+- Support, security contact, privacy, and contribution expectations are usable and do not leak private data.
+- CI, dependency automation, permissions, and supply-chain recommendations are evidence-backed.
+- No fake-green workflow, invented test, unverified badge, or unsupported security claim.
+- Risk and recovery explanations are understandable without GitHub expertise.
+
+### M3 Demo and Launch Ready
 
 - Verified demo or deployment URL.
 - Screenshots, short demo media, social preview, and project visuals.
@@ -77,7 +83,7 @@ The builder can say, "Help me publish and prepare this project," and the coding 
 - Launch Pack with channel-specific drafts and a fact/evidence ledger.
 - Launch preview that distinguishes verified claims from drafts requiring approval.
 
-### P3 Web Workspace
+### M4 Web Workspace
 
 - GitHub sign-in and repository selection.
 - Maturity-stage view with evidence and next actions.
@@ -86,7 +92,7 @@ The builder can say, "Help me publish and prepare this project," and the coding 
 - Execution state, checks, recovery, and confirmation controls.
 - Initial multi-project workspace without organization-wide automation.
 
-### P4 GitHub App Stewardship
+### M5 GitHub App Continuous Stewardship
 
 - Least-privilege installation and repository selection.
 - Webhook-triggered and scheduled inspection.
@@ -95,21 +101,18 @@ The builder can say, "Help me publish and prepare this project," and the coding 
 - Installation-scoped evidence, audit, retry, and recovery.
 - Explicit confirmation remains mandatory for high-impact changes.
 
-### P5 Growth Loop
+### M6 Growth, Portfolio, and Team
 
 - Reusable launch campaigns and channel-specific publishing assistance.
 - Visibility and feedback signals connected to improvement suggestions.
 - Evidence-backed project updates, changelogs, and relaunch workflows.
 - Clear separation between assistance, preview, and external publication.
-
-### P6 Portfolio and Team
-
 - Multi-repository portfolio and health views.
 - Shared templates, brand assets, and policy profiles.
 - Collaborator roles, approval boundaries, and organization stewardship.
 - Batch recommendations with repository-specific plans and evidence.
 
-## P0 Functional Requirements
+## M0 Functional Requirements
 
 ### Inspect
 
@@ -172,7 +175,7 @@ gh-polish should orchestrate rather than replace commodity capabilities:
 
 ## Success Metrics
 
-### P0/P1 Activation
+### M0/M1 Activation
 
 - A coding agent can complete read-only inspect and plan on a supported repository without undocumented manual setup.
 - A builder can understand the proposed outcome and required decisions within five minutes through the agent explanation.
@@ -198,4 +201,4 @@ gh-polish should orchestrate rather than replace commodity capabilities:
 
 ## Current Release Boundary
 
-The repository currently contains test-covered prototype modules, not a user-complete MVP. T-014 must wire the read-only CLI path and durable plan contract before P1 feature breadth, Web UI, or GitHub App implementation expands.
+The repository currently contains test-covered prototype modules, not a user-complete MVP. T-014 must prove the trusted M0 thin slice before M1 feature breadth, M4 Web UI, or M5 GitHub App implementation expands.

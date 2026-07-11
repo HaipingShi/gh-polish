@@ -1,90 +1,14 @@
 # Harness Specification
 
-The verification harness exists to protect the core trust promise: `inspect` and `plan` must never mutate GitHub or local project files, and `apply` must only mutate through an approved plan.
+The harness protects the product promise across its staged evolution: an AI coding agent may explain and draft, but gh-polish must deterministically prove repository identity, plan validity, authorization, mutation boundaries, and outcome evidence.
+
+Current executable gates apply to the M0 local CLI kernel. M1-M6 sections are stage-entry contracts, not claims that Web UI, GitHub App, launch, growth, or multi-project runtimes exist today.
 
 ## Global Checks
 
-The implementation stack is Node.js + TypeScript with Node's built-in test runner. The global checks are:
+The current implementation uses Node.js 22, TypeScript, and Node's built-in test runner.
 
-```bash
-npm run typecheck
-npm test
-npm run build
-npm run ci
-```
-
-When CodeRail reference scripts are available, also run:
-
-```bash
-python %TEMP%\coderail-ref\scripts\doctor.py --target .
-```
-
-## CodeRail Gates
-
-- Coordinate Gate: every non-trivial task has Rail plus G/T/S/V/X/P in `docs/TASKS.md`.
-- Blueprint Gate: architecture, data flow, sequence, state, deployment, and CI/CD diagrams are current or explicitly planned/not-applicable in `docs/BLUEPRINTS.md`.
-- TDD Gate: required for bugs, regressions, parsers, validators, domain logic, APIs, shared utilities, and risky refactors; waived for design-only Light Rail tasks with a reason.
-- Done Gate: no task is marked done without V evidence or explicit manual acceptance.
-- Trace Graph: meaningful actions append source, task, modified assets, validation, and persistence evidence to `docs/TRACELOG.jsonl` and refresh `docs/TRACE_INDEX.md`.
-- Closeout Gate: substantial stops record task result, auto-commit action, handoff trigger check, resume anchor, and one next executable step.
-
-## Test Layers
-
-### Unit Tests
-
-- Analyzer tests for local project fixtures.
-- Policy tests for every operation class and GitHub capability.
-- Planner tests for deterministic plan generation.
-- Template registry tests for stack selection and overwrite safety.
-- Adapter mapping tests for normal and degraded GitHub responses.
-
-Expected gate: all unit tests pass on every pull request.
-
-### Integration Tests with Mocked GitHub API
-
-- Use mocked REST/GraphQL responses for repository metadata, topics, labels, milestones, Actions, checks, branch rulesets, Pages, releases, and security feature status.
-- Cover token missing, permission denied, rate limit, not found, and partial response scenarios.
-- Verify no direct network mutation endpoint is called unless the test explicitly opts into mutation mode.
-
-Expected gate: integration suite passes without real GitHub credentials.
-
-### CLI Smoke Tests
-
-- `gh-polish --help`
-- `gh-polish inspect --dry-run`
-- `gh-polish plan --dry-run`
-- `gh-polish apply --plan <fixture> --dry-run`
-- `gh-polish monitor --dry-run`
-
-Smoke tests should run in temporary fixture repositories and must not require a real GitHub repository.
-
-Current T-001 smoke equivalent:
-
-```bash
-node dist/src/cli.js --help
-node dist/src/cli.js inspect --dry-run
-node dist/src/cli.js apply --plan fixture
-```
-
-Current T-002 repository context checks:
-
-```bash
-npm test
-```
-
-The repository context suite covers HTTPS remotes, SSH remotes, outside-git errors, injected git output, dirty state, default branch fallback, and a temporary git repository smoke test.
-
-Current T-003 GitHub adapter checks:
-
-```bash
-npm test
-```
-
-The GitHub adapter suite uses mocked fetch only. It covers environment token resolution, repository metadata, topics, Actions workflows/runs, labels, milestones, forbidden/not-found/rate-limit degraded states, invalid responses, network failures, and absence of mutation methods.
-
-Current roadmap coverage:
-
-```bash
+```powershell
 npm run lint
 npm run typecheck
 npm test
@@ -92,73 +16,174 @@ npm run build
 npm run ci
 ```
 
-The full suite covers CLI safety, local git context, GitHub read adapter, local analyzer, remote analyzer, policy classification, dry-run planner, template overwrite protection, guarded apply/metadata flow, monitor summaries, and harness mutation checks.
+`npm run ci` is the current aggregate. Lint currently aliases strict TypeScript checking. Formatter and coverage thresholds must be contracted before a published release.
 
-### Dry-Run Snapshot Tests
+## Local CodeRail Checks
 
-- Fixture repositories for Node, Python, Go, Rust, and generic projects.
-- Snapshot the human-readable summary and machine-readable plan JSON.
-- Snapshots must include risk levels, confirmation flags, verification steps, and evidence fields.
-- Any snapshot update must be reviewed as a product behavior change.
+Use the user-supplied runtime directly; do not clone, install, vendor, or modify it during project tasks.
 
-### No Real GitHub Mutation Gate
+```powershell
+python "G:\codeRail\coderail\scripts\doctor.py" --target .
+python "G:\codeRail\coderail\scripts\contract_check.py" --target .
+python "G:\codeRail\coderail\scripts\coordinate_check.py" --target .
+python "G:\codeRail\coderail\scripts\blueprint_check.py" --target .
+python "G:\codeRail\coderail\scripts\trace_doctor.py" --target .
+python "G:\codeRail\coderail\scripts\ci_gate.py" --target .
+```
 
-Real GitHub mutation is forbidden unless an explicit environment flag is set.
+Before completion, use `done_gate.py` with the real task, rail, type, and fresh evidence. Refresh trace index and runtime status, then use `closeout_check.py` with exact task scope.
 
-Required behavior:
+## Trust Invariants
 
-- Default test mode blocks write endpoints.
-- `inspect` and `plan` never call write endpoints, even when mutation flag is set.
-- `apply` may call write endpoints only when all are true:
-  - A saved plan is provided.
-  - The operation is approved by policy.
-  - Required confirmations are present.
-  - `GH_POLISH_ALLOW_REAL_GITHUB_MUTATION=1` is set.
-  - The target repository matches an allowed test repository pattern when running in CI.
+- `inspect` and `plan` never mutate local project files or GitHub state.
+- `apply` loads an identity-bound saved plan; it does not accept reconstructed operations as equivalent evidence.
+- Repository identity, base revision, relevant content hashes, schema/tool version, operation digest, and confirmation state are validated before apply.
+- High-impact operations require explicit confirmation and plain-language impact.
+- File/PR operations, immediate GitHub settings, merge/release, deployment, and external publication are separate operation groups.
+- Verification binds evidence to the target plan and revision rather than unrelated repository-wide history.
+- No workflow, test, deployment, screenshot, badge, release, or feature claim is considered successful without evidence.
+- Partial failure records per-operation state and one recoverable next action.
+- Real GitHub mutation remains disabled in automated tests unless a separately contracted allowlist and explicit flag are both present.
 
-Write endpoints include repository metadata updates, topic updates, content writes, branch creation, pull request creation, label/milestone writes, ruleset writes, Pages changes, security feature toggles, release creation, and workflow-affecting file writes.
+## M0 Agent-Native Kernel Harness
 
-### Lint, Typecheck, and Build Gates
+### Unit and Contract Tests
 
-The current gates are:
+- Repository context and GitHub remote parsing.
+- Local and remote finding normalization, including degraded permissions and missing credentials.
+- Policy decisions for every operation surface and risk class.
+- Versioned plan schema validation and deterministic serialization.
+- Repository identity, base SHA, content hash, expiry, payload digest, and stale-plan rejection.
+- Agent-facing JSON envelope, stable exit codes, actionable errors, and recovery fields.
+- Artifact selection and overwrite protection.
+- Apply validation, idempotency, per-operation evidence, partial failure, and recovery.
+- Plan-bound verify summaries.
 
-- Linter equivalent: `npm run lint` currently aliases strict TypeScript checking.
-- Typecheck: `npm run typecheck`.
-- Build/package command: `npm run build`.
-- Test command: `npm test`.
-- CI aggregate: `npm run ci`.
+### Integration Tests
 
-Formatter and coverage gates are deferred until code volume justifies them. They must be revisited before a release or published binary.
+- Mocked GitHub reads never require credentials or live network access.
+- Node and generic fixture repositories exercise `inspect -> plan -> apply --dry-run -> verify`.
+- A temporary git repository and local bare remote exercise Git behavior without the user's working tree.
+- Missing token, permission denied, rate limit, not found, invalid response, network failure, dirty tree, detached HEAD, and stale base are covered.
+- A tampered plan or mismatched repository is refused before any effect.
+
+### CLI Smoke Contract
+
+The intended T-014 surface is:
+
+```powershell
+gh-polish inspect --json
+gh-polish plan --profile public-project --json
+gh-polish apply --plan .gh-polish/plans/<plan-id>.json --dry-run --json
+gh-polish verify --plan <plan-id> --json
+```
+
+Until T-014 completes, current CLI stub output must be described honestly and tested as a stub. Snapshot changes to the structured protocol are public product-contract changes.
+
+### Read-Only Dogfood
+
+- Run on this repository and representative Node/generic fixtures.
+- Capture command, exit code, JSON output, warnings, recovery guidance, and filesystem/Git status before and after.
+- Prove no project-file or GitHub mutation.
+- Live remote reads require an explicitly available user credential; missing credentials must degrade rather than block local inspection.
+
+## M1 Repository Ready Harness
+
+Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
+
+- Profiles distinguish public project, private project, demo, library, application, and commercial product.
+- README, metadata, commands, community files, and workflows are contextual rather than placeholders.
+- Install/run/test/build commands are observed or explicitly marked unknown.
+- Existing customized content produces patch/manual-review behavior.
+- A Repository Ready PR passes its detected checks and presents one merge decision to the builder.
+
+## M2 Trust Ready Harness
+
+Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.
+
+- License choice is explicit and linked to builder intent.
+- Security/support/contact paths are usable and do not leak private data.
+- CI, dependency automation, permissions, and supply-chain recommendations are evidence-backed.
+- No fake-green workflow, invented test, unverified badge, or unsupported security claim is allowed.
+- Risk explanations and recovery are understandable without GitHub terminology.
+
+## M3 Demo and Launch Ready Harness
+
+Entry requirement: Repository and Trust evidence are reliable.
+
+- Demo/deployment URL is reachable and associated with the intended revision/environment.
+- Screenshots and demo media show the actual project state.
+- Release/release notes match committed capability.
+- OG/social assets and channel drafts contain only claim-ledger facts or explicit unverified drafts.
+- Known limitations, roadmap, and feedback path are visible.
+- Deployment, release, and external publication each require explicit approval and post-action evidence.
+
+## M4 Web Workspace Entry Harness
+
+This is planned, not currently executable. Before Web implementation, the Web page flow, hosted data/tenancy model, deployment topology, and threat model must be current.
+
+- GitHub sign-in and repository selection respect account/repository boundaries.
+- Plans, diffs, risks, README, visuals, demo, release, and sharing previews match kernel artifacts.
+- Builder decisions use plain language with progressive disclosure.
+- Refresh/retry does not duplicate mutation.
+- Loading, empty, degraded, partial-failure, recovery, and cancellation states are tested.
+- Browser tests cover supported desktop/mobile flows, accessibility, console errors, and visual non-overlap.
+- Web execution cannot bypass the same plan, policy, confirmation, and evidence gates as CLI.
+
+## M5 GitHub App Entry Harness
+
+This is planned, not currently executable. Before App implementation, permission/event, installation lifecycle, deduplication, retry, retention, and threat blueprints must be current.
+
+- Webhook signatures, replay protection, delivery deduplication, retry, and idempotency are tested.
+- Installation/user tokens are short-lived, least-privilege, repository-scoped, and never logged.
+- Installation, repository access change, suspension, and uninstall lifecycle are covered.
+- Checks, PR comments, scheduled inspections, and maintenance PRs reference the same plan/evidence model.
+- Events may propose work but do not grant implicit approval for high-risk settings.
+- Cross-installation and cross-tenant access tests fail closed.
+
+## M6 Growth, Portfolio, and Team Entry Harness
+
+This is planned, not currently executable.
+
+- External publication requires channel-specific explicit consent and idempotency.
+- Visibility and feedback signals record provenance, privacy classification, and retention.
+- Recommendations connect to builder goals rather than vanity metrics.
+- Multi-repository plans remain repository-bound; approval is not silently reused across projects.
+- Collaborator roles, organization policy profiles, and audit boundaries are tested.
 
 ## Fixture Strategy
 
-Fixtures should model real but small repositories:
+Current fixtures:
 
-- Empty generic repo.
-- Node package with scripts.
-- Python package with pytest.
-- Go module.
-- Rust crate.
-- Repo with existing customized docs.
-- Repo with existing workflows and partial GitHub metadata.
+- empty generic repository;
+- Node project with scripts;
+- Python, Go, and Rust detection fixtures;
+- existing customized docs/workflows;
+- partial GitHub metadata and permission-degraded responses.
 
-Fixtures must not contain real secrets, private repository names, or user-specific paths.
+T-014 must make Node and generic fixtures exercise the complete read-only thin slice. Fixtures must contain no secrets, private repository names, or user-specific paths.
 
 ## Evidence Requirements
 
-Every successful gate should produce evidence:
+Each successful task records:
 
-- Unit and integration test logs.
-- CLI smoke output.
-- Dry-run plan snapshots.
-- Mutation guard logs.
-- Lint/typecheck/build outputs.
-- CI workflow link when running in GitHub Actions.
+- exact commands and exit results;
+- Red/Green/Refactor evidence when TDD is required;
+- snapshots or structured protocol fixtures when behavior is a contract;
+- before/after Git and filesystem evidence for mutation-sensitive work;
+- plan, operation, verification, and recovery identifiers;
+- CodeRail verify trace, refreshed trace index, runtime status, done gate, handoff check, and closeout state.
 
-## Exit Criteria for MVP Harness
+## Drive Progress Harness
 
-- All gates can run locally.
-- All gates can run in CI.
-- Mocked GitHub integration tests do not need credentials.
-- Real GitHub mutation cannot happen by accident.
-- Plan snapshots make product behavior reviewable.
+- Progress signal: acceptance items completed with passing fresh evidence and no scope violations.
+- How to measure: task acceptance checklist, failing/passing test count, gate status, and unresolved blocker count.
+- Improvement direction: increase completed acceptance; decrease failing checks and unresolved blockers.
+- Checkpoint command: task-specific V commands followed by `drive_check.py` only when a continuous Drive Contract is explicitly active.
+- Terminal evidence: Done Gate pass, persistence/trace synced, clean task-scoped commit, and next executable step.
+
+Activity without measurable progress does not satisfy a continuous Drive Contract.
+
+## Release Rule
+
+No maturity stage, delivery surface, or task is complete merely because modules exist. Completion requires its entry/exit evidence, current blueprints, scope compliance, trace, and the rail-appropriate done/closeout gates.

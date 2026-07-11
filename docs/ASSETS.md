@@ -60,3 +60,5 @@
 - Generated trace/status indexes are refreshed with scripts from the local CodeRail runtime.
 - `src/` and `test/` are existing implementation and verification assets; product-direction Light Rail work must not modify them.
 - Future Web, GitHub App, launch, and growth assets become canonical only when their stage contracts authorize creation.
+- T-013F compared `AGENTS.md` and `CLAUDE.md` with the local standard templates and incrementally restored the missing Continuous Drive checkpoint rules; both entry files now match the current local templates without destructive overwrite.
+- `docs/HARNESS_SPEC.md` and `docs/METRICS.md` are project-specific extensions of the standard templates, not copies of generic placeholder content.

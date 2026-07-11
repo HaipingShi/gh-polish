@@ -4,7 +4,7 @@
 
 gh-polish is an agent-native workflow with a deterministic execution kernel. The first adapter is a local CLI operated by an external AI coding agent. Future adapters include a human-oriented Web workspace and an installation-scoped GitHub App.
 
-The architecture must make later delivery surfaces possible without pretending their infrastructure exists today. P0 has no hosted service, shared database, queue, billing system, or Web runtime.
+The architecture must make later delivery surfaces possible without pretending their infrastructure exists today. M0 has no hosted service, shared database, queue, billing system, or Web runtime.
 
 ## Responsibility Boundary
 
@@ -59,16 +59,16 @@ flowchart LR
 - **Artifact Registry:** README, workflows, community files, screenshots, demo evidence, releases, launch assets, and future content types.
 - **Executor:** applies only validated operations through local and remote ports.
 - **Verifier:** binds evidence to the target plan, revision, pull request, deployment, or release.
-- **Plan Store / Evidence Store Ports:** local files in P0; hosted implementations only when later stages are contracted.
+- **Plan Store / Evidence Store Ports:** local files in M0; hosted implementations only when later stages are contracted.
 
 ## Ports and Adapters
 
 ```mermaid
 flowchart LR
     subgraph Delivery["Delivery adapters"]
-        CLI["Agent CLI\nP0"]
-        WebUI["Web workspace\nP3"]
-        App["GitHub App\nP4"]
+        CLI["Agent CLI\nM0"]
+        WebUI["Web workspace\nM4"]
+        App["GitHub App\nM5"]
     end
 
     subgraph Core["Shared domain kernel"]
@@ -106,7 +106,7 @@ flowchart LR
 
 Dashed paths are planned adapters, not current runtime dependencies.
 
-## P0 Workflow
+## M0 Workflow
 
 ```mermaid
 sequenceDiagram
@@ -202,12 +202,22 @@ stateDiagram-v2
 
 | Stage | Runtime | State | Trigger | Primary experience |
 |---|---|---|---|---|
-| P0-P2 | Local CLI invoked by coding agent | Local plan/evidence files | Explicit agent command | Conversational through coding agent |
-| P3 | Web workspace plus shared kernel service | Hosted per-user/project state | User session and explicit action | Visual decisions, previews, plans, evidence |
-| P4 | GitHub App workers plus shared kernel | Installation-scoped durable state | Webhook, schedule, user approval | GitHub checks/comments plus Web control |
-| P5-P6 | Multi-project services and integrations | Tenant-aware portfolio and campaign state | Events, schedules, explicit publication | Portfolio, growth, and team workflows |
+| M0-M3 | Local CLI invoked by coding agent | Local plan/evidence files | Explicit agent command | Conversational through coding agent |
+| M4 | Web workspace plus shared kernel service | Hosted per-user/project state | User session and explicit action | Visual decisions, previews, plans, evidence |
+| M5 | GitHub App workers plus shared kernel | Installation-scoped durable state | Webhook, schedule, user approval | GitHub checks/comments plus Web control |
+| M6 | Multi-project services and integrations | Tenant-aware portfolio and campaign state | Events, schedules, explicit publication | Portfolio, growth, and team workflows |
 
 The table is an architecture runway, not a vendor or implementation commitment.
+
+## Maturity Responsibilities
+
+- **M0 Agent-Native Deterministic Kernel:** repository identity, plans, policy, dry-run execution, verification, evidence, and recovery.
+- **M1 Repository Ready:** contextual repository presentation and runnable project entry points.
+- **M2 Trust Ready:** explicit legal, support, security, CI, dependency, permission, and maintenance evidence.
+- **M3 Demo and Launch Ready:** verified runtime/demo, truthful visuals, release, launch assets, and feedback path.
+- **M4 Web Workspace:** human control plane over the shared kernel, plans, previews, decisions, and evidence.
+- **M5 GitHub App Continuous Stewardship:** least-privilege event/schedule adapters over the same plan and policy model.
+- **M6 Growth, Portfolio, and Team:** consent-based distribution, feedback, multi-project state, roles, and organization policy.
 
 ## Mutation Boundaries
 
@@ -238,4 +248,4 @@ Existing modules approximate several logical components, but they are prototypes
 - `monitor.ts`: repository-wide workflow summary, not plan-bound verification.
 - `cli.ts`: command stub, not integrated delivery adapter.
 
-T-014 begins closing the gap with read-only CLI integration and a durable plan contract. It must not pretend P1-P4 adapters are already implemented.
+T-014 begins closing the gap with a trusted local CLI thin slice and a durable plan contract. It must not pretend M1-M5 capabilities or adapters are already implemented.

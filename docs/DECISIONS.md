@@ -195,7 +195,7 @@ The target builder may have no development experience and may delegate even basi
 
 ### Decision
 
-Treat the builder as the beneficiary and decision owner, the external AI coding agent as the primary operator and explainer, and gh-polish as the deterministic execution kernel. The first CLI is an agent-facing structured interface, not the final human user interface. Do not build a competing general-purpose agent loop in P0.
+Treat the builder as the beneficiary and decision owner, the external AI coding agent as the primary operator and explainer, and gh-polish as the deterministic execution kernel. The first CLI is an agent-facing structured interface, not the final human user interface. Do not build a competing general-purpose agent loop in M0.
 
 ### Consequences
 
@@ -231,15 +231,15 @@ Define the durable product outcome as the path from AI-built working code throug
 
 ### Context
 
-Calling Web UI, GitHub App, growth, or portfolio capabilities "deferred" can accidentally erase them from design decisions. Implementing their infrastructure during P0 would create premature complexity, but ignoring them could bind the core to local files and one CLI process.
+Calling Web UI, GitHub App, growth, or portfolio capabilities "deferred" can accidentally erase them from design decisions. Implementing their infrastructure during M0 would create premature complexity, but ignoring them could bind the core to local files and one CLI process.
 
 ### Decision
 
-Use ports for interaction, auth, events, artifacts, plans, evidence, GitHub operations, and storage where they represent an explicit staged need. Implement only local P0 adapters now. Require new architecture, threat, persistence, tenancy, and vendor decisions before hosted or App work.
+Use ports for interaction, auth, events, artifacts, plans, evidence, GitHub operations, and storage where they represent an explicit staged need. Implement only local M0 adapters now. Require new architecture, threat, persistence, tenancy, and vendor decisions before hosted or App work.
 
 ### Consequences
 
-- P0 avoids databases, queues, hosted identity, billing, and App infrastructure.
+- M0 avoids databases, queues, hosted identity, billing, and App infrastructure.
 - Domain records must carry repository identity and execution context rather than assuming a local path is sufficient.
 - Web UI and GitHub App are delivery adapters over shared plans and policy.
 - Blueprint gates make future infrastructure requirements visible without claiming current implementation.
@@ -262,3 +262,23 @@ Report named maturity stages with evidence, unmet outcomes, and one meaningful n
 - A demo, private tool, public library, and commercial application can have different readiness evidence.
 - The Web workspace can show progress without gamifying unverified artifacts.
 - Recommendations must explain why they matter and what evidence completes them.
+
+## ADR-014: Make Trust Ready an explicit maturity gate
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+Repository presentation and launch visibility are different from trust. A project can look polished or have a working demo while its license, support path, security contact, CI claims, dependency posture, or permissions remain ambiguous. Folding trust into a generic repository or launch stage makes false confidence more likely.
+
+### Decision
+
+Extend ADR-011 with the explicit sequence: M0 Agent-Native Deterministic Kernel, M1 Repository Ready, M2 Trust Ready, M3 Demo and Launch Ready, M4 Web Workspace, M5 GitHub App Continuous Stewardship, and M6 Growth/Portfolio/Team. Each stage has evidence-backed entry and exit conditions in the roadmap and harness.
+
+### Consequences
+
+- Repository readiness no longer implies legal, security, CI, or maintenance trust.
+- Launch work cannot begin from presentation alone; M2 evidence must be reliable first.
+- Web UI and GitHub App move to M4 and M5 without changing their planned responsibilities.
+- Growth, multi-project, team, and organization capabilities share M6 but must still receive separate implementation contracts when activated.

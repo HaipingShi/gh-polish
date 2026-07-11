@@ -3,75 +3,71 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Current task: T-013 done
+Completed task: T-013F
+Next task: T-014 accepted but not started
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: T-014-contract
+Resume anchor: T-014-start-gate
 
 ## Coordinate Summary
 
 Rail: light
-G: Reframe gh-polish around the path from AI-built code to credible, visible, launch-ready, and maintained projects.
-T: Complete T-013 product direction, architecture runway, roadmap, and CodeRail normalization.
-S: README and product/CodeRail documents only; no implementation, dependencies, live GitHub mutation, or local CodeRail source changes.
-V: Document consistency, scope scan, Mermaid checks, CodeRail gates, trace, and `npm run ci`.
-X: Stop on implementation expansion or premature hosted/vendor commitment.
-P: TASKS, DECISIONS, HANDOFF, ASSETS, TRACE, and generated status/index files.
+G: Complete only the merged Prompt requirements not already delivered by T-013.
+T: Align local standard entries, explicit M0-M6 maturity, staged Harness/Metrics, and the unexecuted T-014 Full Rail contract.
+S: AGENTS.md, CLAUDE.md, README.md, and docs/** only; no implementation, tests, package/build/workflow files, live GitHub state, or local CodeRail source changes.
+V: Template semantic diff, M0-M6 consistency, scope/fence checks, project CI, trace, and local CodeRail gates.
+X: Stop on destructive overwrite, implementation expansion, or hosted/vendor decisions.
+P: TASKS, HANDOFF, DECISIONS, ASSETS, TRACE, generated index, and runtime status.
 
 ## Direction
 
-gh-polish is now defined as an agent-native project launch and stewardship workflow for builders who use AI coding agents but may not understand development or GitHub infrastructure.
+The durable maturity path is:
 
-The builder owns product intent and approvals. The external AI coding agent is the primary operator and explainer. The deterministic gh-polish kernel owns inspection, repository-bound plans, policy, confirmation, mutation, evidence, recovery, and lifecycle state.
+`M0 Agent-Native Deterministic Kernel -> M1 Repository Ready -> M2 Trust Ready -> M3 Demo and Launch Ready -> M4 Web Workspace -> M5 GitHub App Continuous Stewardship -> M6 Growth, Portfolio, and Team`
 
-The product path is:
+Trust Ready is deliberately separate from repository presentation and launch visibility. Later stages have entry harnesses and blueprint prerequisites but no current implementation authorization.
 
-`P0 Deterministic Foundation -> P1 Repository Ready -> P2 Launch Ready -> P3 Web Workspace -> P4 GitHub App Stewardship -> P5 Growth Loop -> P6 Portfolio and Team`
+## Completed Residual Work
 
-Later stages are planned architecture runway. They are not authorized implementation scope until their stage gates and contracts are satisfied.
-
-## Current State
-
-- Local CodeRail at `G:\codeRail\coderail` initialized the existing repository in standard mode without overwriting files.
-- Product direction, PRD, architecture, roadmap, task graph, blueprint index, decisions, README, and asset boundary are aligned to the new outcome.
-- The architecture includes the agent/kernel boundary, shared delivery adapters, durable plan/evidence concepts, and a current plan/execution state machine.
-- Existing TypeScript modules remain first-pass prototypes.
-- The public CLI remains unwired and plans are not yet durable repository-bound execution artifacts.
-- No implementation, dependency, generated-output, or live GitHub state changes were made in T-013.
+- Compared `AGENTS.md` and `CLAUDE.md` with `G:\codeRail\coderail\project-template`; incrementally restored missing Continuous Drive rules and reached template compatibility without force or overwrite.
+- Replaced the stale CLI-only Harness with executable M0 gates and planned M1-M6 stage-entry evidence.
+- Replaced placeholder Metrics with current governance evidence and staged product measures.
+- Added ADR-014 for the explicit Trust Ready gate.
+- Created accepted CD-003 and the complete T-014 Full Rail task card.
+- T-014 was not executed; no `src/`, `test/`, package, build, workflow, remote GitHub, or local CodeRail source changes occurred.
 
 ## Verification
 
-- Scope scan: passed; no `src/`, `test/`, package, dependency, or local CodeRail source changes.
-- Document consistency: passed across README, North Star, PRD, architecture, roadmap, task graph, blueprints, decisions, and task state.
-- Mermaid fences: balanced.
-- Local CodeRail contract, coordinate, and blueprint checks: healthy.
+- Local template compatibility: passed for AGENTS.md and CLAUDE.md.
+- M0-M6 and Trust Ready terminology: passed across core product, architecture, roadmap, harness, and metrics documents.
+- Code fences and task scope: passed.
 - Project regression: `npm run ci` passed with 28 tests.
-- Trace: T-013 intent, change, and verify events appended; trace index regenerated.
+- Contract, Coordinate, and Blueprint checks: healthy.
+- Trace: T-013F intent/change/verify events appended with coordinate summaries; index regenerated.
 
 ## Handoff Trigger Check
 
-- Level: H1 because product direction and the next implementation anchor changed, but the task is complete and unblocked.
+- Level: H1 because the next task now has an accepted Full Rail contract and start gate.
 - Handoff updated: yes.
 
 ## Auto Commit
 
 - Eligible: yes
 - Action: committed by the CodeRail closeout check
-- Commit: task-scoped product-direction commit
-- Exact files staged: T-013-scoped README and docs only
-- Safe to stage: README.md and the modified files under docs/
-- Do not stage: src/, test/, package files, generated output, local CodeRail source, or unrelated user changes
+- Commit: task-scoped residual-governance commit
+- Exact files staged: T-013F-scoped entry and docs files only
+- Safe to stage: AGENTS.md, CLAUDE.md, README.md, and modified docs/
+- Do not stage: src/, test/, package/build/workflow files, generated output, local CodeRail source, or unrelated changes
 - Ignored/generated artifacts: node_modules/, dist/
 - Avoid git add .: yes
 
 ## Next Executable Step
 
-Create and accept the T-014 Full Rail contract for:
+Start T-014 in a separate Full Rail turn:
 
-- agent-native `inspect` and `plan` CLI wiring;
-- stable JSON and actionable degraded states;
-- a versioned, repository-bound, stale-detecting plan artifact;
-- read-only dogfood on this repository and representative fixtures;
-- explicit proof that no local or GitHub mutation occurs.
+1. Read North Star, T-014, CD-003, Harness, and current Git status.
+2. Confirm no conflicting user changes and that T-014 still forbids real GitHub mutation and project writes during dogfood.
+3. Append the T-014 intent trace.
+4. Capture required Red tests before editing implementation.
 
-Do not expand into P1 templates, Web UI, GitHub App, hosted persistence, or real GitHub mutation inside T-014.
+Do not begin M1 feature breadth, Web UI, GitHub App, hosted persistence, dependencies, or real mutation inside T-014.

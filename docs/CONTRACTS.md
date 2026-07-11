@@ -73,6 +73,150 @@ Decision: proceed
 Notes:
 - "Deferred" means planned but not implemented in the current slice. It does not mean excluded from the product architecture or roadmap.
 
+## CD-002 Complete residual Light Rail normalization
+
+Status: accepted
+Created at: 2026-07-11
+Source: user
+Trace: docs/TRACELOG.jsonl (T-013F)
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Complete the parts of the supplied product-direction Prompt that were not already delivered by T-013.
+- Outcome served: Keep the agent-native launch/stewardship direction executable through an aligned harness, explicit trust and launch maturity stages, current CodeRail standard entry rules, measurable governance, and a ready-but-unexecuted next Full Rail contract.
+- Why now: The merged Prompt explicitly asks Codex to exclude completed work and execute the remaining requirements.
+
+T — Task:
+- Task ID: T-013F
+- Exact task: Compare current governance entries with the local standard template, incrementally merge missing standard rules, align maturity/harness/metrics, and create the next Full Rail M0 contract without implementing it.
+- What this task must not become: Repeating T-013, changing business code, executing T-014, or selecting hosted infrastructure.
+
+S — Scope:
+- Allowed:
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `README.md`
+  - `docs/**`
+- Forbidden:
+  - `src/**`
+  - `test/**`
+  - package, lock, TypeScript, build, or workflow configuration
+  - real GitHub mutation
+  - `G:\codeRail\coderail/**`
+  - Web UI, GitHub App, database, queue, or hosted implementation
+
+V — Verify:
+- TDD mode: waived
+- Red check: not applicable to a Light Rail governance and product-document follow-up.
+- Green check: template compatibility evidence is recorded; maturity stages explicitly include Trust Ready; Harness covers CLI now and stage gates for Web/App later; Metrics are measurable; T-014 has a complete Full Rail contract and remains unexecuted.
+- Refactor check: no completed T-013 content is needlessly rewritten and no future stage is presented as current capability.
+- Regression check: no implementation/config changes and existing project CI remains green.
+- CI check: local CodeRail doctor, contract, coordinate, blueprint, trace, done, inspect, CI, and closeout flows.
+- Waiver reason: No business logic, schema, dependency, runner, or external interface is implemented.
+- Harness:
+  - Local-template semantic diff for `AGENTS.md`, `CLAUDE.md`, and Harness requirements.
+  - Maturity and cross-document terminology scans.
+  - Mermaid fence and scope scans.
+  - Project-native `npm run ci`.
+- Manual acceptance:
+  - Automated Light Rail evidence is sufficient; T-014 explicitly remains unexecuted for later Full Rail activation.
+
+X — Stop:
+- Compatibility requires `--force`, destructive overwrite, or local CodeRail source modification.
+- Remaining requirements require business code, dependencies, build configuration, live GitHub mutation, or a hosted-vendor decision.
+- User changes conflict with a target document and cannot be merged safely.
+
+P — Persist:
+- TASKS: T-013F completion and T-014 future task state.
+- HANDOFF: next executable T-014 activation step.
+- DECISIONS: update only if a new durable decision is introduced.
+- LESSONS: update only for a reusable failure.
+- ASSETS: preserve local CodeRail source boundary.
+- TRACE: append T-013F intent/change/verify events and regenerate the index.
+
+Decision: proceed
+
+Notes:
+- T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
+
+## CD-003 Trusted agent-native M0 thin slice
+
+Status: accepted
+Created at: 2026-07-11
+Source: user
+Trace: future T-014 execution trace
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Prove the M0 Agent-Native Deterministic Kernel through one trusted `inspect -> plan -> apply -> verify` path.
+- Outcome served: Give an external AI coding agent a stable, evidence-backed workflow without requiring the builder to understand GitHub mechanics and without enabling real GitHub mutation.
+- Why now: Prototype modules exist, but the public CLI is still a stub, plans are not durable identity-bound artifacts, and no end-to-end dogfood evidence exists.
+
+T — Task:
+- Task ID: T-014
+- Exact task: Wire the agent-facing CLI to existing context/analyzer modules, persist and reload a versioned repository-bound plan, validate it through dry-run apply, and return a plan-bound read-only verify result for Node/generic fixtures and this repository.
+- What this task must not become: M1 repository feature breadth, real GitHub mutation, production PR creation, Web UI, GitHub App, hosted persistence, dependency/platform selection, or a general-purpose agent loop.
+
+S — Scope:
+- Allowed:
+  - existing M0 CLI, context, GitHub-read, analyzer, planner, policy, applier, and monitor modules under `src/`
+  - new narrowly scoped M0 protocol, plan-schema/store, error, evidence, and verification modules under `src/`
+  - corresponding tests and Node/generic fixtures under `test/`
+  - T-014-relevant CodeRail/project documents and append-only trace
+- Forbidden:
+  - real GitHub mutation or write endpoints
+  - writes to the user's project during inspect, plan, dry-run apply, verify, or dogfood
+  - Web UI, GitHub App, hosted service, database, queue, billing, tenancy, OAuth, or deployment implementation
+  - M1-M6 artifact/template/growth feature expansion
+  - dependency, package, TypeScript, build, release, or GitHub Actions workflow changes without a separate decision-grade contract revision
+  - `G:\codeRail\coderail/**`
+
+V — Verify:
+- TDD mode: required
+- Red check:
+  - Add failing tests for the four-command CLI thin slice, versioned plan validation, persistence/reload, tamper/mismatch/stale rejection, stable JSON envelopes/exit codes, and no-mutation dogfood.
+- Green check:
+  - Node and generic fixtures pass `inspect -> plan -> apply --dry-run -> verify` with deterministic artifacts and actionable recovery fields.
+- Refactor check:
+  - Shared protocol, plan validation, persistence, and verification concerns have explicit ownership; CLI orchestration does not absorb domain logic.
+- Regression check:
+  - Existing tests remain green; read adapter remains GET-only; mutation guard remains closed; public protocol changes are intentionally snapshotted.
+- CI check:
+  - `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run ci`, and local CodeRail TDD/CI/Done/Closeout gates.
+- Waiver reason:
+  - none; parser/schema/shared-domain/CLI behavior requires Red-Green-Refactor evidence.
+- Harness:
+  - Unit tests for schema, protocol, persistence, staleness, digest, errors, and recovery.
+  - CLI integration snapshots for Node and generic fixtures.
+  - Temporary-repository and local-bare-remote tests where Git behavior is needed.
+  - Read-only dogfood on `F:\projects\gh-polish` with before/after Git and filesystem evidence.
+  - Mocked GitHub reads only; no credentials or live network required for the mandatory suite.
+- Manual acceptance:
+  - Required only if the public command/JSON contract has an unresolved product tradeoff; otherwise executable TDD and dogfood evidence governs completion.
+
+X — Stop:
+- The plan schema, persistence location, or public JSON contract cannot be defined without a product decision.
+- Any path requires project-file mutation, real GitHub mutation, new runtime dependencies, build changes, hosted infrastructure, or high-risk permissions outside the accepted scope.
+- Repository identity or stale-plan behavior remains ambiguous after two focused design/test attempts.
+- Required dogfood cannot prove no mutation, or a gate fails twice with unclear cause.
+- Existing user changes conflict with a required target file and cannot be merged safely.
+
+P — Persist:
+- TASKS: T-014 Red/Green evidence, acceptance, closeout, and next hardening task.
+- HANDOFF: update for H1/H2/H3 with exact failing/passing anchor.
+- DECISIONS: append plan/protocol/persistence ADR only if the contract requires a durable choice.
+- LESSONS: record repeated schema, identity, or no-mutation failure patterns.
+- ASSETS: register new canonical schema/protocol fixtures and generated-artifact boundary.
+- TRACE: append intent, Red, Green, change, dogfood, verify, and closeout events; regenerate index.
+
+Decision: proceed in a separate Full Rail execution turn; do not execute as part of T-013F
+
+Notes:
+- `apply` in this thin slice is validation-only dry-run for the user repository. Any effectful apply path belongs to T-015 or a revised contract.
+- `verify` proves plan/current-state evidence in M0; remote PR/check verification is hardened in T-016.
+
 Copy this block and rename the heading to `## CD-001 Short title` when creating a real draft.
 
 ```markdown

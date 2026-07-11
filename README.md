@@ -6,19 +6,19 @@ It is designed to help an AI coding agent move a working idea toward a credible 
 
 ## Product Path
 
-1. **P0 Deterministic Foundation:** inspect, plan, apply, verify, evidence, and recovery.
-2. **P1 Repository Ready:** understandable, runnable, trustworthy repository presentation and engineering basics.
-3. **P2 Launch Ready:** verified demo, visuals, release, launch preview, and feedback path.
-4. **P3 Web Workspace:** human-oriented decisions, previews, diffs, evidence, and project control.
-5. **P4 GitHub App Stewardship:** installation-scoped, event-driven, and scheduled maintenance.
-6. **P5 Growth Loop:** launch distribution, feedback signals, and evidence-backed improvement cycles.
-7. **P6 Portfolio and Team:** multi-project and organization stewardship.
+1. **M0 Agent-Native Deterministic Kernel:** inspect, plan, apply, verify, evidence, and recovery.
+2. **M1 Repository Ready:** understandable, runnable, and professionally presented repository basics.
+3. **M2 Trust Ready:** explicit license, support, security, CI, dependency, and permission evidence.
+4. **M3 Demo and Launch Ready:** verified demo, visuals, release, launch preview, and feedback path.
+5. **M4 Web Workspace:** human-oriented decisions, previews, diffs, evidence, and project control.
+6. **M5 GitHub App Continuous Stewardship:** installation-scoped, event-driven, and scheduled maintenance.
+7. **M6 Growth, Portfolio, and Team:** distribution, feedback, multi-project, and organization stewardship.
 
-Later stages are deliberately planned even though the current implementation remains focused on P0.
+Later stages are deliberately planned even though the current implementation remains focused on M0.
 
 ## Current State
 
-Status: P0 module prototype, not yet an end-to-end MVP.
+Status: M0 module prototype, not yet an end-to-end MVP.
 
 The repository contains first-pass TypeScript modules and tests for:
 
