@@ -142,7 +142,7 @@ Notes:
 
 ## CD-007 Effectful Repository Ready PR execution
 
-Status: proposed
+Status: accepted
 Created at: 2026-07-11
 Source: continuous-roadmap handoff
 Trace: future T-018 review/intent trace
@@ -175,7 +175,8 @@ P — Persist:
 - TASKS, HANDOFF, DECISIONS, ASSETS, TRACE/index/status and plan-bound evidence.
 
 Decision:
-- review required; not authorized by the read-only continuous goal.
+- proceed with local bare-remote and mocked PR-adapter verification only.
+- live GitHub dogfood remains deferred and requires separate repository and credential approval.
 
 ## CD-006 M1 profile-aware Repository Ready preview
 

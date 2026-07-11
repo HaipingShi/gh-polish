@@ -8,7 +8,7 @@ Owner: project maintainer
 
 - Mode: continuous
 - Next-task mode: activate
-- Terminal condition: The M1 read-only Repository Ready profile/plan/preview thin slice is done and any effectful PR contract is ready for explicit review.
+- Terminal condition: T-018 proves the effectful Repository Ready branch/PR lifecycle through local bare-remote and mocked-adapter evidence; live GitHub dogfood remains separately gated.
 - Progress signal: active-task acceptance items and passing fresh verification increase without scope violations.
 - Retry budget: 3
 - No-progress limit: 2
@@ -66,13 +66,13 @@ Later stages are planned but not authorized in the current implementation slice.
 
 ## Current Slice
 
-Milestone: M0 Agent-Native Deterministic Kernel, integration and dogfood track.
+Milestone: M1 Repository Ready, local effectful PR execution track.
 
 - First-pass modules exist for repository context, GitHub reads, analysis, policy, planning, templates, guarded apply, monitoring, and tests.
 - The public CLI now provides the versioned read-only `inspect -> plan -> apply --dry-run -> verify` path over local context and analysis.
 - Plans are durable, identity-bound local artifacts; the M0 public CLI remains validation-only.
 - Read-only dogfood evidence exists for this repository.
-- T-015 and T-016 complete the executable M0 kernel evidence. T-017 is the active M1 read-only profile/plan/preview slice; effectful PR execution remains separately gated.
+- T-015 and T-016 complete the executable M0 kernel evidence. T-017 completes the M1 read-only profile/plan/preview slice. T-018 is authorized for local bare-remote and mocked PR-adapter execution only; live GitHub dogfood remains separately gated.
 
 ## Legacy Cutoff
 

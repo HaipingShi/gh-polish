@@ -301,3 +301,22 @@ Store M0 plan artifacts in a local application-data directory outside the reposi
 - M0 commands leave the inspected project and GitHub state untouched while still supporting save/reload across processes.
 - A caller may retain the returned path without committing plan state to the repository.
 - Later repository-local or hosted plan storage requires a new contract because it changes the persistence and mutation boundary.
+
+## ADR-016: Prove Repository Ready PR execution without live GitHub credentials
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+T-017 proved truthful read-only previews. The next lifecycle step needs real Git branch and push behavior plus a pull-request boundary, but a production GitHub adapter would introduce credential, permission, and user-repository risk before the execution contract is proven.
+
+### Decision
+
+T-018 uses temporary repositories, local bare remotes, and an injected idempotent PR adapter. The coordinator binds repository, plan, base branch, head branch, and pushed head SHA; it records local and PR stages separately. No live GitHub adapter or credential path is added.
+
+### Consequences
+
+- Branch isolation, overwrite refusal, partial failure, recovery, and deduplication are executable without network access.
+- A mocked PR result is verification evidence for the port contract, not evidence that a live GitHub PR exists.
+- Live GitHub dogfood remains a separate approval boundary requiring a named repository and credential authority.

@@ -113,6 +113,15 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - Node/generic preview fixtures and public-project repository dogfood are deterministic and mutation-free.
 - Effectful branch/PR execution requires the separately reviewed T-018 contract.
 
+### Local Effectful PR Gate
+
+- Mandatory verification remains credential-free: temporary Node/generic repositories, local bare remotes, and a mocked idempotent PR adapter.
+- The default branch SHA must remain unchanged; the pushed head SHA must bind the repository, plan, base branch, head branch, and PR evidence.
+- Existing customized content is refused before push or PR creation.
+- Local-effect and PR-adapter partial failures retain per-stage evidence and retry only unfinished work.
+- Retry must not duplicate successful file effects, commits, pushes, or pull requests.
+- A stale base SHA fails before file effects; live GitHub dogfood requires a separate repository and credential approval.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.

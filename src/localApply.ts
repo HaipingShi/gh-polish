@@ -21,7 +21,7 @@ export interface LocalApplyRequest {
 }
 
 export interface LocalEffectExecutor {
-  createBranch(branch: string, base: string): Promise<void>;
+  createBranch(branch: string, base: string, expectedBaseSha?: string): Promise<void>;
   writeFile(path: string, content: string): Promise<void>;
   commit(planId: string): Promise<string>;
   push(branch: string): Promise<void>;
@@ -39,6 +39,7 @@ export interface LocalApplyEvidence {
   baseSha: string;
   branchName: string;
   status: "completed" | "partial-failure";
+  commitSha?: string;
   operations: OperationLifecycleEvidence[];
   recovery: { action: string; command?: string };
 }
@@ -49,7 +50,7 @@ export async function executeLocalPlan(request: LocalApplyRequest, executor: Loc
   const completed = new Set(request.completedOperationIds ?? []);
 
   try {
-    await executor.createBranch(request.branchName, request.baseBranch);
+    await executor.createBranch(request.branchName, request.baseBranch, request.baseSha);
     for (const operation of request.operations) {
       if (completed.has(operation.id)) {
         evidence.push({ id: operation.id, status: "skipped" });
@@ -74,7 +75,7 @@ export async function executeLocalPlan(request: LocalApplyRequest, executor: Loc
         recovery: { action: "No effects remained to retry; verify the existing branch evidence." }
       };
     }
-    await executor.commit(request.planId);
+    const commitSha = await executor.commit(request.planId);
     await executor.push(request.branchName);
     return {
       planId: request.planId,
@@ -82,6 +83,7 @@ export async function executeLocalPlan(request: LocalApplyRequest, executor: Loc
       baseSha: request.baseSha,
       branchName: request.branchName,
       status: "completed",
+      commitSha,
       operations: evidence,
       recovery: { action: "Verify the pushed branch before creating a pull request." }
     };

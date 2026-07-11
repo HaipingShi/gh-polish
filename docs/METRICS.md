@@ -41,6 +41,10 @@ Reviewed: 2026-07-11
 - plan-to-merged-PR and launch-preview-to-approved-launch conversion.
 - M1 preview preservation violations: target 0;
 - generated command claims without observed evidence: target 0.
+- M1 default-branch mutation violations: target 0;
+- M1 customized-content overwrite violations: target 0;
+- duplicate commits, pushes, or PRs during retry: target 0;
+- plan/branch/head-SHA/PR evidence binding: target 100%.
 
 ## M4 Web, M5 App, and M6 Growth/Portfolio/Team Metrics
 
