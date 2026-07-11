@@ -121,6 +121,7 @@ Entry requirement: M0 thin slice passes with trustworthy plans and evidence.
 - Local-effect and PR-adapter partial failures retain per-stage evidence and retry only unfinished work.
 - Retry must not duplicate successful file effects, commits, pushes, or pull requests.
 - A stale base SHA fails before file effects; live GitHub dogfood requires a separate repository and credential approval.
+- Exact plan/branch/head-SHA check evidence maps success to `ready-for-review`, non-success to `not-ready`, and unreadable or mismatched evidence to `unknown`; none of these states performs merge.
 
 ## M2 Trust Ready Harness
 

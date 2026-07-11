@@ -313,7 +313,7 @@ T-017 proved truthful read-only previews. The next lifecycle step needs real Git
 
 ### Decision
 
-T-018 uses temporary repositories, local bare remotes, and an injected idempotent PR adapter. The coordinator binds repository, plan, base branch, head branch, and pushed head SHA; it records local and PR stages separately. No live GitHub adapter or credential path is added.
+T-018 uses temporary repositories, local bare remotes, an injected idempotent PR adapter, and an exact-revision check adapter. The coordinator binds repository, plan, base branch, head branch, pushed head SHA, PR, and checks; it records local, PR, and check stages separately. Successful exact-revision checks mean `ready-for-review`, never automatic merge. No live GitHub adapter or credential path is added.
 
 ### Consequences
 

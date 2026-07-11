@@ -4,6 +4,7 @@ import {
   type LocalApplyRequest,
   type LocalEffectExecutor
 } from "./localApply.js";
+import type { RemoteVerificationEvidence, RemoteVerificationTarget } from "./remoteVerification.js";
 
 export interface PullRequestInput {
   repositoryRoot: string;
@@ -25,6 +26,10 @@ export interface PullRequestAdapter {
   ensurePullRequest(input: PullRequestInput): Promise<PullRequestResult>;
 }
 
+export interface RevisionCheckAdapter {
+  verify(target: RemoteVerificationTarget): Promise<RemoteVerificationEvidence>;
+}
+
 export interface RepositoryReadyExecutionRequest extends Omit<LocalApplyRequest, "completedOperationIds"> {
   pullRequest: { title: string; body: string };
   previousEvidence?: RepositoryReadyExecutionEvidence;
@@ -38,6 +43,17 @@ export interface PullRequestEvidence {
   error?: string;
 }
 
+export interface RevisionCheckEvidence {
+  status: RemoteVerificationEvidence["status"] | "adapter-failure" | "not-attempted";
+  result?: RemoteVerificationEvidence;
+  error?: string;
+}
+
+export interface MergeDecisionEvidence {
+  status: "ready-for-review" | "not-ready" | "unknown";
+  reason: string;
+}
+
 export interface RepositoryReadyExecutionEvidence {
   planId: string;
   repositoryRoot: string;
@@ -47,13 +63,16 @@ export interface RepositoryReadyExecutionEvidence {
   status: "completed" | "partial-failure";
   local: LocalApplyEvidence;
   pullRequest: PullRequestEvidence;
+  checks: RevisionCheckEvidence;
+  mergeDecision: MergeDecisionEvidence;
   recovery: { action: string; command?: string };
 }
 
 export async function executeRepositoryReadyPullRequest(
   request: RepositoryReadyExecutionRequest,
   executor: LocalEffectExecutor,
-  pullRequests: PullRequestAdapter
+  pullRequests: PullRequestAdapter,
+  revisionChecks: RevisionCheckAdapter
 ): Promise<RepositoryReadyExecutionEvidence> {
   validatePreviousEvidence(request);
   const completedOperationIds = request.previousEvidence?.local.operations
@@ -71,14 +90,20 @@ export async function executeRepositoryReadyPullRequest(
   }, executor);
 
   if (local.status !== "completed") {
-    return evidence(request, local, { status: "not-attempted" }, {
+    return evidence(request, local, { status: "not-attempted" }, { status: "not-attempted" }, {
+      status: "not-ready",
+      reason: "Local effects did not complete, so no pull request or checks can establish readiness."
+    }, {
       action: "Review the failed local effect, then retry with this evidence after correcting the cause."
     });
   }
 
   const headSha = local.commitSha ?? request.previousEvidence?.pullRequest.headSha;
   if (!headSha) {
-    return evidence(request, local, { status: "failed", error: "No pushed head SHA is available." }, {
+    return evidence(request, local, { status: "failed", error: "No pushed head SHA is available." }, { status: "not-attempted" }, {
+      status: "unknown",
+      reason: "No pushed head SHA exists to bind check evidence."
+    }, {
       action: "Re-run local apply to produce plan-bound pushed-branch evidence before retrying PR creation."
     });
   }
@@ -93,20 +118,50 @@ export async function executeRepositoryReadyPullRequest(
       title: request.pullRequest.title,
       body: request.pullRequest.body
     });
-    return evidence(request, local, {
+    const pullRequest: PullRequestEvidence = {
       status: result.created ? "created" : "existing",
       headSha,
       id: result.id,
       url: result.url
-    }, { action: "Review the pull request checks and merge decision." }, "completed");
+    };
+    try {
+      const checkResult = await revisionChecks.verify({
+        planId: request.planId,
+        branch: request.branchName,
+        sha: headSha
+      });
+      validateCheckIdentity(request, headSha, checkResult);
+      const mergeDecision: MergeDecisionEvidence = checkResult.status === "success"
+        ? { status: "ready-for-review", reason: "Checks passed for the exact pushed revision; human review and merge remain explicit." }
+        : { status: "not-ready", reason: `Exact-revision checks are ${checkResult.status}.` };
+      return evidence(request, local, pullRequest, { status: checkResult.status, result: checkResult }, mergeDecision, {
+        action: checkResult.status === "success" ? "Review the pull request and make the explicit merge decision." : checkResult.nextStep
+      }, "completed");
+    } catch (error) {
+      return evidence(request, local, pullRequest, { status: "adapter-failure", error: errorMessage(error) }, {
+        status: "unknown",
+        reason: "Exact-revision checks could not be read, so merge readiness is unknown."
+      }, {
+        action: "Retry exact-revision check verification with this evidence; the existing commit and pull request will be reused."
+      });
+    }
   } catch (error) {
     return evidence(request, local, {
       status: "failed",
       headSha,
       error: errorMessage(error)
+    }, { status: "not-attempted" }, {
+      status: "unknown",
+      reason: "Pull-request creation failed before exact-revision checks could be bound."
     }, {
       action: "Retry PR creation with this evidence; completed local effects and the pushed commit will be reused."
     });
+  }
+}
+
+function validateCheckIdentity(request: RepositoryReadyExecutionRequest, headSha: string, result: RemoteVerificationEvidence): void {
+  if (result.planId !== request.planId || result.branch !== request.branchName || result.sha !== headSha) {
+    throw new Error("Revision-check evidence does not match the plan-bound pushed branch and SHA.");
   }
 }
 
@@ -128,6 +183,8 @@ function evidence(
   request: RepositoryReadyExecutionRequest,
   local: LocalApplyEvidence,
   pullRequest: PullRequestEvidence,
+  checks: RevisionCheckEvidence,
+  mergeDecision: MergeDecisionEvidence,
   recovery: { action: string; command?: string },
   status: "completed" | "partial-failure" = "partial-failure"
 ): RepositoryReadyExecutionEvidence {
@@ -140,6 +197,8 @@ function evidence(
     status,
     local,
     pullRequest,
+    checks,
+    mergeDecision,
     recovery
   };
 }

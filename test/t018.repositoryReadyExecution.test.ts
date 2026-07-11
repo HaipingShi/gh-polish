@@ -11,8 +11,10 @@ import {
   type PullRequestAdapter,
   type PullRequestInput,
   type PullRequestResult,
+  type RevisionCheckAdapter,
   type RepositoryReadyExecutionRequest
 } from "../src/repositoryReadyExecution.js";
+import type { RemoteVerificationEvidence, RemoteVerificationTarget } from "../src/remoteVerification.js";
 
 class MockPullRequestAdapter implements PullRequestAdapter {
   readonly requests: PullRequestInput[] = [];
@@ -34,15 +36,43 @@ class MockPullRequestAdapter implements PullRequestAdapter {
   }
 }
 
+class MockRevisionCheckAdapter implements RevisionCheckAdapter {
+  readonly requests: RemoteVerificationTarget[] = [];
+  status: RemoteVerificationEvidence["status"] = "success";
+  failNext = false;
+
+  async verify(target: RemoteVerificationTarget): Promise<RemoteVerificationEvidence> {
+    this.requests.push(target);
+    if (this.failNext) {
+      this.failNext = false;
+      throw new Error("mock checks unavailable");
+    }
+    return {
+      ...target,
+      status: this.status,
+      matchedRuns: this.status === "missing" ? 0 : 1,
+      runs: this.status === "missing" ? [] : [{
+        id: 1,
+        name: "ci",
+        status: this.status === "pending" ? "in_progress" : "completed",
+        conclusion: this.status === "success" ? "success" : this.status === "failure" ? "failure" : null,
+        url: "mock://checks/1"
+      }],
+      nextStep: this.status === "success" ? "Checks passed." : "Resolve or wait for target checks."
+    };
+  }
+}
+
 describe("T-018 Repository Ready PR execution", () => {
   for (const kind of ["node", "generic"] as const) {
     it(`creates one plan-bound PR without changing the default branch for a ${kind} repository`, async () => {
       const fixture = createFixture(kind);
       const adapter = new MockPullRequestAdapter();
+      const checks = new MockRevisionCheckAdapter();
       try {
         const initialMain = git(fixture.root, ["rev-parse", "main"]);
         const request = makeRequest(fixture.root, initialMain, kind);
-        const first = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter);
+        const first = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter, checks);
 
         assert.equal(first.status, "completed");
         assert.equal(first.pullRequest.status, "created");
@@ -63,7 +93,8 @@ describe("T-018 Repository Ready PR execution", () => {
         const retry = await executeRepositoryReadyPullRequest(
           { ...request, previousEvidence: first },
           createLocalGitExecutor(fixture.root),
-          adapter
+          adapter,
+          checks
         );
 
         assert.equal(retry.status, "completed");
@@ -79,6 +110,7 @@ describe("T-018 Repository Ready PR execution", () => {
   it("refuses to overwrite customized content before push or PR creation", async () => {
     const fixture = createFixture("generic");
     const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
     try {
       const mainSha = git(fixture.root, ["rev-parse", "main"]);
       const result = await executeRepositoryReadyPullRequest({
@@ -91,7 +123,7 @@ describe("T-018 Repository Ready PR execution", () => {
           requiresConfirmation: true
         }],
         confirmations: ["readme"]
-      }, createLocalGitExecutor(fixture.root), adapter);
+      }, createLocalGitExecutor(fixture.root), adapter, checks);
 
       assert.equal(result.status, "partial-failure");
       assert.match(result.local.operations.at(-1)?.error ?? "", /refusing to overwrite/i);
@@ -107,10 +139,11 @@ describe("T-018 Repository Ready PR execution", () => {
   it("recovers from PR failure without duplicating local effects or commits", async () => {
     const fixture = createFixture("node");
     const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
     adapter.failNext = true;
     try {
       const request = makeRequest(fixture.root, git(fixture.root, ["rev-parse", "main"]), "node");
-      const failed = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter);
+      const failed = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter, checks);
 
       assert.equal(failed.status, "partial-failure");
       assert.equal(failed.local.status, "completed");
@@ -121,7 +154,8 @@ describe("T-018 Repository Ready PR execution", () => {
       const recovered = await executeRepositoryReadyPullRequest(
         { ...request, previousEvidence: failed },
         createLocalGitExecutor(fixture.root),
-        adapter
+        adapter,
+        checks
       );
 
       assert.equal(recovered.status, "completed");
@@ -135,6 +169,7 @@ describe("T-018 Repository Ready PR execution", () => {
 
   it("retries only the failed local effect before creating one PR", async () => {
     const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
     const writes = new Map<string, number>();
     let failSecond = true;
     let commits = 0;
@@ -170,8 +205,8 @@ describe("T-018 Repository Ready PR execution", () => {
       pullRequest: { title: "Ready", body: "Apply plan-local-retry" }
     };
 
-    const failed = await executeRepositoryReadyPullRequest(request, executor, adapter);
-    const recovered = await executeRepositoryReadyPullRequest({ ...request, previousEvidence: failed }, executor, adapter);
+    const failed = await executeRepositoryReadyPullRequest(request, executor, adapter, checks);
+    const recovered = await executeRepositoryReadyPullRequest({ ...request, previousEvidence: failed }, executor, adapter, checks);
 
     assert.equal(failed.status, "partial-failure");
     assert.equal(failed.pullRequest.status, "not-attempted");
@@ -186,6 +221,7 @@ describe("T-018 Repository Ready PR execution", () => {
   it("refuses a stale base SHA before any effect or PR request", async () => {
     const fixture = createFixture("generic");
     const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
     try {
       const staleSha = git(fixture.root, ["rev-parse", "main"]);
       writeFileSync(join(fixture.root, "AFTER-PLAN.md"), "drift\n", "utf8");
@@ -195,12 +231,60 @@ describe("T-018 Repository Ready PR execution", () => {
       const result = await executeRepositoryReadyPullRequest(
         makeRequest(fixture.root, staleSha, "generic"),
         createLocalGitExecutor(fixture.root),
-        adapter
+        adapter,
+        checks
       );
 
       assert.equal(result.status, "partial-failure");
       assert.match(result.local.operations.at(-1)?.error ?? "", /no longer matches plan SHA/i);
       assert.equal(adapter.requests.length, 0);
+    } finally {
+      fixture.dispose();
+    }
+  });
+
+  it("binds exact revision checks to a truthful merge decision", async () => {
+    const fixture = createFixture("node");
+    const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
+    checks.status = "pending";
+    try {
+      const request = makeRequest(fixture.root, git(fixture.root, ["rev-parse", "main"]), "node");
+      const result = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter, checks);
+
+      assert.equal(result.status, "completed");
+      assert.equal(result.checks.status, "pending");
+      assert.equal(result.mergeDecision.status, "not-ready");
+      assert.deepEqual(checks.requests, [{ planId: request.planId, branch: request.branchName, sha: result.pullRequest.headSha }]);
+    } finally {
+      fixture.dispose();
+    }
+  });
+
+  it("retries failed check reads without duplicating the commit or PR", async () => {
+    const fixture = createFixture("generic");
+    const adapter = new MockPullRequestAdapter();
+    const checks = new MockRevisionCheckAdapter();
+    checks.failNext = true;
+    try {
+      const request = makeRequest(fixture.root, git(fixture.root, ["rev-parse", "main"]), "generic");
+      const failed = await executeRepositoryReadyPullRequest(request, createLocalGitExecutor(fixture.root), adapter, checks);
+      const commitCount = git(fixture.root, ["rev-list", "--count", request.branchName]);
+      const recovered = await executeRepositoryReadyPullRequest(
+        { ...request, previousEvidence: failed },
+        createLocalGitExecutor(fixture.root),
+        adapter,
+        checks
+      );
+
+      assert.equal(failed.status, "partial-failure");
+      assert.equal(failed.checks.status, "adapter-failure");
+      assert.equal(recovered.status, "completed");
+      assert.equal(recovered.checks.status, "success");
+      assert.equal(recovered.mergeDecision.status, "ready-for-review");
+      assert.equal(git(fixture.root, ["rev-list", "--count", request.branchName]), commitCount);
+      assert.equal(adapter.pullRequests.size, 1);
+      assert.equal(checks.requests.length, 2);
     } finally {
       fixture.dispose();
     }
