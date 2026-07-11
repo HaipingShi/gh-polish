@@ -1342,6 +1342,94 @@ Resume anchor: docs/TASKS.md#T-018
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-019 Credential-free Repository Ready end-to-end workflow
+
+Status: [x]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: allowed
+Execution state: Red TR-20260711-083900-t019r and drift Red TR-20260711-084100-t019r closed by Green TR-20260711-084400-t019g; focused 4/4 and full CI 62/62 pass.
+
+### CodeRail Coordinate
+
+G — Goal:
+- Complete the M1 credential-free evidence chain from profile-aware preview to one truthful merge decision.
+
+T — Task:
+- Implement a two-phase prepare/execute workflow: preview -> external saved PlanArtifact, then explicit-confirmation execution -> local branch -> mocked PR -> exact-SHA checks -> merge decision.
+
+S — Scope:
+- Allowed:
+  - `src/repositoryReadyWorkflow.ts`; minimal T-017/T-018 API reuse; `test/t019*.test.ts`; `docs/*.md`; and `docs/TRACELOG.jsonl`.
+- Forbidden:
+  - live GitHub/user repositories, default-branch writes, automatic merge, public CLI mutation activation, dependencies/build/workflow changes, hosted persistence, M2-M6, and `G:\\codeRail\\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: end-to-end prepare/execute tests fail before the workflow module exists.
+- Green check: Node/generic fixtures complete the credential-free chain with an external saved artifact and exact evidence.
+- Refactor check: preview compilation, artifact persistence, and execution remain distinct phases.
+- Regression check: T-014 through T-018 safety and GET-only boundaries remain green.
+- CI check: focused T-019, project CI, blueprint, CodeRail Full Rail gates, and no-live-network dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Stop if real credentials/repositories, implicit confirmation, automatic merge, public mutation CLI, or a new persistence/API decision becomes necessary.
+
+P — Persist:
+- CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
+
+### Task Contract
+
+Depends on:
+- T-017 and T-018 done.
+- CD-008 accepted.
+
+Blocks:
+- Credential-free M1 end-to-end evidence.
+- Any separately approved live GitHub adapter/dogfood contract.
+
+Acceptance:
+- [x] Prepare produces a deterministic profile-aware preview and saves a digest-valid PlanArtifact outside the inspected repository.
+- [x] Only `create` preview items with evidence-backed content become explicitly confirmation-gated artifact effects.
+- [x] `manual_review` and `unknown` items never become executable effects.
+- [x] Node/generic fixtures preserve the default branch and reach a mocked PR plus exact-SHA merge decision.
+- [x] Saved artifact reload, missing confirmation, tamper/stale refusal, and retry idempotency remain proven.
+- [x] Full CI passes without credentials, network, or live GitHub effects; final CodeRail gates pending.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] S forbids all live mutation and new delivery surfaces.
+- [x] V has Red/Green and complete end-to-end evidence.
+- [x] P is synced through CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, and TRACE.
+
+### Start Gate
+
+- User explicitly activated T-019/CD-008 as a Goal.
+- Capture Red before implementation.
+
+
+Task result: done
+
+Harness result: passed
+
+Handoff level: H0
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-019
+
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

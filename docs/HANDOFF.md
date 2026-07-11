@@ -3,45 +3,40 @@
 Updated at: 2026-07-11
 Handoff Level: H0
 Current branch: master
-Current task: T-018
-Next task: complete T-018 CodeRail gates, then define the remaining M1 merge-readiness slice
+Current task: T-019 final CodeRail closeout
+Next task: define the next M1 boundary without enabling live GitHub implicitly
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: docs/TASKS.md#T-018
+Resume anchor: docs/TASKS.md#T-019
 
 ## Coordinate Summary
 
 Rail: full
-G: Turn a confirmed Repository Ready preview into one reviewable branch and PR without overwriting customized work or bypassing confirmation.
-T: Execute confirmed local effects, push a non-default branch, bind one idempotent mocked PR, and preserve recovery evidence.
-S: T-018 source/tests/docs plus temporary repositories and local bare remotes; no live GitHub, user repository, default-branch mutation, automatic merge, settings, release, deploy, publish, dependency, or M2-M6 work.
-V: Required Red-Green, Node/generic bare-remote dogfood, mocked PR, overwrite refusal, exact-base binding, local/PR retry idempotency, full CI, and CodeRail gates.
-X: Stop only if real credentials/repository effects or a contract-external product/security/persistence decision becomes necessary.
-P: CONTRACTS, TASKS, HANDOFF, DECISIONS, ASSETS, NORTH_STAR/HARNESS/METRICS, TRACE/index/status, and execution evidence.
+G: Complete the M1 credential-free Repository Ready evidence chain.
+T: Connect profile preview, external saved PlanArtifact, local branch, mocked PR, exact-SHA checks, and merge decision through separate prepare/execute phases.
+S: T-019 source/tests/docs and test-owned repositories only; no live GitHub, default-branch mutation, automatic merge, public mutation CLI, dependencies, hosted persistence, or M2-M6.
+V: Required Red-Green, Node/generic end-to-end, external store, non-executable manual/unknown states, stale/tamper/confirmation guards, retry, CI, and CodeRail gates.
+X: Real credentials/repositories or a new API/persistence/product boundary.
+P: CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
 
 ## Current Evidence
 
-- CD-007 accepted for local/mock verification; live GitHub dogfood explicitly deferred.
-- Red: missing Repository Ready execution module failed compilation before implementation.
-- Green: focused T-018 tests pass 9/9, including exact checks and saved-artifact integrity repairs.
-- Full CI passes 58/58.
-- Node and generic fixtures preserve the default branch and push one plan-bound non-default branch.
-- Customized-content overwrite and stale base SHA fail before push or PR creation.
-- Local and PR partial-failure retries do not duplicate effects, commits, pushes, or PRs.
-- Exact plan/branch/head-SHA checks produce `ready-for-review`, `not-ready`, or `unknown`; check-read retry reuses the existing commit and PR.
-- The production-facing entry derives only explicitly confirmed effects from a digest-validated saved PlanArtifact; tampered or missing payloads fail before adapters.
-
-## Auto Commit
-
-- CodeRail state closeout commit: `04a8d7a`.
-- Initial exact-path implementation commit: `e295fcb`.
-- Final check-binding repair will use exact-path staging; `git add .` remains prohibited.
+- Focused T-019: 4/4 passed.
+- Full CI: 62/62 passed.
+- Node/generic fixtures preserve `main` and create one idempotent mocked PR bound to exact-SHA successful checks.
+- Plans are stored outside the inspected repository; first execution revalidates expiry, identity, base SHA, and content hashes.
+- Manual-review/unknown items are excluded from effects; missing confirmation and tamper fail before adapters.
+- Credentials, live network, live GitHub, and automatic merge: none.
 
 ## Handoff Trigger Check
 
-- Current level: H0; no context loss, blocker, or operator change requires a handoff.
-- Live GitHub dogfood remains separately gated rather than implicitly authorized.
+- H0: no blocker, context loss, or operator transition.
+
+## Auto Commit
+
+- CodeRail exact state files may auto-commit during finish.
+- Remaining implementation/docs use exact-path staging only; never `git add .`.
 
 ## Next Executable Step
 
-Run blueprint and `python .coderail/coderail.py finish --task T-018 --task-result done --next-task-mode activate`.
+Run blueprint and `python .coderail/coderail.py finish --task T-019 --task-result done --next-task-mode activate`.
