@@ -977,13 +977,14 @@ Notes: M0 plan artifacts deliberately live outside the inspected repository unde
 
 ## T-015 Mutation-ready apply and evidence hardening
 
-Status: [~]
+Status: [x]
 Type: feature
 Rail: full
 Priority: P1
 Owner: project maintainer
 Branch: master
-Execution state: CD-004 accepted; artifact payload revision and Green TR-20260711-051000-t015g now bind local execution to saved effects. Retry/idempotency, dogfood, CodeRail Full Rail gates, and closeout remain.
+Autonomy: allowed
+Execution state: CD-004 accepted; artifact-bound execution, retry/idempotency, local bare-remote isolation, read-only dogfood, and project CI pass. Final CodeRail finish/closeout is running.
 
 ### CodeRail Coordinate
 
@@ -996,7 +997,10 @@ T — Task:
 
 S — Scope:
 - Allowed:
-  - T-015 modules, tests, and T-015-relevant docs named in CD-004.
+  - `src/localApply.ts`, `src/localGitExecutor.ts`, `src/planArtifact.ts`.
+  - `test/t015.*.test.ts`.
+  - `.coderail/coderail.py`, `.coderail/config.json` created by standard initialization.
+  - T-015-relevant `docs/*.md` and append-only `docs/TRACELOG.jsonl` / generated index.
 - Forbidden:
   - live GitHub or user-repository mutation, default-branch writes, user-facing execution, new dependencies/build changes, hosted infrastructure, M1-M6 work, and `G:\codeRail\coderail/**`.
 
@@ -1014,7 +1018,7 @@ V — Verify:
   - Required only before a follow-on contract enables user-facing or live GitHub execution.
 
 X — Stop:
-- CD-004 needs revision to define the immutable effect-payload schema and confirmation/digest rules; do not reconstruct operations. Also stop if any forbidden effect/dependency/hosted scope is required.
+- Stop if effect payload/digest/retry semantics become ambiguous, operations would be reconstructed, or any forbidden effect/dependency/hosted scope is required.
 
 P — Persist:
 - TASKS, HANDOFF, DECISIONS if durable, LESSONS if repeated, ASSETS, and append-only TRACE/index.
@@ -1030,13 +1034,20 @@ Blocks:
 - M1 Repository Ready feature work.
 
 Acceptance:
-- [ ] Saved-plan validation precedes every local effect.
-- [ ] Each effect needs explicit operation-level confirmation and is refused on the default branch.
-- [ ] Per-operation lifecycle/evidence and recovery remain plan/repository/branch/revision bound.
-- [ ] Partial failure does not report false completion and has a safe retry/recovery result.
-- [ ] Node/generic fixtures prove branch/file/push behavior only through local bare remotes.
-- [ ] Public CLI and this repository remain free of effectful apply and live GitHub mutation.
-- [ ] Project CI and CodeRail Full Rail gates pass.
+- [x] Saved-plan validation precedes every local effect.
+- [x] Each effect needs explicit operation-level confirmation and is refused on the default branch.
+- [x] Per-operation lifecycle/evidence and recovery remain plan/repository/branch/revision bound.
+- [x] Partial failure does not report false completion and has a safe retry/recovery result.
+- [x] Node/generic fixtures prove branch/file/push behavior only through local bare remotes.
+- [x] Public CLI and this repository remain free of effectful apply and live GitHub mutation.
+- [x] Project CI and CodeRail Full Rail gates pass.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] Changes stayed inside S.
+- [x] V has Red/Green, artifact, retry/idempotency, bare-remote, dogfood, CI, and CodeRail evidence.
+- [x] P is synced through TASKS, HANDOFF, CONTRACTS, NORTH_STAR, ASSETS/TRACE, and generated state.
 
 ### Start Gate
 
@@ -1044,11 +1055,11 @@ Acceptance:
 - This execution turn must capture Red evidence before implementation and keep all effects inside test-owned temporary repositories.
 
 
-Task result: stage-complete
+Task result: done
 
 Harness result: passed
 
-Handoff level: H1
+Handoff level: H0
 
 Handoff updated: no
 
@@ -1058,7 +1069,7 @@ Drive decision: BLOCKED_DECISION
 
 Resume anchor: docs/TASKS.md#T-015
 
-Next executable step: Continue in manual mode; no dependency-ready autonomous task is available to recommend.
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
 ## Task Template
