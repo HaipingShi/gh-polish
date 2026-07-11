@@ -1520,14 +1520,14 @@ Next executable step: Authorize a ready task or provide terminal evidence; do no
 Auto commit: requested
 ## T-021 Draft live GitHub adapter and dogfood contract
 
-Status: [~]
+Status: [x]
 Type: docs
 Rail: light
 Priority: P1
 Owner: project maintainer
 Branch: master
 Autonomy: review-required
-Execution state: CD-010 and recommended defaults accepted; exact dogfood repository remains pending because `owner/repository` is a placeholder. T-022 is not activated.
+Execution state: CD-010 and recommended defaults accepted; `HaipingShi/coderail` is the exact sole dogfood repository. T-022 is eligible but not activated by this Light Rail closeout.
 
 ### CodeRail Coordinate
 
@@ -1552,7 +1552,8 @@ X — Stop:
 - Stop before T-022 activation, credentials, or live mutation until CD-010 is accepted and an exact dogfood repository is supplied.
 
 P — Persist:
-- CD-010 accepted contract, accepted defaults, unresolved exact-repository prerequisite, T-021 state, SEC blueprint backlink, proposed live harness, H1 handoff, trace/index/status.
+- TASKS: close T-021 with the accepted contract, defaults, and resolved exact-repository prerequisite.
+- CONTRACTS/BLUEPRINTS/HARNESS/HANDOFF/TRACE: preserve the CD-010 boundary, SEC backlink, proposed live harness, H1 handoff, and trace/index/status evidence.
 
 ### Acceptance / Trace
 - [x] Credential source, minimum permissions, expiry/redaction, and revocation policy are explicit.
@@ -1562,17 +1563,17 @@ P — Persist:
 - [x] Threats, tests, live dogfood evidence, and Stop conditions are explicit.
 - [x] Official GitHub references support the permission and credential recommendations.
 - [x] User accepts CD-010 and recommended credential/effect/PR defaults.
-- [ ] User replaces `owner/repository` with the exact dogfood allowlist target.
+- [x] User names `HaipingShi/coderail` as the exact dogfood allowlist target.
 
 Next step:
-- Explain fine-grained PAT setup; do not activate T-022 until the exact dogfood repository is supplied.
+- Draft and activate the separate Full Rail T-022 implementation task; begin with mocked credential, allowlist, permission, PR-idempotency, and secret-redaction Red tests before any live run.
 
 
-Task result: stage-complete
+Task result: done
 
 Harness result: passed
 
-Handoff level: H1
+Handoff level: H0
 
 Handoff updated: no
 
@@ -1582,7 +1583,7 @@ Drive decision: BLOCKED_DECISION
 
 Resume anchor: docs/TASKS.md#T-021
 
-Next executable step: Request the human gate for T-021 or mark a separately authorized task autonomous.
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
 ## Task Template
