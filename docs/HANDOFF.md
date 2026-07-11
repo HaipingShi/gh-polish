@@ -4,10 +4,10 @@ Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
 Completed task: T-015
-Next task: M1 Repository Ready contract activation after T-016 closeout
+Next task: T-018 effectful Repository Ready PR contract requires review
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: T-016-finish-done
+Resume anchor: CD-007-review
 
 ## Coordinate Summary
 
@@ -68,4 +68,4 @@ Trust Ready is deliberately separate from repository presentation and launch vis
 
 ## Next Executable Step
 
-Run `python .coderail/coderail.py finish --task T-016 --task-result done`; then activate only an accepted M1 Repository Ready contract.
+Review CD-007 before any user-repository branch, push, or pull-request execution. Read-only M1 preview work is complete.

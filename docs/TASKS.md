@@ -1162,6 +1162,95 @@ Resume anchor: docs/TASKS.md#T-016
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-017 M1 profile-aware Repository Ready preview
+
+Status: [x]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: allowed
+Execution state: CD-006 accepted; Red TR-20260711-074600-t017r and Green TR-20260711-074800-t017g captured; CI and public-project no-mutation dogfood pass. Final closeout is running.
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Produce a truthful profile-aware Repository Ready plan/preview before any PR mutation.
+- Outcome served: Builders see appropriate repository artifacts and preserved custom work without invented facts.
+
+T — Task:
+- Implement six profiles and deterministic create/manual-review/unknown artifact previews for Node/generic fixtures.
+
+S — Scope:
+- Allowed:
+  - new `src/repositoryProfile.ts`, `src/artifactPreview.ts`, minimal template-registry reuse, `test/t017*.test.ts`, and T-017 docs/trace/state.
+- Forbidden:
+  - repository/GitHub writes, PR creation, dependencies/build/workflow changes, invented commands/contacts/licenses, M2-M6 implementation, `G:\codeRail\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: profile, preservation, observed-command, and unknown-evidence tests fail before implementation.
+- Green check: Node/generic fixtures produce deterministic previews with no writes.
+- Refactor check: profile policy, evidence, template rendering, and preview remain separate.
+- Regression check: M0 safety and GET-only tests remain green.
+- CI check: project CI and CodeRail Full Rail gates plus dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Required builder intent cannot be defaulted safely, or any mutation/license/security/dependency/hosted scope appears.
+
+P — Persist:
+- TASKS, HANDOFF, NORTH_STAR/HARNESS/METRICS, ASSETS, TRACE/index/status.
+
+### Task Contract
+
+Depends on:
+- T-016 done and M0 exit evidence.
+- CD-006 accepted.
+
+Blocks:
+- Effectful Repository Ready PR contract.
+- M2 Trust Ready.
+
+Acceptance:
+- [x] Six profiles have explicit artifact requirements.
+- [x] Existing customized files always produce manual review, never overwrite.
+- [x] Commands are observed from analysis or marked unknown.
+- [x] Node/generic previews are deterministic and contain no invented facts.
+- [x] Public-project dogfood produces no repository/GitHub mutation.
+- [x] Project CI and CodeRail Full Rail gates pass.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] Changes stayed inside S.
+- [x] V has Red/Green, six-profile, preservation, command-evidence, CI, and dogfood evidence.
+- [x] P is synced through TASKS, HANDOFF, NORTH_STAR/HARNESS/METRICS, ASSETS, and TRACE/index/status.
+
+### Start Gate
+
+- Continuous roadmap goal authorizes this read-only M1 slice.
+- Capture Red evidence before implementation.
+
+
+Task result: done
+
+Harness result: passed
+
+Handoff level: H0
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-017
+
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
