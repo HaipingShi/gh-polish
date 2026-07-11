@@ -140,6 +140,83 @@ Decision: proceed
 Notes:
 - T-013 standard initialization and core product refactor are accepted prerequisites and are not repeated.
 
+## CD-004 Mutation-ready apply and evidence hardening
+
+Status: proposed
+Created at: 2026-07-11
+Source: user
+Trace: TR-20260711-041635-t015
+
+### Coordinate Contract Draft
+
+G — Goal:
+- North Star: Make M0 apply trustworthy by proving that a saved, repository-bound plan can only cause its confirmed operations, records recoverable evidence, and never bypasses branch/default-branch safety.
+- Outcome served: A coding agent can explain exactly what was attempted, what happened for each operation, and the next recovery action without claiming a remote PR, GitHub setting, or completed mutation that lacks evidence.
+- Why now: T-014 proves a read-only saved-plan workflow. The next M0 risk is not recommendation quality but safe authorization, effect isolation, and partial-failure evidence.
+
+T — Task:
+- Task ID: T-015
+- Exact task: Implement a mutation-ready apply/evidence engine that reloads and revalidates the T-014 artifact, requires explicit operation-level confirmation, produces an immutable per-operation lifecycle/evidence record, and proves branch/file/push behavior only in temporary local repositories with a local bare remote.
+- Proposed public boundary: the existing user-facing CLI remains validation-only (`apply --dry-run`) for this task. A future execution CLI syntax and any GitHub PR/settings mutation require an accepted follow-on contract; T-015 may expose an injected/internal executor only for its local integration harness.
+- What this task must not become: live GitHub mutation, PR creation, default-branch writes, GitHub settings mutation, user-repository execution, M1 artifact generation, Web UI, GitHub App, hosted persistence, or a generic agent loop.
+
+S — Scope:
+- Allowed:
+  - `src/applier.ts`, `src/policy.ts`, `src/planArtifact.ts`, `src/protocol.ts`, and narrowly scoped supporting M0 evidence/error modules under `src/`
+  - minimal CLI wiring only to preserve explicit validation-only refusal and structured recovery
+  - operation-lifecycle/evidence tests, temporary-repository helpers, and local-bare-remote integration tests under `test/`
+  - T-015-relevant `docs/`, `README.md`, and append-only trace
+- Forbidden:
+  - any live GitHub API write endpoint, `gh` mutation command, PR creation, or settings mutation
+  - writes, commits, branches, pushes, or uncommitted-file changes in the user's repository
+  - execution on a remote other than a test-owned local bare remote
+  - direct default-branch mutation, implicit confirmation, reconstructed operation payloads, or bypassing plan validation
+  - dependency, package, TypeScript, build, release, or GitHub Actions workflow changes without a revised contract
+  - Web UI, GitHub App, hosted service, database, queue, billing, tenancy, OAuth, deployment, or M1-M6 work
+  - `G:\codeRail\coderail/**`
+
+V — Verify:
+- TDD mode: required
+- Red check:
+  - Add failing tests for missing/extra confirmations, forbidden/default-branch operations, stale/tampered/repository-mismatched artifacts, executor failure mid-plan, retry/idempotency, and false completion claims.
+- Green check:
+  - A Node and a generic fixture each use a test-owned branch and local bare remote to execute an approved file operation, push only the non-default branch, and return plan-bound per-operation evidence plus one recovery action.
+- Refactor check:
+  - Keep artifact validation, policy authorization, execution, lifecycle recording, evidence serialization, and CLI refusal separate; no adapter may write GitHub state.
+- Regression check:
+  - T-014 read-only paths remain no-project-write; GitHub read adapter remains GET-only; mutation guard remains closed; existing plans remain loadable.
+- CI check:
+  - `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run ci`, CodeRail TDD/CI/Contract/Coordinate/Blueprint/Trace/Done/Closeout gates, and a before/after user-worktree check.
+- Waiver reason:
+  - none; authorization, lifecycle, retry, evidence, and mutation-boundary behavior require Red-Green-Refactor proof.
+- Harness:
+  - Unit tests for authorization and lifecycle state transitions.
+  - Local temporary Git repositories and local bare remotes only; no credentials or network.
+  - Fault-injected executor tests that prove no false success after partial failure and safe retry behavior.
+  - Read-only dogfood that confirms the public CLI still cannot mutate this repository.
+- Manual acceptance:
+  - Required before any subsequent contract enables a user-facing execution command or a live GitHub mutation; not required for the local-only T-015 harness if all executable evidence passes.
+
+X — Stop:
+- The confirmation syntax, artifact/evidence schema, retry semantics, or public execution boundary requires a product decision not recorded in this draft.
+- Any implementation path needs a live GitHub write, user-repository effect, new dependency/build change, hosted infrastructure, or a forbidden file.
+- A local bare-remote test cannot prove non-default-branch isolation, or an injected partial failure cannot produce a coherent recovery record after two focused attempts.
+- Existing user changes conflict with a required target file and cannot be merged safely.
+
+P — Persist:
+- TASKS: create/update T-015 status, Red/Green evidence, acceptance, closeout, and next task.
+- HANDOFF: retain H1 with the accepted/executable contract anchor or record a blocking product decision.
+- DECISIONS: append only durable confirmation, evidence, retry, or execution-boundary decisions.
+- LESSONS: record repeated authorization, idempotency, evidence, or recovery failure patterns.
+- ASSETS: register canonical lifecycle/evidence modules, fixtures, and generated-artifact boundaries.
+- TRACE: append intent, Red, Green, local-effect, dogfood, verify, and closeout events; regenerate index.
+
+Decision: proposed for user acceptance. It authorizes local test-owned effects only; live GitHub/user-repository mutation remains out of scope.
+
+Notes:
+- T-016 owns remote PR/check verification and M0 completion evidence; T-015 must not claim those outcomes.
+- Treat an operation as successful only when its evidence record is complete and bound to the saved plan, repository identity, branch, and resulting revision.
+
 ## CD-003 Trusted agent-native M0 thin slice
 
 Status: accepted

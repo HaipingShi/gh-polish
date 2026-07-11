@@ -975,6 +975,74 @@ Notes: M0 plan artifacts deliberately live outside the inspected repository unde
 - Execution is intentionally not started by T-013F.
 - A future turn must inspect current state, confirm CD-003/T-014 scope, record a T-014 intent trace, and capture Red evidence before implementation.
 
+## T-015 Mutation-ready apply and evidence hardening
+
+Status: [ ]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Execution state: contract draft CD-004 is proposed; implementation is not authorized.
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Make M0 apply trustworthy through explicit authorization, branch isolation, per-operation evidence, and recoverable partial failure.
+- Outcome served: An agent can report what an approved plan attempted and what happened without overstating execution or bypassing the builder's decisions.
+
+T — Task:
+- Build and locally prove a mutation-ready executor/evidence lifecycle for saved plans, limited to temporary repositories and local bare remotes; preserve the public CLI's validation-only behavior.
+
+S — Scope:
+- Allowed:
+  - T-015 modules, tests, and T-015-relevant docs named in CD-004.
+- Forbidden:
+  - live GitHub or user-repository mutation, default-branch writes, user-facing execution, new dependencies/build changes, hosted infrastructure, M1-M6 work, and `G:\codeRail\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: authorization, lifecycle, evidence, partial-failure, retry, and branch-isolation tests fail before implementation.
+- Green check: Node/generic local fixtures execute only confirmed file operations on non-default branches against a local bare remote, with plan-bound evidence and recovery.
+- Refactor check: validation, policy, execution, lifecycle, evidence, and CLI refusal stay separated.
+- Regression check: T-014 remains read-only; GitHub adapter remains GET-only; mutation guard remains closed.
+- CI check: project CI plus CodeRail Full Rail gates and a user-worktree before/after check pass.
+- Waiver reason: none.
+- Harness:
+  - CD-004 local temporary-repository, bare-remote, fault-injection, and dogfood evidence.
+- Manual acceptance:
+  - Required only before a follow-on contract enables user-facing or live GitHub execution.
+
+X — Stop:
+- CD-004's unresolved confirmation/execution/evidence decision needs user direction, or any forbidden effect/dependency/hosted scope is required.
+
+P — Persist:
+- TASKS, HANDOFF, DECISIONS if durable, LESSONS if repeated, ASSETS, and append-only TRACE/index.
+
+### Task Contract
+
+Depends on:
+- T-014 trusted agent-native M0 thin slice.
+- CD-004 acceptance.
+
+Blocks:
+- T-016 remote plan-bound verification and completion hardening.
+- M1 Repository Ready feature work.
+
+Acceptance:
+- [ ] Saved-plan validation precedes every local effect.
+- [ ] Each effect needs explicit operation-level confirmation and is refused on the default branch.
+- [ ] Per-operation lifecycle/evidence and recovery remain plan/repository/branch/revision bound.
+- [ ] Partial failure does not report false completion and has a safe retry/recovery result.
+- [ ] Node/generic fixtures prove branch/file/push behavior only through local bare remotes.
+- [ ] Public CLI and this repository remain free of effectful apply and live GitHub mutation.
+- [ ] Project CI and CodeRail Full Rail gates pass.
+
+### Start Gate
+
+- Do not implement until the user accepts or revises CD-004.
+- A future execution turn must inspect current state, append a T-015 intent trace, capture Red evidence, and keep all effects inside test-owned temporary repositories.
+
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
