@@ -23,12 +23,13 @@ P: CONTRACTS, TASKS, HANDOFF, DECISIONS, ASSETS, NORTH_STAR/HARNESS/METRICS, TRA
 
 - CD-007 accepted for local/mock verification; live GitHub dogfood explicitly deferred.
 - Red: missing Repository Ready execution module failed compilation before implementation.
-- Green: focused T-018 tests pass 8/8, including the closeout-audit repair.
-- Full CI passes 57/57.
+- Green: focused T-018 tests pass 9/9, including exact checks and saved-artifact integrity repairs.
+- Full CI passes 58/58.
 - Node and generic fixtures preserve the default branch and push one plan-bound non-default branch.
 - Customized-content overwrite and stale base SHA fail before push or PR creation.
 - Local and PR partial-failure retries do not duplicate effects, commits, pushes, or PRs.
 - Exact plan/branch/head-SHA checks produce `ready-for-review`, `not-ready`, or `unknown`; check-read retry reuses the existing commit and PR.
+- The production-facing entry derives only explicitly confirmed effects from a digest-validated saved PlanArtifact; tampered or missing payloads fail before adapters.
 
 ## Auto Commit
 

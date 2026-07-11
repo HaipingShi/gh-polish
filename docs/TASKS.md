@@ -1260,7 +1260,7 @@ Priority: P1
 Owner: project maintainer
 Branch: master
 Autonomy: allowed
-Execution state: Reopened gap closed with second Red TR-20260711-081500-t018r and Green TR-20260711-081735-t018g; focused 8/8 and full CI 57/57 pass.
+Execution state: Final artifact-bound gap closed with third Red TR-20260711-082100-t018r and Green TR-20260711-082400-t018g; focused 9/9 and full CI 58/58 pass.
 
 ### CodeRail Coordinate
 
@@ -1303,6 +1303,7 @@ Blocks:
 - Any separately approved live GitHub dogfood.
 
 Acceptance:
+- [x] Production-facing execution accepts immutable saved PlanArtifact effects and rejects tampered or missing payloads before local/PR/check adapters.
 - [x] Only confirmed create effects execute on a non-default branch; customized content is never overwritten.
 - [x] One idempotent mocked PR is bound to repository, plan, base branch, head branch, and pushed head SHA.
 - [x] Exact plan/branch/head-SHA check evidence produces a truthful ready-for-review, not-ready, or unknown merge decision.
