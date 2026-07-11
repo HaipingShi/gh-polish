@@ -1486,7 +1486,7 @@ Acceptance:
 - [x] `execute` rejects invalid review tokens before adapters and uses only injected local/mock ports.
 - [x] Completion reports credential-free capability as achieved only with complete PR/check evidence.
 - [x] Without a live adapter, live GitHub and overall M1 remain deferred rather than falsely achieved.
-- [x] Public CLI remains M0 validation-only; focused/full CI pass and final CodeRail gates are pending.
+- [x] Public CLI remains M0 validation-only; focused/full CI, Blueprint, TDD, Done, and CodeRail closeout gates pass.
 
 ### Critical Check
 

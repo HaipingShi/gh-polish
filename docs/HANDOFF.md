@@ -36,8 +36,9 @@ P: CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/inde
 
 ## Auto Commit
 
-- CodeRail state files may auto-commit during finish.
-- Remaining implementation/docs use exact-path staging only; never `git add .`.
+- CodeRail state commit: `12bcd50`.
+- Exact-path implementation/docs commit: `8cb1f39`.
+- `git add .` was not used.
 
 ## Next Executable Step
 
