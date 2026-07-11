@@ -31,18 +31,18 @@ The repository contains first-pass TypeScript modules and tests for:
 - workflow-run summaries;
 - no-real-mutation harness checks.
 
-The public CLI still exposes stub behavior and is not wired into the implemented modules. Plans are not yet durable, identity-bound execution artifacts, and no real-repository read-only dogfood has been recorded.
+The M0 CLI provides a read-only `inspect -> plan -> apply --dry-run -> verify` path. Plans are versioned, bound to repository identity and current content, and stored outside the inspected repository; effectful apply remains unavailable.
 
 ## Intended Agent Interface
 
 ```bash
 gh-polish inspect --json
 gh-polish plan --profile public-project --json
-gh-polish apply --plan .gh-polish/plans/<plan-id>.json
-gh-polish verify --plan <plan-id>
+gh-polish apply --plan <plan-id-or-returned-path> --dry-run --json
+gh-polish verify --plan <plan-id-or-returned-path> --json
 ```
 
-These commands describe the intended contract, not the currently completed CLI behavior.
+`plan` returns the saved plan ID and path. By default, plans live in the local application-data store rather than the project; set `GH_POLISH_PLAN_STORE_DIR` to choose another local store. Every successful M0 command emits the versioned JSON envelope.
 
 ## Safety Principles
 
@@ -82,4 +82,4 @@ The implementation uses Node.js 22, TypeScript, and Node's built-in test runner.
 
 This repository uses the local CodeRail runtime at `G:\codeRail\coderail`. Product and design work uses Light Rail; implementation, schema, API, dependency, persistence, runner, release, and external-integration work uses Full Rail.
 
-The next executable slice is T-014: wire agent-native read-only `inspect` and `plan`, define the versioned repository-bound plan artifact, and complete a no-mutation dogfood run.
+The active slice is T-014: complete the agent-native read-only `inspect -> plan -> apply --dry-run -> verify` evidence and no-mutation dogfood run.

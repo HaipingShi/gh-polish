@@ -36,7 +36,10 @@
 | src/templateRegistry.ts | A3 template registry | yes | keep templates stack-aware and overwrite-safe |
 | src/applier.ts | A3 apply coordinator | yes | keep real mutation env-gated and confirmation-gated |
 | src/monitor.ts | A3 monitor | yes | keep check summaries read-only and recommendation-only |
+| src/protocol.ts | A3 M0 protocol | yes | keep versioned JSON envelopes and actionable recovery stable |
+| src/planArtifact.ts | A3 M0 plan artifact | yes | keep repository-bound schema, digest, expiry, and local-store validation deterministic |
 | test/cli.test.ts | A3 verification asset | yes | update with CLI command contract changes |
+| test/t014.thinSlice.test.ts | A3 T-014 verification asset | yes | exercise Node/generic thin slices plus tamper/stale rejection without project mutation |
 | test/repositoryContext.test.ts | A3 verification asset | yes | update with repository context behavior changes |
 | test/githubAdapter.test.ts | A3 verification asset | yes | update with GitHub read adapter behavior changes |
 | test/localAnalyzer.test.ts | A3 verification asset | yes | update with local analyzer behavior changes |
@@ -62,3 +65,4 @@
 - Future Web, GitHub App, launch, and growth assets become canonical only when their stage contracts authorize creation.
 - T-013F compared `AGENTS.md` and `CLAUDE.md` with the local standard templates and incrementally restored the missing Continuous Drive checkpoint rules; both entry files now match the current local templates without destructive overwrite.
 - `docs/HARNESS_SPEC.md` and `docs/METRICS.md` are project-specific extensions of the standard templates, not copies of generic placeholder content.
+- M0 plan artifacts are generated local application-data records outside the inspected repository. They are not project assets, are not committed, and may be redirected only with `GH_POLISH_PLAN_STORE_DIR`.

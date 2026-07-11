@@ -859,13 +859,13 @@ Auto commit:
 
 ## T-014 Trusted agent-native M0 thin slice
 
-Status: [ ]
+Status: [x]
 Type: feature
 Rail: full
 Priority: P1
 Owner: project maintainer
 Branch: master
-Execution state: contract accepted; not started by T-013F
+Execution state: completed with Red/Green, fixture, dogfood, CI, and Full Rail gate evidence.
 
 ### CodeRail Coordinate
 
@@ -929,14 +929,46 @@ Blocks:
 - M1 Repository Ready feature work.
 
 Acceptance:
-- [ ] Stable agent-facing JSON envelope and exit-code contract for all four commands.
-- [ ] Versioned plan includes repository identity, base SHA, relevant content hashes, created/expiry data, immutable operation payloads/digest, risk, confirmations, verification, evidence, and recovery.
-- [ ] Plan is saved and reloaded rather than reconstructed for apply.
-- [ ] Dry-run apply rejects stale, tampered, expired, or repository-mismatched plans before effects.
-- [ ] Verify reports plan-bound read-only evidence and one executable next step.
-- [ ] Node and generic fixtures complete the thin slice with Red/Green evidence.
-- [ ] Read-only dogfood on this repository proves no project or GitHub mutation.
-- [ ] Project CI and CodeRail Full Rail gates pass.
+- [x] Stable agent-facing JSON envelope and exit-code contract for all four commands.
+- [x] Versioned plan includes repository identity, base SHA, relevant content hashes, created/expiry data, immutable operation payloads/digest, risk, confirmations, verification, evidence, and recovery.
+- [x] Plan is saved and reloaded rather than reconstructed for apply.
+- [x] Dry-run apply rejects stale, tampered, expired, or repository-mismatched plans before effects.
+- [x] Verify reports plan-bound read-only evidence and one executable next step.
+- [x] Node and generic fixtures complete the thin slice with Red/Green evidence.
+- [x] Read-only dogfood on this repository proves no project or GitHub mutation.
+- [x] Project CI and CodeRail Full Rail gates pass.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] Changes stayed inside S.
+- [x] V has executable Red/Green, fixture, dogfood, and project CI evidence.
+- [x] P is synced through TASKS, DECISIONS, ASSETS, and append-only TRACE; index/status refresh is pending final gate.
+
+### Completion
+
+Task result: done
+Done gate: pass
+Completed at: 2026-07-11T03:09:19Z
+Commit: task-scoped T-014 closeout commit
+Harness result: Red test failed as expected; 6 focused T-014 fixture tests passed; `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, and `npm run ci` passed with 35 tests; CodeRail TDD, CI, Contract, Coordinate, Blueprint, and Done gates passed.
+Manual acceptance: not required; executable evidence governs the accepted M0 thin slice.
+Handoff level: H1
+Handoff updated: yes
+Trace: TR-20260711-025814-t014, TR-20260711-030000-t014r, TR-20260711-030724-t014g, TR-20260711-030724-t014d, and final verify trace
+Inspect status: pending final refresh
+Resume anchor: T-015-contract-draft
+Next executable step: Draft T-015 Trustworthy apply and evidence hardening; do not enable real mutation without a new Full Rail contract.
+Auto commit:
+- Eligible: yes
+- Action: committed with manual exact-path staging after the Closeout scope parser warning
+- Commit: task-scoped T-014 closeout commit
+- Exact files staged: README, T-014 docs, `src/cli.ts`, `src/protocol.ts`, `src/planArtifact.ts`, `test/cli.test.ts`, and `test/t014.thinSlice.test.ts`
+- Safe to stage: T-014-scoped source, tests, README, and docs
+- Do not stage: `dist/`, `node_modules/`, external local plan artifacts, and unrelated changes
+- Ignored/generated artifacts: `dist/`, `node_modules/`, local application-data plan store, generated trace/status files
+- Avoid git add .: yes
+Notes: M0 plan artifacts deliberately live outside the inspected repository under ADR-015.
 
 ### Start Gate
 

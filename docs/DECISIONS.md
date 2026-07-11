@@ -282,3 +282,22 @@ Extend ADR-011 with the explicit sequence: M0 Agent-Native Deterministic Kernel,
 - Launch work cannot begin from presentation alone; M2 evidence must be reliable first.
 - Web UI and GitHub App move to M4 and M5 without changing their planned responsibilities.
 - Growth, multi-project, team, and organization capabilities share M6 but must still receive separate implementation contracts when activated.
+
+## ADR-015: Keep M0 plan artifacts outside the inspected repository
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+T-014 must persist a versioned, reloadable plan while keeping `inspect`, `plan`, validation-only `apply`, `verify`, and repository dogfood free of project-file writes. A repository-local `.gh-polish/plans` store would make a read-only command alter the project it is inspecting.
+
+### Decision
+
+Store M0 plan artifacts in a local application-data directory outside the repository. The CLI returns the plan ID and resolved path; `apply` and `verify` accept either. `GH_POLISH_PLAN_STORE_DIR` provides a deterministic local override for tests and controlled environments. The artifact binds its schema, repository identity, base SHA, relevant content hashes, expiry, immutable payload, and digest.
+
+### Consequences
+
+- M0 commands leave the inspected project and GitHub state untouched while still supporting save/reload across processes.
+- A caller may retain the returned path without committing plan state to the repository.
+- Later repository-local or hosted plan storage requires a new contract because it changes the persistence and mutation boundary.

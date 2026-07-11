@@ -3,20 +3,20 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Completed task: T-013F
-Next task: T-014 accepted but not started
+Completed task: T-014
+Next task: T-015 Trustworthy apply and evidence hardening
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: T-014-start-gate
+Resume anchor: T-015-contract-draft
 
 ## Coordinate Summary
 
-Rail: light
-G: Complete only the merged Prompt requirements not already delivered by T-013.
-T: Align local standard entries, explicit M0-M6 maturity, staged Harness/Metrics, and the unexecuted T-014 Full Rail contract.
-S: AGENTS.md, CLAUDE.md, README.md, and docs/** only; no implementation, tests, package/build/workflow files, live GitHub state, or local CodeRail source changes.
-V: Template semantic diff, M0-M6 consistency, scope/fence checks, project CI, trace, and local CodeRail gates.
-X: Stop on destructive overwrite, implementation expansion, or hosted/vendor decisions.
+Rail: full
+G: Prove the M0 Agent-Native Deterministic Kernel through a trusted inspect -> plan -> apply -> verify path.
+T: Complete T-014's versioned external plan store, read-only dry-run/verify protocol, fixtures, and dogfood evidence.
+S: T-014 source, tests, README/docs, and trace only; no real GitHub mutation, project writes during command execution, dependencies/build/workflow changes, or hosted infrastructure.
+V: Required Red/Green evidence, Node/generic fixture thin slices, no-mutation dogfood, project CI, and CodeRail Full Rail gates.
+X: Stop on a new protocol/persistence product decision, scope crossing, unsafe mutation, or unprovable no-mutation behavior.
 P: TASKS, HANDOFF, DECISIONS, ASSETS, TRACE, generated index, and runtime status.
 
 ## Direction
@@ -27,47 +27,38 @@ The durable maturity path is:
 
 Trust Ready is deliberately separate from repository presentation and launch visibility. Later stages have entry harnesses and blueprint prerequisites but no current implementation authorization.
 
-## Completed Residual Work
+## Completed T-014 Work
 
-- Compared `AGENTS.md` and `CLAUDE.md` with `G:\codeRail\coderail\project-template`; incrementally restored missing Continuous Drive rules and reached template compatibility without force or overwrite.
-- Replaced the stale CLI-only Harness with executable M0 gates and planned M1-M6 stage-entry evidence.
-- Replaced placeholder Metrics with current governance evidence and staged product measures.
-- Added ADR-014 for the explicit Trust Ready gate.
-- Created accepted CD-003 and the complete T-014 Full Rail task card.
-- T-014 was not executed; no `src/`, `test/`, package, build, workflow, remote GitHub, or local CodeRail source changes occurred.
+- Replaced the T-001 CLI stubs with versioned JSON envelopes for `inspect`, `plan`, validation-only `apply --dry-run`, and `verify`.
+- Added an external local plan store with repository identity, base SHA, content hashes, expiry, immutable operations/digest, evidence, and recovery.
+- Added fixture coverage for Node/generic workflows plus tamper, stale, expiry, and repository-mismatch rejection.
+- Recorded ADR-015 to preserve the no-project-write M0 boundary.
+- Completed read-only dogfood on this repository without GitHub or project-file mutation.
 
 ## Verification
 
-- Local template compatibility: passed for AGENTS.md and CLAUDE.md.
-- M0-M6 and Trust Ready terminology: passed across core product, architecture, roadmap, harness, and metrics documents.
-- Code fences and task scope: passed.
-- Project regression: `npm run ci` passed with 28 tests.
-- Contract, Coordinate, and Blueprint checks: healthy.
-- Trace: T-013F intent/change/verify events appended with coordinate summaries; index regenerated.
+- Required Red evidence: the added JSON-envelope test failed against the stub before implementation.
+- Green evidence: Node/generic fixture tests passed with tamper, stale, expiry, and mismatch rejection.
+- Read-only dogfood: all four commands returned version 1 JSON envelopes; before/after Git status and top-level inventory were identical.
+- Project regression: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, and `npm run ci` passed with 35 tests.
+- CodeRail TDD, CI, Contract, Coordinate, Blueprint, and Done gates passed.
 
 ## Handoff Trigger Check
 
-- Level: H1 because the next task now has an accepted Full Rail contract and start gate.
+- Level: H1 because T-015 needs an independent Full Rail contract draft before effectful behavior is authorized.
 - Handoff updated: yes.
 
 ## Auto Commit
 
 - Eligible: yes
-- Action: committed by the CodeRail closeout check
-- Commit: task-scoped residual-governance commit
-- Exact files staged: T-013F-scoped entry and docs files only
-- Safe to stage: AGENTS.md, CLAUDE.md, README.md, and modified docs/
-- Do not stage: src/, test/, package/build/workflow files, generated output, local CodeRail source, or unrelated changes
-- Ignored/generated artifacts: node_modules/, dist/
+- Action: committed with manual exact-path staging after the Closeout scope parser warning
+- Commit: task-scoped T-014 closeout commit
+- Exact files staged: T-014-scoped source, tests, README, and docs only
+- Safe to stage: `src/cli.ts`, `src/protocol.ts`, `src/planArtifact.ts`, `test/cli.test.ts`, `test/t014.thinSlice.test.ts`, `README.md`, and T-014 docs
+- Do not stage: `dist/`, `node_modules/`, external local plan artifacts, package/build/workflow files, local CodeRail source, or unrelated changes
+- Ignored/generated artifacts: `node_modules/`, `dist/`, local application-data plan store, generated trace/status files
 - Avoid git add .: yes
 
 ## Next Executable Step
 
-Start T-014 in a separate Full Rail turn:
-
-1. Read North Star, T-014, CD-003, Harness, and current Git status.
-2. Confirm no conflicting user changes and that T-014 still forbids real GitHub mutation and project writes during dogfood.
-3. Append the T-014 intent trace.
-4. Capture required Red tests before editing implementation.
-
-Do not begin M1 feature breadth, Web UI, GitHub App, hosted persistence, dependencies, or real mutation inside T-014.
+Draft T-015 in an independent Full Rail turn. It must decide and prove any effectful apply/evidence boundary before adding real GitHub mutation. Do not begin M1 breadth, Web UI, GitHub App, hosted infrastructure, dependency changes, or real mutation without that contract.

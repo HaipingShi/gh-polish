@@ -74,11 +74,11 @@ The intended T-014 surface is:
 ```powershell
 gh-polish inspect --json
 gh-polish plan --profile public-project --json
-gh-polish apply --plan .gh-polish/plans/<plan-id>.json --dry-run --json
-gh-polish verify --plan <plan-id> --json
+gh-polish apply --plan <plan-id-or-returned-path> --dry-run --json
+gh-polish verify --plan <plan-id-or-returned-path> --json
 ```
 
-Until T-014 completes, current CLI stub output must be described honestly and tested as a stub. Snapshot changes to the structured protocol are public product-contract changes.
+`plan` persists the artifact in a local application-data store outside the inspected project and returns the plan ID and path. `GH_POLISH_PLAN_STORE_DIR` may select an alternate local store. Snapshot changes to the structured protocol are public product-contract changes.
 
 ### Read-Only Dogfood
 

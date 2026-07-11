@@ -4,8 +4,20 @@ import { runCli } from "../src/cli.js";
 import { assertRealGitHubMutationAllowed } from "../src/mutationGuard.js";
 
 describe("gh-polish CLI skeleton", () => {
-  it("prints help", () => {
-    const result = runCli(["--help"]);
+  it("emits the T-014 versioned JSON envelope for inspect", async () => {
+    const result = await runCli(["inspect", "--json"]);
+
+    assert.equal(result.code, 0);
+    assert.equal(result.stderr, "");
+    const envelope = JSON.parse(result.stdout) as { version: string; command: string; ok: boolean; data: { mutation: string } };
+    assert.equal(envelope.version, "1");
+    assert.equal(envelope.command, "inspect");
+    assert.equal(envelope.ok, true);
+    assert.equal(envelope.data.mutation, "none");
+  });
+
+  it("prints help", async () => {
+    const result = await runCli(["--help"]);
 
     assert.equal(result.code, 0);
     assert.match(result.stdout, /Usage:/);
@@ -13,32 +25,31 @@ describe("gh-polish CLI skeleton", () => {
     assert.equal(result.stderr, "");
   });
 
-  it("fails unknown commands with a non-zero exit code", () => {
-    const result = runCli(["wat"]);
+  it("fails unknown commands with a non-zero exit code", async () => {
+    const result = await runCli(["wat"]);
 
     assert.equal(result.code, 1);
     assert.equal(result.stdout, "");
     assert.match(result.stderr, /Unknown command: wat/);
   });
 
-  it("supports dry-run smoke paths for MVP commands", () => {
-    for (const command of ["inspect", "plan", "apply", "monitor"]) {
-      const args = command === "apply" ? [command, "--plan", "fixture", "--dry-run"] : [command, "--dry-run"];
-      const result = runCli(args);
-
-      assert.equal(result.code, 0);
-      assert.match(result.stdout, new RegExp(`command: ${command}`));
-      assert.match(result.stdout, /mutation: none/);
-      assert.equal(result.stderr, "");
-    }
-  });
-
-  it("blocks non-dry-run apply while mutation support is not implemented", () => {
-    const result = runCli(["apply", "--plan", "fixture"], {});
+  it("returns a structured recovery error when apply omits its plan", async () => {
+    const result = await runCli(["apply", "--dry-run", "--json"]);
 
     assert.equal(result.code, 2);
-    assert.equal(result.stdout, "");
-    assert.match(result.stderr, /Real GitHub mutation is disabled/);
+    assert.equal(result.stderr, "");
+    assert.deepEqual(JSON.parse(result.stdout).error, {
+      code: "PLAN_REFERENCE_REQUIRED",
+      message: "Command 'apply' requires --plan <id-or-path>."
+    });
+  });
+
+  it("blocks non-dry-run apply while mutation support is not implemented", async () => {
+    const result = await runCli(["apply", "--plan", "fixture"], {});
+
+    assert.equal(result.code, 2);
+    assert.equal(result.stderr, "");
+    assert.equal(JSON.parse(result.stdout).error.code, "DRY_RUN_REQUIRED");
   });
 
   it("keeps mutation guard closed by default", () => {
