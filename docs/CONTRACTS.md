@@ -142,7 +142,7 @@ Notes:
 
 ## CD-010 Live GitHub adapter and dogfood boundary
 
-Status: proposed
+Status: accepted
 Created at: 2026-07-11
 Source: user request
 Trace: T-021 contract-draft trace
@@ -261,13 +261,14 @@ P — Persist:
 
 ### Required User Decisions
 
-1. Exact dogfood repository `owner/repository` and confirmation that it is safe for a draft PR.
-2. Credential authority: recommended fine-grained PAT through `GH_TOKEN`, selected-repository only, permissions `Contents: write`, `Pull requests: write`, `Actions: read`, expiry at most 7 days.
-3. Confirm the initial effect allowlist: create-only README, gitignore, contributing guide, and PR template; no workflows.
-4. Confirm the default PR policy: draft PR, leave branch and PR intact, no merge or automatic cleanup.
+1. **Pending:** replace the placeholder `owner/repository` with the exact dogfood repository and confirm it is safe for a draft PR.
+2. **Accepted:** fine-grained PAT through `GH_TOKEN`, selected-repository only, permissions `Contents: write`, `Pull requests: write`, `Actions: read`, expiry at most 7 days.
+3. **Accepted:** create-only README, gitignore, contributing guide, and PR template; no workflows.
+4. **Accepted:** draft PR, leave branch and PR intact, no merge or automatic cleanup.
 
 Decision:
-- review required; contract drafting does not authorize adapter implementation, credential access, or live GitHub mutation.
+- Contract and recommended defaults accepted by the user on 2026-07-11.
+- T-022 remains unactivated because `owner/repository` is a placeholder rather than an exact allowlist target; acceptance does not authorize credential access or live mutation until that prerequisite is supplied.
 
 ## CD-009 Agent-facing M1 protocol and completion report
 
