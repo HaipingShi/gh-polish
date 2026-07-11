@@ -53,6 +53,6 @@ flowchart LR
 Trust rules:
 
 - Tokens remain in memory and are replaced by redacted credential metadata before evidence, errors, traces, or persistence.
-- Authorization requires the global enable flag, exact `HaipingShi/coderail` allowlist, fetched numeric repository identity, artifact/local-remote/base agreement, valid review token, and exact confirmed effects.
+- Authorization requires the global enable flag, exact `HaipingShi/stakespeak` allowlist, fetched numeric repository identity, artifact/local-remote/base agreement, valid review token, and exact confirmed effects.
 - The adapter exposes only deterministic branch, draft-PR, and exact-SHA check operations. It has no merge, cleanup, workflow, settings, release, or deployment operation.
 - T-022 mandatory verification injects HTTP/Git doubles and never consumes ambient credentials or contacts GitHub. Live execution is a later explicit gate.

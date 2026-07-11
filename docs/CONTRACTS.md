@@ -154,7 +154,7 @@ G — Goal:
 - Outcome served: Credential-free M1 evidence may advance to repository-bound live evidence without turning a token or agent instruction into ambient GitHub write access.
 
 T — Task:
-- Future implementation task: T-022, now eligible for activation because this contract is accepted and `HaipingShi/coderail` is the named dogfood repository.
+- Implementation task: T-022, active with `HaipingShi/stakespeak` as the current named dogfood repository.
 - Implement a live GitHub credential provider, allowlist preflight, branch/push adapter, idempotent pull-request adapter, exact-SHA check reader, and one allowlisted live dogfood run.
 - Initial live effects are create-only repository files from an accepted saved PlanArtifact. Workflow files, metadata, settings, deletion, replacement, merge, release, deployment, and publication remain outside this contract.
 
@@ -171,11 +171,11 @@ S — Scope:
   - wildcard/multi-repository allowlists, classic PAT by default, token persistence/logging, hosted credentials, GitHub App installation, or `G:\\codeRail\\coderail/**`.
 
 V — Verify:
-- Current Light Rail acceptance: contract and coordinate checks pass; Blueprint remains healthy; official GitHub documentation supports the permission/credential claims; the user accepted the defaults and named `HaipingShi/coderail` as the exact dogfood repository.
+- Contract and coordinate checks pass; Blueprint remains healthy; official GitHub documentation supports the permission/credential claims; the user accepted the defaults and named `HaipingShi/stakespeak` as the replacement exact dogfood repository.
 - Future Full Rail implementation requires TDD, mocked and local integration, secret scanning, one separately approved live dogfood run, project CI, and CodeRail gates as detailed below.
 
 X — Stop:
-- Stop before implementation or credential access until the user accepts the four Required User Decisions and names the exact dogfood repository. This prerequisite was satisfied for `HaipingShi/coderail` on 2026-07-11; live execution still requires the independent runtime gates and explicit effect confirmation.
+- Stop before implementation or credential access until the user accepts the four Required User Decisions and names the exact dogfood repository. This prerequisite is satisfied for `HaipingShi/stakespeak`; live execution still requires the independent runtime gates and explicit effect confirmation.
 - During future implementation/execution, stop on identity, allowlist, permission, secret, stale-plan, branch/PR conflict, or forbidden-effect ambiguity.
 
 P — Persist:
@@ -202,7 +202,7 @@ P — Persist:
 ### Repository Allowlist Contract
 
 - Exactly one canonical `owner/repository` is allowed per live run; no organization, owner, prefix, glob, or inherited allowlist.
-- Accepted dogfood allowlist target: `HaipingShi/coderail` (canonical repository form of `https://github.com/HaipingShi/coderail.git`). No other repository is authorized by CD-010.
+- Accepted dogfood allowlist target: `HaipingShi/stakespeak` (canonical repository form of `https://github.com/HaipingShi/stakespeak.git`). It supersedes the earlier zero-effect `HaipingShi/coderail` target; no other repository is currently authorized by CD-010.
 - Preflight must fetch and bind repository numeric ID, canonical full name, visibility, default branch, and current base SHA. Request, saved artifact, explicit allowlist, fetched identity, and local remote must all agree.
 - All three independent gates are mandatory:
   1. `GH_POLISH_ALLOW_REAL_GITHUB_MUTATION=1`;
@@ -262,14 +262,14 @@ P — Persist:
 
 ### Required User Decisions
 
-1. **Accepted:** `HaipingShi/coderail` is the exact dogfood repository and is approved as the sole target for a draft PR under this contract.
+1. **Accepted:** `HaipingShi/stakespeak` is the replacement exact dogfood repository and is approved as the sole target for a draft PR under this contract.
 2. **Accepted:** fine-grained PAT through `GH_TOKEN`, selected-repository only, permissions `Contents: write`, `Pull requests: write`, `Actions: read`, expiry at most 7 days.
 3. **Accepted:** create-only README, gitignore, contributing guide, and PR template; no workflows.
 4. **Accepted:** draft PR, leave branch and PR intact, no merge or automatic cleanup.
 
 Decision:
 - Contract and recommended defaults accepted by the user on 2026-07-11.
-- The user supplied `https://github.com/HaipingShi/coderail.git` on 2026-07-11; its canonical allowlist value is `HaipingShi/coderail`.
+- The user initially supplied `HaipingShi/coderail`, whose read-only artifact had zero allowed create effects. The user replaced it with `https://github.com/HaipingShi/stakespeak.git` on 2026-07-11; its canonical allowlist value is `HaipingShi/stakespeak`.
 - T-022 is eligible for activation but remains unactivated here. Acceptance and repository naming do not by themselves authorize credential access or live mutation; the independent runtime gates and exact live-effect confirmation remain mandatory.
 
 ## CD-009 Agent-facing M1 protocol and completion report
