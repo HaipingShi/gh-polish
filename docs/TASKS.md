@@ -1430,6 +1430,94 @@ Resume anchor: docs/TASKS.md#T-019
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-020 Agent-facing M1 protocol and completion report
+
+Status: [x]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: allowed
+Execution state: Red TR-20260711-085100-t020r closed by Green TR-20260711-085500-t020g; focused 2/2, full CI 64/64, and current-repository prepare/review no-mutation dogfood pass.
+
+### CodeRail Coordinate
+
+G — Goal:
+- Let coding agents safely drive the credential-free M1 workflow and receive a truthful achieved/deferred report.
+
+T — Task:
+- Implement serializable prepare/review/execute contracts, deterministic review binding, and M1 completion reporting over T-019.
+
+S — Scope:
+- Allowed:
+  - new `src/repositoryReadyAgentProtocol.ts`; minimal `src/repositoryReadyWorkflow.ts` reuse; `test/t020*.test.ts`; `docs/*.md`; and `docs/TRACELOG.jsonl`.
+- Forbidden:
+  - public CLI mutation activation, protocol v1 breaking changes, live GitHub/user repositories, credentials, default-branch writes, automatic merge, persistent review sessions, dependencies/build/workflow changes, hosted infrastructure, M2-M6, and `G:\\codeRail\\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: prepare/review/execute contract and M1 completion tests fail before implementation.
+- Green check: deterministic external-plan prepare, exact-confirmation review token, local/mock execute, and truthful achieved/deferred report pass.
+- Refactor check: protocol mapping stays separate from workflow and adapters.
+- Regression check: public CLI stays validation-only and T-014 through T-019 remain green.
+- CI check: focused T-020, full CI, blueprint, CodeRail gates, and credential-free protocol dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Stop if real credentials/repositories, public mutation CLI, breaking protocol v1, persistent sessions, or new API/persistence decisions become necessary.
+
+P — Persist:
+- CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, TRACE/index/status.
+
+### Task Contract
+
+Depends on:
+- T-019 done.
+- CD-009 accepted.
+
+Blocks:
+- Stable agent-facing M1 integration.
+- Any separately reviewed live GitHub adapter contract.
+
+Acceptance:
+- [x] `prepare` returns preview, plan reference, confirmation requirements, and explicit read-only/external-store effects.
+- [x] `review` is repository-read-only, requires the exact effect IDs, and returns a deterministic artifact/confirmation-bound token.
+- [x] `execute` rejects invalid review tokens before adapters and uses only injected local/mock ports.
+- [x] Completion reports credential-free capability as achieved only with complete PR/check evidence.
+- [x] Without a live adapter, live GitHub and overall M1 remain deferred rather than falsely achieved.
+- [x] Public CLI remains M0 validation-only; focused/full CI pass and final CodeRail gates are pending.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] S preserves live GitHub, CLI, and persistence boundaries.
+- [x] V has Red/Green, current-repository no-mutation dogfood, and truthful report evidence.
+- [x] P is synced through CONTRACTS, TASKS, NORTH_STAR, HARNESS, DECISIONS, ASSETS, HANDOFF, and TRACE.
+
+### Start Gate
+
+- User explicitly activated T-020/CD-009 as a Goal.
+- Capture Red before implementation.
+
+
+Task result: done
+
+Harness result: passed
+
+Handoff level: H0
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-020
+
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
