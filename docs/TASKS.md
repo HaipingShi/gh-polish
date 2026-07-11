@@ -1603,7 +1603,7 @@ G — Goal:
 - Outcome served: Convert the accepted CD-010 boundary into a testable adapter without granting ambient or accidental GitHub write authority.
 
 T — Task:
-- Implement the non-live portion of the real GitHub adapter: credential resolution/redaction, independent mutation gates, exact repository/permission preflight, deterministic draft-PR idempotency and conflict recovery, and exact-SHA check reads.
+- Implement the real GitHub adapter boundary and prepare a reviewed live-dogfood artifact: credential resolution/redaction, independent mutation gates, exact repository/permission preflight, deterministic draft-PR idempotency/recovery, exact-SHA checks, and read-only artifact preparation before live confirmation.
 
 S — Scope:
 - Allowed:
@@ -1613,8 +1613,10 @@ S — Scope:
   - T-022-relevant `docs/TASKS.md`, `docs/BLUEPRINTS.md`, `docs/HARNESS_SPEC.md`, `docs/HANDOFF.md`, append-only trace, index, and generated status.
   - user-authorized read-only inspection of `G:\\codeRail\\coderail/**` and its Git metadata solely to prepare/review a repository-bound PlanArtifact for `HaipingShi/coderail`;
   - writing that PlanArtifact only to an external gh-polish plan store outside `G:\\codeRail\\coderail`, plus non-secret artifact/effect evidence.
+  - `docs/CONTRACTS.md` amendment replacing the sole allowlist target with `HaipingShi/stakespeak`;
+  - unauthenticated public read-only `git ls-remote`/clone of `https://github.com/HaipingShi/stakespeak.git` into an external temporary directory, plus an external plan store for artifact review.
 - Forbidden:
-  - real network access, reading the actual process `GH_TOKEN`, or any write to `HaipingShi/coderail` during mandatory implementation/verification;
+  - authenticated network access, reading the actual process `GH_TOKEN`, or any write to `HaipingShi/coderail`/`HaipingShi/stakespeak` before final live confirmation;
   - default-branch writes, force push, merge, PR close, cleanup, workflows, settings, rulesets, secrets, releases, deploys, Pages, or publication;
   - any write, checkout, branch, commit, push, clean, reset, generated file, or configuration change under `G:\\codeRail\\coderail/**`;
   - public CLI live-mutation enablement, dependencies/package/build/workflow changes, hosted credentials, or GitHub App work.
@@ -1650,7 +1652,7 @@ P — Persist:
 
 Depends on:
 - T-021 done.
-- CD-010 accepted with `HaipingShi/coderail` as the sole dogfood repository.
+- CD-010 accepted and amended with `HaipingShi/stakespeak` as the sole current dogfood repository.
 
 Blocks:
 - Separately confirmed live GitHub dogfood.
@@ -1665,6 +1667,16 @@ Acceptance:
 - [x] Live GitHub dogfood remains explicitly deferred at this closeout unless separately confirmed after non-live completion.
 - [x] Read-only T-020 prepare binds an external artifact to `HaipingShi/coderail`, `main`, and base SHA `c699fb0d286196caba7e145f95195140c6916ba5` without changing the target repository.
 - [x] Artifact review truthfully reports zero create effects because all four CD-010 allowlisted paths already exist; review refuses an empty confirmation set instead of inventing a mutation.
+- [ ] Public read-only inspection of `HaipingShi/stakespeak` proves exact remote/base identity and produces a non-empty create-only artifact without target mutation.
+- [ ] Exact stakespeak effect IDs, content hashes, artifact digest, and review impacts are persisted before any live confirmation.
+
+### Stakespeak Access Evidence
+
+- Anonymous `git ls-remote --symref https://github.com/HaipingShi/stakespeak.git` failed closed with `could not read Username`; no clone directory was created.
+- The connected GitHub read-only app returned repository 404, so it is not installed/authorized for this private repository.
+- `gh` CLI is not installed, no global Git credential helper is configured, and no stakespeak checkout exists in the checked common local paths.
+- No token was requested, read, printed, or persisted. No remote or local target mutation occurred.
+- Preparation can resume from a user-authenticated local checkout path without sharing credentials with this task.
 
 ### Read-Only Artifact Evidence
 
@@ -1691,6 +1703,7 @@ Acceptance:
 - User explicitly activated T-022 on 2026-07-11.
 - Capture Red before implementation; do not run live dogfood.
 - User explicitly authorized read-only inspection of `G:\\codeRail\\coderail` for artifact/effect review on 2026-07-11; live mutation remains forbidden.
+- User replaced the sole dogfood target with `HaipingShi/stakespeak` and authorized public read-only artifact preparation on 2026-07-11; live mutation remains forbidden until exact effects are reviewed.
 
 Task result: stage-complete
 Harness result: passed
