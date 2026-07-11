@@ -1072,6 +1072,96 @@ Resume anchor: docs/TASKS.md#T-015
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-016 Remote verification and completion hardening
+
+Status: [x]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: allowed
+Execution state: CD-005 accepted; Red TR-20260711-074000-t016r and Green TR-20260711-074229-t016g captured; state matrix, CI, and read-only dogfood pass. Final CodeRail closeout is running.
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Complete M0 with remote evidence bound to the target plan, branch, and revision.
+- Outcome served: Report truthful check state and one repair/next action without relying on unrelated workflow history.
+
+T — Task:
+- Implement and prove read-only target-bound remote verification and define M0 exit/M1 entry evidence.
+
+S — Scope:
+- Allowed:
+  - `src/monitor.ts`, `src/githubAdapter.ts`, `src/protocol.ts`, new read-only verification modules, `test/t016*.test.ts`, minimal monitor/adapter tests, and T-016-relevant docs/trace/state.
+- Forbidden:
+  - GitHub writes, PR creation/merge, user-repository effects, live credentials in mandatory tests, dependencies/build/workflow changes, hosted or M1-M6 implementation, `G:\codeRail\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: exact branch/SHA and state classification tests fail before implementation.
+- Green check: mocked runs yield deterministic pending/success/failure/missing/permission-limited plan-bound evidence.
+- Refactor check: transport, filtering, classification, and protocol remain separate.
+- Regression check: GET-only adapter and all M0 safety tests remain green.
+- CI check: project CI and CodeRail Full Rail gates plus read-only dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Required mutation, live credentials, dependency changes, or ambiguous completion semantics.
+
+P — Persist:
+- TASKS, HANDOFF, NORTH_STAR/HARNESS/METRICS as needed, ASSETS, TRACE/index/status.
+
+### Task Contract
+
+Depends on:
+- T-015 done.
+- CD-005 accepted.
+
+Blocks:
+- M0 completion.
+- M1 Repository Ready contract activation.
+
+Acceptance:
+- [x] Evidence filters runs by exact target branch and SHA.
+- [x] Pending, success, failure, missing, and permission-limited states are deterministic.
+- [x] Unrelated runs cannot satisfy completion.
+- [x] Every non-success result includes one executable repair/next action.
+- [x] GitHub adapter remains GET-only and mandatory tests need no credentials/network.
+- [x] M0 exit and M1 entry evidence are persisted.
+- [x] Project CI and CodeRail Full Rail gates pass.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] Changes stayed inside S.
+- [x] V has Red/Green, state-matrix, regression CI, and no-mutation dogfood evidence.
+- [x] P is synced through TASKS, HANDOFF, NORTH_STAR, HARNESS, ASSETS, and TRACE/index/status.
+
+### Start Gate
+
+- Continuous roadmap goal authorizes this read-only task.
+- Capture Red evidence before implementation.
+
+
+Task result: done
+
+Harness result: passed
+
+Handoff level: H0
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-016
+
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

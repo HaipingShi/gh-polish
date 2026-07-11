@@ -3,11 +3,11 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Completed task: T-014
-Next task: T-015 final closeout, then T-016 contract/activation
+Completed task: T-015
+Next task: M1 Repository Ready contract activation after T-016 closeout
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: T-015-finish-done
+Resume anchor: T-016-finish-done
 
 ## Coordinate Summary
 
@@ -68,4 +68,4 @@ Trust Ready is deliberately separate from repository presentation and launch vis
 
 ## Next Executable Step
 
-Run `python .coderail/coderail.py finish --task T-015 --task-result done`; on ADVANCE, create and activate the T-016 Full Rail coordinate without entering M1 early.
+Run `python .coderail/coderail.py finish --task T-016 --task-result done`; then activate only an accepted M1 Repository Ready contract.
