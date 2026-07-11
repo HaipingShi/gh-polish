@@ -1251,6 +1251,95 @@ Resume anchor: docs/TASKS.md#T-017
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-018 Effectful Repository Ready PR execution
+
+Status: [x]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: allowed
+Execution state: CD-007 accepted; Red TR-20260711-080500-t018r and Green TR-20260711-080856-t018g captured; focused 6/6 and full CI 55/55 pass. Final CodeRail gates pending.
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Turn an accepted Repository Ready preview into one reviewable branch and PR without overwriting customized work or bypassing confirmation.
+- Outcome served: The builder receives plan-bound execution evidence and one truthful merge decision.
+
+T — Task:
+- Apply confirmed preview effects on a non-default branch, push to a local bare remote, create one PR through a mocked adapter, bind evidence, and remain idempotent.
+
+S — Scope:
+- Allowed:
+  - `src/repositoryReadyExecution.ts`; minimal T-018 integration in `src/localApply.ts` and `src/localGitExecutor.ts`; `test/t018*.test.ts`; `docs/*.md`; and `docs/TRACELOG.jsonl`.
+- Forbidden:
+  - live GitHub or user-repository mutation, default-branch writes, automatic merge, settings mutation, release/deploy/publish, dependencies/build/workflow changes, M2-M6 implementation, `G:\\codeRail\\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: branch/PR orchestration, overwrite refusal, idempotency, and partial-failure tests fail before implementation.
+- Green check: Node/generic temporary repositories push one non-default branch and mocked PR evidence is bound to the plan and head SHA.
+- Refactor check: local Git effects, PR adapter, orchestration, and evidence remain separate.
+- Regression check: M0/T-017 safety, artifact integrity, and GET-only boundaries remain green.
+- CI check: focused T-018 tests, project CI, blueprint, CodeRail Full Rail gates, and credential-free dogfood.
+- Waiver reason: none.
+
+X — Stop:
+- Stop if implementation requires live credentials/repository writes, default-branch mutation, automatic merge, or contract-external product/security/persistence decisions.
+
+P — Persist:
+- CONTRACTS, TASKS, HANDOFF, DECISIONS, ASSETS, NORTH_STAR/HARNESS/METRICS, TRACE/index/status, and plan-bound execution evidence.
+
+### Task Contract
+
+Depends on:
+- T-017 done.
+- CD-007 accepted for local bare-remote and mocked PR-adapter verification.
+
+Blocks:
+- M1 Repository Ready completion evidence.
+- Any separately approved live GitHub dogfood.
+
+Acceptance:
+- [x] Only confirmed create effects execute on a non-default branch; customized content is never overwritten.
+- [x] One idempotent mocked PR is bound to repository, plan, base branch, head branch, and pushed head SHA.
+- [x] Retry after local or PR partial failure does not duplicate commits, pushes, effects, or PRs.
+- [x] Default branch remains unchanged in Node and generic local bare-remote dogfood.
+- [x] Failures provide truthful per-stage evidence and one executable recovery action.
+- [~] Project CI passes without credentials or live network access; final CodeRail Full Rail gates pending.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md`.
+- [x] Changes are constrained to T-018 S.
+- [x] V has Red/Green, branch isolation, overwrite refusal, idempotency, partial-failure, CI, and dogfood evidence.
+- [x] P is synced through CONTRACTS, TASKS, HANDOFF, DECISIONS, ASSETS, NORTH_STAR/HARNESS/METRICS, and TRACE.
+
+### Start Gate
+
+- User explicitly accepted CD-007 and deferred live GitHub dogfood.
+- Capture Red evidence before implementation.
+
+
+Task result: done
+
+Harness result: passed
+
+Handoff level: H0
+
+Handoff updated: no
+
+Inspect status: refreshed
+
+Drive decision: BLOCKED_DECISION
+
+Resume anchor: docs/TASKS.md#T-018
+
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
+
+Auto commit: requested
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
