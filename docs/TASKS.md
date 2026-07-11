@@ -1527,7 +1527,7 @@ Priority: P1
 Owner: project maintainer
 Branch: master
 Autonomy: review-required
-Execution state: CD-010 drafted from current project boundaries and official GitHub permission documentation; manual acceptance pending.
+Execution state: CD-010 and recommended defaults accepted; exact dogfood repository remains pending because `owner/repository` is a placeholder. T-022 is not activated.
 
 ### CodeRail Coordinate
 
@@ -1552,7 +1552,7 @@ X — Stop:
 - Stop before T-022 activation, credentials, or live mutation until CD-010 is accepted and an exact dogfood repository is supplied.
 
 P — Persist:
-- CD-010 proposed contract, T-021 state, SEC blueprint backlink, proposed live harness, H1 handoff, trace/index/status.
+- CD-010 accepted contract, accepted defaults, unresolved exact-repository prerequisite, T-021 state, SEC blueprint backlink, proposed live harness, H1 handoff, trace/index/status.
 
 ### Acceptance / Trace
 - [x] Credential source, minimum permissions, expiry/redaction, and revocation policy are explicit.
@@ -1561,10 +1561,11 @@ P — Persist:
 - [x] Branch/PR/check idempotency, conflict, partial-failure, and recovery states are explicit.
 - [x] Threats, tests, live dogfood evidence, and Stop conditions are explicit.
 - [x] Official GitHub references support the permission and credential recommendations.
-- [ ] User accepts or revises the four Required User Decisions in CD-010.
+- [x] User accepts CD-010 and recommended credential/effect/PR defaults.
+- [ ] User replaces `owner/repository` with the exact dogfood allowlist target.
 
 Next step:
-- Review CD-010; do not activate T-022 until explicit acceptance and an exact dogfood repository are supplied.
+- Explain fine-grained PAT setup; do not activate T-022 until the exact dogfood repository is supplied.
 
 
 Task result: stage-complete

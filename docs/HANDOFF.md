@@ -3,7 +3,7 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Current task: T-021 CD-010 contract review
+Current task: T-021 accepted CD-010, exact repository prerequisite pending
 Next task: T-022 live GitHub adapter implementation remains unactivated
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
@@ -19,7 +19,7 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Contract State
 
-- CD-010 status: proposed, review required.
+- CD-010 status: accepted with recommended defaults.
 - Future implementation task: T-022, not activated.
 - SEC blueprint remains planned until CD-010 is accepted and implementation evidence exists.
 - Initial recommended credential: short-lived fine-grained PAT, one repository, `Contents: write`, `Pull requests: write`, `Actions: read`.
@@ -37,4 +37,4 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Next Executable Step
 
-User accepts or revises CD-010 Required User Decisions and provides the exact dogfood `owner/repository`; do not activate T-022 beforehand.
+User replaces the placeholder with the exact dogfood `owner/repository`; do not paste the token into chat and do not activate T-022 beforehand.
