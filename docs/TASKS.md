@@ -1544,7 +1544,7 @@ S — Scope:
   - `src/**`, `test/**`, package/build/workflow files, credentials, real GitHub mutation, user repositories, and `G:\\codeRail\\coderail/**`.
 
 V — Verify:
-- TDD mode: waived.
+- TDD mode: waived
 - Contract, coordinate, Blueprint, trace, and Light Rail closeout checks pass; official GitHub references support permission claims; manual acceptance remains explicit.
 - Waiver reason: contract drafting changes no executable behavior.
 
