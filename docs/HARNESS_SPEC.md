@@ -157,6 +157,17 @@ This gate is not authorized until CD-010 is explicitly accepted and one reposito
 - Verify only the pushed head SHA, scan all evidence for secrets, and record before/after default-branch state.
 - Live completion requires repository-bound branch, PR, check, retry, and no-secret evidence; pending checks remain not-ready.
 
+### T-022 Non-Live Adapter Gate
+
+- Mandatory tests inject both HTTP and Git runners; they never use ambient credentials or contact GitHub.
+- Credential resolution accepts only an explicit token or caller-supplied `GH_TOKEN` environment map. `GITHUB_TOKEN` does not grant implicit local authority, and serialized credential metadata contains no token.
+- Authorization requires the enable flag, exact single-repository allowlist, fetched numeric identity, local/artifact repository agreement, default branch/base SHA, minimum declared permissions, review token, and exact create-only effects.
+- Repository preflight reads canonical identity and the exact base ref; check verification filters workflow runs by both target branch and head SHA.
+- Git push uses an exact HTTPS remote, a deterministic non-default branch, no force flag, non-interactive credential delivery outside argv, exact remote-SHA reconciliation, and conflict refusal.
+- Draft PR creation lists before mutation, reuses one exact plan marker, refuses mismatched/multiple candidates, and performs read-after-write reconciliation after `422`.
+- Write adapters require the immutable authorization result at construction and revalidate repository, branch/base/plan, and effect identity before invoking injected effects.
+- Source/document secret scan and before/after worktree comparison accompany focused and full CI. Live dogfood remains a separate explicit confirmation gate.
+
 ## M2 Trust Ready Harness
 
 Entry requirement: supported M1 profiles can complete a truthful Repository Ready PR.
