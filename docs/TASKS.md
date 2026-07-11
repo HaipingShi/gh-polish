@@ -1586,6 +1586,103 @@ Resume anchor: docs/TASKS.md#T-021
 Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 
 Auto commit: requested
+## T-022 Live GitHub adapter non-live implementation
+
+Status: [~]
+Type: feature
+Rail: full
+Priority: P1
+Owner: project maintainer
+Branch: master
+Autonomy: autonomous-non-live; live dogfood remains review-required
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Prove a trustworthy Repository Ready branch and draft-PR path behind least-privilege, exact-repository, plan-bound authorization.
+- Outcome served: Convert the accepted CD-010 boundary into a testable adapter without granting ambient or accidental GitHub write authority.
+
+T — Task:
+- Implement the non-live portion of the real GitHub adapter: credential resolution/redaction, independent mutation gates, exact repository/permission preflight, deterministic draft-PR idempotency and conflict recovery, and exact-SHA check reads.
+
+S — Scope:
+- Allowed:
+  - narrowly scoped live-adapter, credential, preflight, mutation-guard, PR-idempotency, and check-read modules under `src/`;
+  - `test/t022*.test.ts` with injected fetch/Git doubles and local bare remotes only;
+  - minimal existing port wiring needed to keep live behavior behind injection and explicit authorization;
+  - T-022-relevant `docs/TASKS.md`, `docs/BLUEPRINTS.md`, `docs/HARNESS_SPEC.md`, `docs/HANDOFF.md`, append-only trace, index, and generated status.
+- Forbidden:
+  - real network access, reading the actual process `GH_TOKEN`, or any write to `HaipingShi/coderail` during mandatory implementation/verification;
+  - default-branch writes, force push, merge, PR close, cleanup, workflows, settings, rulesets, secrets, releases, deploys, Pages, or publication;
+  - public CLI live-mutation enablement, dependencies/package/build/workflow changes, hosted credentials, GitHub App work, or `G:\\codeRail\\coderail/**`.
+
+V — Verify:
+- TDD mode: required
+- Red check: failing tests cover missing enable flag/token, absent or wrong allowlist, repository ID/name/default/base mismatch, insufficient permissions, token redaction, forbidden effects, existing exact PR reuse, conflicting PR refusal, `422` read-after-write reconciliation, and retry without duplicate PR creation.
+- Green check: injected non-live adapters pass all contract states; no test reads ambient credentials or reaches GitHub.
+- Refactor check: credential, authorization/preflight, HTTP mutation adapter, idempotency/recovery, and check verification remain separate from public CLI orchestration.
+- Regression check: existing credential-free M1 and GET-only read adapter tests remain green; public CLI mutation guard stays closed.
+- CI check: focused T-022 tests, `npm run ci`, secret scan, mock dogfood, CodeRail TDD/CI/Coordinate/Blueprint/Trace/Done/Closeout gates.
+- Waiver reason: none.
+- Harness:
+  - injected HTTP responses only, including 401/403/404/422/rate/network cases;
+  - local bare remote only for Git regression;
+  - before/after worktree and environment-boundary checks.
+- Manual acceptance:
+  - not required for non-live Green; required again before the separately gated live dogfood execution.
+
+X — Stop:
+- Any test or implementation attempts real network access, consumes ambient credentials, or targets a non-test remote.
+- Required behavior needs broader permissions/effects, token persistence, public CLI activation, or mutation outside CD-010.
+- Repository identity, branch, PR, or retry conflict cannot fail closed after two focused attempts.
+- Live dogfood remains stopped until exact effect IDs and all three runtime gates are independently confirmed.
+
+P — Persist:
+- TASKS: T-022 Red/Green evidence, acceptance, closeout, and live-deferred state.
+- BLUEPRINTS/HARNESS/HANDOFF: current SEC boundary, executable non-live gate, and next live review point.
+- DECISIONS/ASSETS: update only if implementation introduces a durable adapter boundary or canonical module.
+- TRACE: append intent, Red, Green, mock-dogfood, verify, and closeout events; regenerate index/status.
+
+### Task Contract
+
+Depends on:
+- T-021 done.
+- CD-010 accepted with `HaipingShi/coderail` as the sole dogfood repository.
+
+Blocks:
+- Separately confirmed live GitHub dogfood.
+
+Acceptance:
+- [x] Non-live Red evidence is captured before implementation: `npm run build` fails because the tested live authorization and adapter modules do not exist.
+- [x] Credential resolution accepts explicit/injected or `GH_TOKEN` only and never serializes token values.
+- [x] Mutation authorization fails closed unless enable flag, exact allowlist, repository identity/base, permissions, review token, and exact effects agree.
+- [x] Draft PR creation is deterministic and idempotent; matching PRs are reused and conflicts stop.
+- [x] `422` reconciliation and partial-failure retry do not duplicate PR mutation.
+- [x] Exact-SHA checks and all existing CI pass without network or ambient credentials.
+- [x] Live GitHub dogfood remains explicitly deferred at this closeout unless separately confirmed after non-live completion.
+
+### Critical Check
+
+- [x] G maps to `docs/NORTH_STAR.md` and accepted CD-010.
+- [x] S excludes live mutation and ambient credential access.
+- [x] V requires Red before implementation and full non-live regression evidence.
+- [x] P names TASKS, TRACE, SEC/harness, handoff, and generated state.
+
+### Start Gate
+
+- User explicitly activated T-022 on 2026-07-11.
+- Capture Red before implementation; do not run live dogfood.
+
+Task result: stage-complete
+Harness result: passed
+Handoff level: H1
+Handoff updated: no
+Inspect status: refreshed
+Drive decision: BLOCKED_DECISION
+Resume anchor: docs/TASKS.md#T-022
+Next executable step: Request the human gate for T-022 or mark a separately authorized task autonomous.
+Auto commit: requested
+
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

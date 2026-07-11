@@ -3,18 +3,18 @@
 Updated at: 2026-07-11
 Handoff Level: H1
 Current branch: master
-Current task: T-021 complete; CD-010 accepted with `HaipingShi/coderail` as the sole dogfood repository
-Next task: T-022 live GitHub adapter implementation is eligible but remains unactivated
+Current task: T-022 non-live adapter implementation stage complete
+Next task: prepare the exact reviewed artifact/effect confirmation for the separately gated `HaipingShi/coderail` live dogfood
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
 Resume anchor: docs/CONTRACTS.md#CD-010-Live-GitHub-adapter-and-dogfood-boundary
 
 ## Coordinate Summary
 
-Rail: light
-Goal: Establish the least-privilege, exact-repository, idempotent safety contract required before live GitHub mutation.
-Boundary: Documentation only; no source/tests/dependencies, credential access, user-repository effects, or GitHub mutation.
-Acceptance: CD-010 covers credentials, permissions, allowlist, live effects, idempotency, recovery, threats, verification, Stop conditions, persistence, and four user decisions.
+Rail: full
+Goal: Implement the accepted least-privilege, exact-repository, idempotent GitHub adapter boundary with non-live evidence.
+Boundary: Injected HTTP/Git doubles only; no ambient credential access, real network, public CLI mutation, or user-repository effect.
+Acceptance: Red preceded implementation; focused 8/8 and full CI 72/72 prove credential redaction, exact allowlisting/preflight, authorization-bound push/PR idempotency/reconciliation, and exact-SHA checks without network.
 Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Contract State
@@ -38,4 +38,4 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Next Executable Step
 
-Draft and activate T-022 as a separate Full Rail task, then add mocked credential/allowlist/permission/PR-idempotency/secret-redaction Red tests before any credential access or live GitHub mutation.
+Prepare and review the repository-bound PlanArtifact and exact effect IDs for `HaipingShi/coderail`; do not paste the token into chat or run live mutation before the separate confirmation gate.
