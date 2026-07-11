@@ -183,3 +183,82 @@ Implement a `GitHubReadAdapter` that accepts an injected fetch implementation an
 - Permission failures, missing resources, rate limits, network failures, and invalid responses become typed degraded states.
 - No write endpoint is available from the adapter in MVP-003.
 - Future write behavior must use a separate policy-gated adapter surface or a clearly named mutation layer.
+
+## ADR-010: Serve the builder through an external AI coding agent
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+The target builder may have no development experience and may delegate even basic Git and GitHub operations to an AI coding agent. A conventional expert-facing CLI would require the user to learn the infrastructure that the product is meant to hide safely.
+
+### Decision
+
+Treat the builder as the beneficiary and decision owner, the external AI coding agent as the primary operator and explainer, and gh-polish as the deterministic execution kernel. The first CLI is an agent-facing structured interface, not the final human user interface. Do not build a competing general-purpose agent loop in P0.
+
+### Consequences
+
+- Structured JSON, stable exit behavior, capability discovery, and actionable degraded states are primary CLI requirements.
+- The coding agent may interpret context and draft content, but authorization, plan validation, mutation, and evidence remain deterministic.
+- Builder questions should concern product intent rather than GitHub mechanics whenever policy can choose a safe default.
+- Future Web UI and GitHub App adapters must use the same core contracts rather than reimplementing product rules.
+
+## ADR-011: Expand the outcome from repository polish to launch and stewardship
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+AI coding has shifted the builder constraint from implementing an idea toward making the idea understandable, credible, visible, usable, and maintained. Repository hygiene is necessary but does not by itself help another person discover or try the project.
+
+### Decision
+
+Define the durable product outcome as the path from AI-built working code through Repository Ready, Launch Ready, Web Workspace, GitHub App Stewardship, Growth Loop, and Portfolio/Team stages. Retain the gh-polish name and safe repository workflow as the entry point, while treating visibility and ongoing stewardship as explicit later-stage outcomes.
+
+### Consequences
+
+- README, repository configuration, CI, launch assets, demos, releases, feedback, maintenance, and growth are connected by one maturity path.
+- Product success is measured by stage progression and evidence, not only file presence or an opaque score.
+- Later stages must be planned now but cannot enter implementation before their entry gates and contracts.
+- The product category is an AI-native project launch and stewardship workflow rather than a generic GitHub wrapper.
+
+## ADR-012: Deferred stages remain planned architecture runway
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+Calling Web UI, GitHub App, growth, or portfolio capabilities "deferred" can accidentally erase them from design decisions. Implementing their infrastructure during P0 would create premature complexity, but ignoring them could bind the core to local files and one CLI process.
+
+### Decision
+
+Use ports for interaction, auth, events, artifacts, plans, evidence, GitHub operations, and storage where they represent an explicit staged need. Implement only local P0 adapters now. Require new architecture, threat, persistence, tenancy, and vendor decisions before hosted or App work.
+
+### Consequences
+
+- P0 avoids databases, queues, hosted identity, billing, and App infrastructure.
+- Domain records must carry repository identity and execution context rather than assuming a local path is sufficient.
+- Web UI and GitHub App are delivery adapters over shared plans and policy.
+- Blueprint gates make future infrastructure requirements visible without claiming current implementation.
+
+## ADR-013: Use evidence-backed maturity instead of a single repository score
+
+- Status: Accepted
+- Date: 2026-07-11
+
+### Context
+
+A single score is easy to display but can reward superficial checklist completion, treat unlike projects identically, and hide what a novice builder should do next.
+
+### Decision
+
+Report named maturity stages with evidence, unmet outcomes, and one meaningful next action. Profiles may vary requirements by project type and visibility. Component-level diagnostics may use measurements, but the primary builder experience must not collapse the project into one unexplained number.
+
+### Consequences
+
+- A demo, private tool, public library, and commercial application can have different readiness evidence.
+- The Web workspace can show progress without gamifying unverified artifacts.
+- Recommendations must explain why they matter and what evidence completes them.

@@ -649,6 +649,119 @@ Auto commit:
 - Avoid git add .: yes
 Notes: The apply flow can call injected mutation clients only when `GH_POLISH_ALLOW_REAL_GITHUB_MUTATION=1` is set and policy/confirmation checks pass. No live GitHub mutation was performed.
 
+## T-013 Agent-native product direction refactor
+
+Status: [x]
+Type: design
+Rail: light
+Priority: P1
+Owner: project maintainer
+Branch: master
+
+### CodeRail Coordinate
+
+G — Goal:
+- North Star: Evolve gh-polish into an agent-native project launch and stewardship workflow for non-technical vibe coders.
+- Outcome served: Preserve the safe repository-polish kernel while planning the path from AI-built code to credible GitHub presence, Web visibility, launch readiness, continuous GitHub App stewardship, and later growth workflows.
+
+T — Task:
+- Normalize the current repository with the local CodeRail runtime and refactor the durable product direction, architecture evolution, capability stages, and roadmap.
+
+S — Scope:
+- Allowed:
+  - README.md
+  - docs/**
+- Forbidden:
+  - src/**
+  - test/**
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - dist/**
+  - node_modules/**
+  - G:\codeRail\coderail/**
+  - real GitHub mutation
+
+V — Verify:
+- TDD mode: waived
+- Verification result: passed through document consistency, scope, CodeRail, trace, and regression-CI evidence recorded for T-013.
+- Red check: not applicable for a docs-only Light Rail refactor.
+- Green check: durable documents agree on the new audience, outcome, maturity model, delivery surfaces, current slice, boundaries, and next executable Full Rail task.
+- Refactor check: P0 is retained as the foundation; later Web UI, GitHub App, visibility, maintenance, and growth stages are explicitly planned without being implemented prematurely.
+- Regression check: `npm run ci` passes and git diff contains no implementation changes.
+- CI check: local CodeRail doctor, contract, coordinate, blueprint, trace, done, inspect, and closeout gates pass or report only documented warnings.
+- Waiver reason: This task changes product direction and documents only.
+- Harness:
+  - Document consistency and Mermaid fence checks.
+  - `python G:\codeRail\coderail\scripts\doctor.py --target .`
+  - `npm run ci`
+- Manual acceptance:
+  - The user can revise the persisted direction; automated document and governance checks are accepted as completion evidence for this task.
+
+X — Stop:
+- Business code, package dependencies, real GitHub state, or local CodeRail source must change.
+- The design requires selecting hosting, billing, identity, database, or queue vendors now.
+- The AI coding agent and deterministic execution-kernel boundary cannot be stated clearly.
+
+P — Persist:
+- TASKS: T-013 coordinate and closeout.
+- HANDOFF: new product direction and next implementation anchor.
+- DECISIONS: agent-native product, maturity roadmap, and delivery-surface boundaries.
+- LESSONS: only if a reusable failure appears.
+- ASSETS: canonical document and local CodeRail reference updates.
+- TRACE: T-013 intent, changes, verification, and generated trace index.
+
+### Task Contract
+
+Depends on:
+- User clarification that gh-polish serves non-technical vibe coders through AI coding agents and must progress from P0 repository readiness toward Web UI, GitHub App, visibility, launch, and growth stages.
+
+Blocks:
+- T-014 agent-native CLI inspect/plan wiring and read-only dogfood.
+- Later Web UI and GitHub App blueprint tasks.
+
+Acceptance:
+- [x] North Star expresses the path from AI-built idea to credible, visible, and maintained project.
+- [x] PRD distinguishes user, operator, deterministic kernel, GitHub, and delivery surfaces.
+- [x] Architecture preserves reusable core boundaries for CLI, Web UI, and GitHub App adapters.
+- [x] Roadmap includes repository, launch, Web UI, GitHub App, growth, and portfolio/team stages.
+- [x] Current implementation is described honestly as a test-covered module prototype with an unwired CLI.
+- [x] Local CodeRail gates and regression CI provide fresh evidence.
+
+### Critical Check
+
+- [x] G maps to the revised product intent supplied by the user.
+- [x] S explicitly protects implementation, dependencies, live GitHub state, and local CodeRail source.
+- [x] V uses Light Rail document/governance checks without pretending a code TDD loop ran.
+- [x] P includes TASKS, decisions, handoff, assets, and TRACE.
+
+### Completion
+
+Task result: done
+Done gate: pass
+Completed at: 2026-07-11
+Commit: task-scoped closeout commit
+Harness result: scope scan passed; Mermaid fences balanced; P0-P6 terminology consistent; contract/coordinate/blueprint checks healthy; `npm run ci` passed with 28 tests
+Manual acceptance: automated Light Rail evidence accepted; user revision remains available
+Handoff level: H1
+Handoff updated: yes
+Trace: docs/TRACELOG.jsonl
+Inspect status: docs/CODERAIL_STATUS.md
+Resume anchor: T-014-contract
+Next executable step: Create and accept the T-014 Full Rail contract for agent-native CLI wiring, versioned repository-bound plans, and read-only dogfood.
+Auto commit:
+- Eligible: yes
+- Action: committed by CodeRail closeout check
+- Commit: task-scoped closeout commit
+- Exact files staged:
+- Safe to stage: T-013-scoped product and CodeRail state documents only
+- Do not stage: `src/**`, `test/**`, package files, generated output, and unrelated user changes
+- Ignored/generated artifacts: `node_modules/`, `dist/`
+- Avoid git add .: yes
+Notes:
+- Local CodeRail standard initialization skipped existing files and doctor reported healthy before this task began.
+- T-013 used the local runtime at `G:\codeRail\coderail`; no clone, package installation, wholesale copy, or local CodeRail source modification occurred.
+
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.

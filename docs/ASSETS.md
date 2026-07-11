@@ -13,6 +13,7 @@
 | docs/BLUEPRINTS.md | A3 architecture index | yes | update when diagrams become current, stale, planned, or not-applicable |
 | docs/GITHUB_CAPABILITIES.md | A3 capability matrix | yes | update when GitHub feature support or permission assumptions change |
 | docs/MVP_TASKS.md | A3 roadmap | yes | update when MVP task split changes |
+| docs/TASK_GRAPH.md | A3 roadmap dependency graph | yes | update when the critical path or stage dependencies change |
 | docs/TASKS.md | A3 CodeRail task state | yes | update task state, coordinate, verification, and closeout evidence |
 | docs/HARNESS_SPEC.md | A3 verification contract | yes | update when test commands or gates change |
 | docs/DECISIONS.md | A3 ADR log | yes | append ADRs for durable decisions |
@@ -51,10 +52,11 @@
 
 | Asset | Type | Canonical | Update Rule |
 |---|---|---:|---|
-| https://github.com/HaipingShi/coderail.git | A0 governance source | yes | pin or vendor only after MVP-001 decides dependency strategy |
+| G:\codeRail\coderail | A0 local CodeRail runtime | yes | read templates/references and execute scripts in place; do not clone, install, copy wholesale, or modify without an explicit CodeRail-source task |
 
 ## Boundary Notes
 
-- Raw temporary clones are not permanent project assets.
-- Generated trace/status indexes should be refreshed by CodeRail scripts once the dependency strategy is chosen.
-- Business code assets do not exist yet.
+- CodeRail is consumed from the user-supplied local absolute path for this workspace and is not vendored into the project.
+- Generated trace/status indexes are refreshed with scripts from the local CodeRail runtime.
+- `src/` and `test/` are existing implementation and verification assets; product-direction Light Rail work must not modify them.
+- Future Web, GitHub App, launch, and growth assets become canonical only when their stage contracts authorize creation.

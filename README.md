@@ -1,73 +1,85 @@
 # gh-polish
 
-gh-polish is an agent-driven GitHub repository polish workflow for turning a freshly pushed project into a cleaner, more professional, and more maintainable repository.
+gh-polish is an agent-native project launch and stewardship workflow for people who build with AI but do not want to become GitHub experts first.
 
-Status: MVP CLI skeleton.
+It is designed to help an AI coding agent move a working idea toward a credible repository, a visible and verifiable launch, and eventually continuous maintenance. The builder supplies product intent; the coding agent explains and drafts; the deterministic gh-polish kernel owns inspection, plans, policy, mutation gates, and evidence.
 
-## Who It Is For
+## Product Path
 
-- Vibe coders who ship quickly and want their GitHub projects to look credible.
-- Solo builders who need repeatable repository cleanup after pushing code.
-- Small teams that want lightweight hygiene without a platform team.
-- Open-source maintainers who want safer defaults for docs, templates, CI, and repository settings.
+1. **P0 Deterministic Foundation:** inspect, plan, apply, verify, evidence, and recovery.
+2. **P1 Repository Ready:** understandable, runnable, trustworthy repository presentation and engineering basics.
+3. **P2 Launch Ready:** verified demo, visuals, release, launch preview, and feedback path.
+4. **P3 Web Workspace:** human-oriented decisions, previews, diffs, evidence, and project control.
+5. **P4 GitHub App Stewardship:** installation-scoped, event-driven, and scheduled maintenance.
+6. **P5 Growth Loop:** launch distribution, feedback signals, and evidence-backed improvement cycles.
+7. **P6 Portfolio and Team:** multi-project and organization stewardship.
 
-## MVP Goal
+Later stages are deliberately planned even though the current implementation remains focused on P0.
 
-The MVP is a CLI-first workflow that inspects local project files and GitHub repository state, generates a reviewable plan, applies approved changes through a branch and pull request, and monitors the resulting GitHub Actions/checks.
+## Current State
 
-The MVP focuses on:
+Status: P0 module prototype, not yet an end-to-end MVP.
 
-- Repository metadata: description, homepage, topics, license, README, badges.
-- Hygiene files: `.gitignore`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, issue templates, PR template.
-- Engineering readiness: CI workflow, test/lint/build detection, Dependabot, CodeQL.
-- GitHub features: Actions/check monitoring, labels/milestones read, branch ruleset recommendations, Pages/release/security status where permitted.
+The repository contains first-pass TypeScript modules and tests for:
 
-## Example Commands
+- local repository context;
+- read-only GitHub access;
+- local and remote analysis;
+- operation policy and dry-run planning;
+- template selection;
+- guarded apply interfaces;
+- workflow-run summaries;
+- no-real-mutation harness checks.
+
+The public CLI still exposes stub behavior and is not wired into the implemented modules. Plans are not yet durable, identity-bound execution artifacts, and no real-repository read-only dogfood has been recorded.
+
+## Intended Agent Interface
 
 ```bash
-gh-polish inspect
-gh-polish plan
-gh-polish apply --plan <plan-id>
-gh-polish monitor --pr <number>
+gh-polish inspect --json
+gh-polish plan --profile public-project --json
+gh-polish apply --plan .gh-polish/plans/<plan-id>.json
+gh-polish verify --plan <plan-id>
 ```
 
-The current T-001 implementation supports these command names as safe stubs. `apply` only supports non-mutating dry-run behavior.
+These commands describe the intended contract, not the currently completed CLI behavior.
 
 ## Safety Principles
 
 - `inspect` and `plan` are read-only.
-- Every change starts as a dry-run plan.
-- High-risk GitHub settings require explicit confirmation.
-- File changes are applied through a branch and pull request by default.
-- gh-polish does not directly edit the default branch in the MVP.
-- GitHub API access is isolated behind an adapter.
-- Tests must prevent real GitHub mutation unless an explicit environment flag is set.
+- Mutation starts from a repository-bound saved plan.
+- High-impact changes require explicit confirmation and plain-language impact.
+- File changes use a branch and pull request by default.
+- Existing project work is preserved unless replacement is explicitly approved.
+- AI may draft content, but deterministic policy owns authorization and completion claims.
+- Generated tests, workflows, deployments, and product claims require evidence.
 
-## Current Design Docs
+## Development
 
-- [PRD](docs/PRD.md)
+```bash
+npm run typecheck
+npm test
+npm run build
+npm run ci
+```
+
+The implementation uses Node.js 22, TypeScript, and Node's built-in test runner.
+
+## Project Documents
+
 - [North Star](docs/NORTH_STAR.md)
+- [Product Requirements](docs/PRD.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Product Roadmap](docs/MVP_TASKS.md)
+- [Task Graph](docs/TASK_GRAPH.md)
 - [GitHub Capabilities](docs/GITHUB_CAPABILITIES.md)
-- [MVP Tasks](docs/MVP_TASKS.md)
 - [CodeRail Tasks](docs/TASKS.md)
 - [Blueprint Index](docs/BLUEPRINTS.md)
-- [Harness Spec](docs/HARNESS_SPEC.md)
+- [Harness Specification](docs/HARNESS_SPEC.md)
 - [Decisions](docs/DECISIONS.md)
 
-## Development Governance
+## Governance
 
-This repository uses CodeRail as its repo-local governance rail. Non-trivial work must start from a task coordinate in `docs/TASKS.md`:
+This repository uses the local CodeRail runtime at `G:\codeRail\coderail`. Product and design work uses Light Rail; implementation, schema, API, dependency, persistence, runner, release, and external-integration work uses Full Rail.
 
-- G: Goal mapped to `docs/NORTH_STAR.md`
-- T: exact task
-- S: allowed and forbidden scope
-- V: verification evidence or explicit manual acceptance
-- X: stop conditions
-- P: persistence and trace targets
-
-Design and ADR work uses Light Rail. Code, API, runner, schema, dependency, release, and external integration work uses Full Rail.
-
-## Next Implementation Slice
-
-The first implementation task should be MVP-001: create the minimal CLI contract, command help, exit codes, and a no-mutation test harness foundation.
+The next executable slice is T-014: wire agent-native read-only `inspect` and `plan`, define the versioned repository-bound plan artifact, and complete a no-mutation dogfood run.

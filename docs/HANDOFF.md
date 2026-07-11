@@ -1,114 +1,77 @@
 # Handoff
 
-Updated at: 2026-07-09
+Updated at: 2026-07-11
 Handoff Level: H1
-Current branch: none; workspace is not a git repository
-Current task: dogfood-readonly
+Current branch: master
+Current task: T-013 done
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: dogfood-readonly
+Resume anchor: T-014-contract
 
 ## Coordinate Summary
 
-North Star / slice: MVP roadmap first-pass implementation complete.
-Rail: full
-G: Validate the implemented MVP workflow on a real or fixture repository without mutation.
-T: Wire CLI inspect/plan to implemented modules, then run read-only dogfood.
-S:
-- Allowed: CLI wiring, read-only local analysis, dry-run plan output, tests and docs.
-- Forbidden: real GitHub mutation, default branch mutation, high-risk settings apply.
-V: CLI/dogfood transcript, no-mutation evidence, `npm run ci`.
-X: stop if dogfood needs real GitHub mutation or a new product decision.
-P: docs/TASKS.md, docs/HARNESS_SPEC.md, docs/TRACELOG.jsonl.
+Rail: light
+G: Reframe gh-polish around the path from AI-built code to credible, visible, launch-ready, and maintained projects.
+T: Complete T-013 product direction, architecture runway, roadmap, and CodeRail normalization.
+S: README and product/CodeRail documents only; no implementation, dependencies, live GitHub mutation, or local CodeRail source changes.
+V: Document consistency, scope scan, Mermaid checks, CodeRail gates, trace, and `npm run ci`.
+X: Stop on implementation expansion or premature hosted/vendor commitment.
+P: TASKS, DECISIONS, HANDOFF, ASSETS, TRACE, and generated status/index files.
 
-## Recent Completed Slice
+## Direction
 
-- T-000 produced PRD, North Star, architecture, capability matrix, MVP task split, harness spec, ADRs, README, and CodeRail governance files.
-- T-001 selected Node.js + TypeScript, created CLI skeleton, added no-mutation guard, and verified tests/build/CI.
-- T-002 added local read-only repository context detection with injectable git runner, GitHub remote parsing, outside-git errors, dirty/default branch detection, and temp repo smoke tests.
-- T-003 added read-only GitHub API adapter with injected fetch, env token resolution, repository/topics/Actions/labels/milestones reads, typed degraded states, and mocked tests.
-- T-004 through T-012 added local analyzer, remote analyzer, policy engine, planner, template registry, guarded applier/metadata interfaces, monitor summaries, and harness self-tests.
+gh-polish is now defined as an agent-native project launch and stewardship workflow for builders who use AI coding agents but may not understand development or GitHub infrastructure.
+
+The builder owns product intent and approvals. The external AI coding agent is the primary operator and explainer. The deterministic gh-polish kernel owns inspection, repository-bound plans, policy, confirmation, mutation, evidence, recovery, and lifecycle state.
+
+The product path is:
+
+`P0 Deterministic Foundation -> P1 Repository Ready -> P2 Launch Ready -> P3 Web Workspace -> P4 GitHub App Stewardship -> P5 Growth Loop -> P6 Portfolio and Team`
+
+Later stages are planned architecture runway. They are not authorized implementation scope until their stage gates and contracts are satisfied.
 
 ## Current State
 
-In progress:
-- None.
-
-Blocked:
-- None.
-
-Stop conditions:
-- User changes product direction.
-- Business code implementation is requested before T-001 contract is accepted.
+- Local CodeRail at `G:\codeRail\coderail` initialized the existing repository in standard mode without overwriting files.
+- Product direction, PRD, architecture, roadmap, task graph, blueprint index, decisions, README, and asset boundary are aligned to the new outcome.
+- The architecture includes the agent/kernel boundary, shared delivery adapters, durable plan/evidence concepts, and a current plan/execution state machine.
+- Existing TypeScript modules remain first-pass prototypes.
+- The public CLI remains unwired and plans are not yet durable repository-bound execution artifacts.
+- No implementation, dependency, generated-output, or live GitHub state changes were made in T-013.
 
 ## Verification
 
-Passed:
-- Design documents exist.
-- Architecture Mermaid code fences are balanced.
-- CodeRail reference repository was cloned and inspected.
+- Scope scan: passed; no `src/`, `test/`, package, dependency, or local CodeRail source changes.
+- Document consistency: passed across README, North Star, PRD, architecture, roadmap, task graph, blueprints, decisions, and task state.
+- Mermaid fences: balanced.
+- Local CodeRail contract, coordinate, and blueprint checks: healthy.
+- Project regression: `npm run ci` passed with 28 tests.
+- Trace: T-013 intent, change, and verify events appended; trace index regenerated.
 
-Failed:
-- none
+## Handoff Trigger Check
 
-Not run:
-- Project-native lint/typecheck/build; implementation stack is not chosen.
-- Real GitHub integration; intentionally out of scope.
-
-## Artifacts
-
-Generated:
-- Design and governance documents under `docs/`.
-- `AGENTS.md` and `CLAUDE.md` from CodeRail template.
-- TypeScript CLI skeleton under `src/`.
-- CLI tests under `test/`.
-- Node package config and lockfile.
-- Repository context module and tests.
-- GitHub read adapter and mocked fetch tests.
-- Roadmap modules and tests for analyzer, planner, templates, apply, monitor, and harness.
-
-Ignored / not staged:
-- Temporary CodeRail clone outside the repository.
-- `node_modules/` and `dist/` ignored by `.gitignore`.
-
-Archived history:
-- TRACE_INDEX | RUNLOG | archive: trace index is initialized but not generated by script yet.
+- Level: H1 because product direction and the next implementation anchor changed, but the task is complete and unblocked.
+- Handoff updated: yes.
 
 ## Auto Commit
 
-Eligible: yes
-Action: committed
-Commit: initial roadmap commit
-Exact files staged:
-- .gitignore
-- AGENTS.md
-- CLAUDE.md
-- README.md
-- docs/
-- package-lock.json
-- package.json
-- src/
-- test/
-- tsconfig.json
-Safe to stage:
-- `.gitignore`, `package.json`, `package-lock.json`, `tsconfig.json`, `src/`, `test/`, and updated docs.
-Do not stage:
-- none identified
-Ignored/generated artifacts:
-- Temporary CodeRail clone outside repository.
-- `node_modules/`, `dist/`.
-Avoid git add .: yes
+- Eligible: yes
+- Action: committed by the CodeRail closeout check
+- Commit: task-scoped product-direction commit
+- Exact files staged: T-013-scoped README and docs only
+- Safe to stage: README.md and the modified files under docs/
+- Do not stage: src/, test/, package files, generated output, local CodeRail source, or unrelated user changes
+- Ignored/generated artifacts: node_modules/, dist/
+- Avoid git add .: yes
 
 ## Next Executable Step
 
-- Wire CLI inspect/plan to implemented modules, then run a read-only dogfood pass.
+Create and accept the T-014 Full Rail contract for:
 
-## Recovery Commands
+- agent-native `inspect` and `plan` CLI wiring;
+- stable JSON and actionable degraded states;
+- a versioned, repository-bound, stale-detecting plan artifact;
+- read-only dogfood on this repository and representative fixtures;
+- explicit proof that no local or GitHub mutation occurs.
 
-```bash
-python %TEMP%\coderail-ref\scripts\doctor.py --target .
-```
-
-## Resume Prompt
-
-Continue this repository under CodeRail. Read `AGENTS.md`, `docs/NORTH_STAR.md`, `docs/TASKS.md`, `docs/CODERAIL_STATUS.md`, and `docs/HARNESS_SPEC.md`. The MVP roadmap modules are implemented; next, wire CLI inspect/plan to them and run a read-only dogfood pass. Do not perform real GitHub mutation.
+Do not expand into P1 templates, Web UI, GitHub App, hosted persistence, or real GitHub mutation inside T-014.

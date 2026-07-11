@@ -1,99 +1,100 @@
 # North Star
 
 Status: current
-Last reviewed: 2026-07-09
+Last reviewed: 2026-07-11
 Owner: project maintainer
 
 ## Outcome
 
-- gh-polish helps builders turn a freshly pushed GitHub repository into a credible, maintainable, and safer project without making surprising changes.
-- The durable outcome is a repeatable post-push workflow that produces a readable plan, applies approved improvements through a pull request, and reports whether the repository is healthier after checks run.
+gh-polish helps people with little or no software-development or GitHub knowledge move an AI-built idea from working code to a credible, visible, launch-ready, and sustainably maintained project.
+
+The durable result is not merely a cleaner repository. People can understand the project, trust it, try it, see that it is maintained, and know how to respond.
+
+## Product Thesis
+
+AI coding agents have made implementation accessible, but launch and stewardship still assume expertise in GitHub, CI, documentation, releases, deployment, security, and distribution. gh-polish supplies that missing workflow.
+
+- **Builder:** owns product intent and consequential decisions; may not understand GitHub mechanics.
+- **AI coding agent:** operates gh-polish, drafts contextual assets, and explains state in ordinary language.
+- **gh-polish kernel:** deterministically inspects, plans, gates, executes, verifies, and records evidence.
+- **GitHub and Web platforms:** infrastructure and later delivery surfaces.
 
 ## Current Bet
 
-- A local CLI with strong plan/apply separation delivers more trust and faster iteration than starting with a hosted GitHub App.
-- Most target users already have a local checkout, a GitHub remote, and either `gh auth token` or `GITHUB_TOKEN`.
-- A CLI can inspect local files and remote state together, then create a branch and PR with minimal setup.
+- Start with an agent-native local CLI because target builders already rely on coding agents.
+- Treat the CLI as a stable machine interface, not the final human experience.
+- Reuse `git`, GitHub CLI/APIs, official sources, and mature inspectors behind adapters.
+- Prove one trustworthy repository workflow before adding hosted state, Web UI, or GitHub App execution.
+- Keep shared plan, policy, artifact, evidence, and lifecycle contracts portable across future delivery adapters.
+
+## Maturity Path
+
+1. **P0 Deterministic Foundation:** safe inspect, plan, apply, verify, evidence, and recovery.
+2. **P1 Repository Ready:** understandable, runnable, professionally presented, and appropriately safe.
+3. **P2 Launch Ready:** verified demo, visuals, release, feedback path, and truthful launch assets.
+4. **P3 Web Workspace:** novice-friendly decisions, previews, plans, evidence, and execution control.
+5. **P4 GitHub App Stewardship:** installation-scoped event and scheduled maintenance through plans and PRs.
+6. **P5 Growth Loop:** explicit distribution, feedback signals, and evidence-backed improvement cycles.
+7. **P6 Portfolio and Team:** multi-project, collaborator, policy, and organization stewardship.
+
+Later stages are planned but not authorized in the current implementation slice. Deferred means sequenced, not removed.
 
 ## Invariants
 
-- The user must be able to see a dry-run plan before mutation.
-- High-risk GitHub settings must require explicit confirmation.
-- The default mutation path is branch plus pull request, not direct default-branch edits.
-- Existing repository-specific files and settings must be preserved unless the user approves a replacement.
-- Every meaningful change must include verification steps and evidence.
-- GitHub API access must be isolated behind an adapter.
-- Analyzer, planner, applier, monitor, and policy responsibilities must remain separate.
-- The product should degrade gracefully when token permissions are missing.
-- Local and remote mutations must be traceable to a saved plan.
-- CodeRail is the project governance rail: non-trivial work must map to G/T/S/V/X/P before implementation.
-- Light Rail is valid for product/design/ADR work; Full Rail is required for code, API, runners, persistence, release, and external integration work.
+- The builder owns product decisions; technical defaults must not masquerade as user intent.
+- Ask product-level questions instead of GitHub implementation questions when safe defaults exist.
+- `inspect` and `plan` are read-only; mutation begins from a visible, repository-bound saved plan.
+- High-impact operations require explicit confirmation and plain-language impact.
+- File changes use a branch and pull request by default; direct default-branch edits are initially refused.
+- Preserve repository-specific work unless replacement is explicitly approved.
+- Link each operation to repository identity, lifecycle state, verification evidence, and recovery.
+- AI may draft, but deterministic policy owns authorization, staleness, scope, and completion claims.
+- Never imply a test, workflow, deployment, screenshot, badge, or feature has evidence when it does not.
+- GitHub access stays behind adapters and degrades with actionable permission/authentication guidance.
+- CLI, Web UI, and GitHub App share domain contracts rather than duplicating behavior.
+- CodeRail governs non-trivial work through explicit rail, coordinate, verification, persistence, and trace.
 
 ## Current Slice
 
-Milestone: MVP first implementation track.
+Milestone: P0 Deterministic Foundation, integration and dogfood track.
 
-Execution Batch: MVP roadmap T-001 through T-012 is implemented at first-pass test-covered depth.
+- First-pass modules exist for repository context, GitHub reads, analysis, policy, planning, templates, guarded apply, monitoring, and tests.
+- The public CLI is still a stub and is not wired into those modules.
+- Plans are not durable, identity-bound execution artifacts.
+- No real-repository read-only dogfood evidence exists.
+- T-013 refactors product direction; T-014 is the next implementation task for agent-native `inspect`/`plan`, versioned plans, and read-only dogfood.
 
-Active Task: Wire CLI inspect/plan to implemented modules and run a read-only dogfood pass.
+## Legacy Cutoff
 
-- CLI-first workflow.
-- Local repository and GitHub remote inspection.
-- Structured plan generation.
-- Template-backed file changes for repository docs, hygiene files, and basic workflows.
-- Conservative GitHub API changes for metadata and topics.
-- Pull-request-based apply.
-- Actions/check monitoring.
-- Verification harness that blocks unintended real GitHub mutation.
+- Enforcement starts at: T-013
 
-## Non-Goals
+Earlier tasks remain historical evidence. T-013 is the first task verified against the current local CodeRail runtime at `G:\codeRail\coderail`.
 
-- Do not build a Web UI before the CLI proves the workflow.
-- Do not implement a hosted GitHub App in the MVP.
-- Do not mutate GitHub settings during `inspect` or `plan`.
-- Do not directly edit the default branch by default.
-- Do not treat gh-polish as a general code refactoring agent.
+## Current Non-Goals
 
-## Known Unknowns
+- No hosted service, Web UI, or GitHub App before P0 is trustworthy, and no hosted-vendor decision in T-013.
+- No competing general-purpose agent loop, code-refactoring platform, or proprietary replacement for commodity GitHub tooling.
+- No automatic high-risk ruleset, Actions-policy, Pages, security, release, or default-branch mutation in P0.
+- No single opaque repository score as the primary builder experience.
 
-- Final implementation language and packaging format.
-- Exact GitHub token permission behavior across fine-grained tokens, classic tokens, GitHub Apps, and `GITHUB_TOKEN`.
-- How much README/template customization is useful before it becomes noisy.
-- Which stack-specific CI templates produce the highest success rate across real projects.
+## Known Unknowns and Decision Debt
 
-## Decision Debt
-
-- Choose implementation stack after MVP-001 framing.
-- Decide whether CodeRail scripts are vendored, referenced as an external tool, or installed as a dev dependency.
-- Define the saved plan schema before planner implementation.
-- Define the minimum supported GitHub token scopes for MVP apply.
+- Best coding-agent integration/discovery format and boundary between agent creation and kernel validation.
+- Evidence that reliably defines Repository Ready and Launch Ready for different project profiles.
+- Trusted permission/confirmation experience and hosted persistence, tenancy, billing, and vendors, deferred to P3/P4 contracts.
 
 ## First Principles
 
-Agents can suggest, draft, and automate, but they must not surprise the owner of the repository.
+- A working project is not yet a launchable project.
+- Visibility without credibility disappoints; credibility without visibility stays obscure.
+- The workflow ends when the builder understands the result and next action, not when an API returns.
+- The agent explains and creates; the kernel authorizes and proves.
+- Recommendations must fit the project profile and be earned by evidence.
+- Reuse infrastructure; differentiate through orchestration, safe judgment boundaries, and the path to launch.
 
-Repository polish includes low-risk file generation and high-risk GitHub settings. Low-risk file changes still need a visible plan, but they can usually be applied through a branch and PR. High-risk GitHub settings, including branch rulesets, required checks, security feature toggles, Pages changes, Actions policy changes, and release automation, must always be dry-run plus explicit user confirmation before any real mutation.
+## Stop and Drift Signals
 
-The agent is a steward, not an owner. It should make the professional path easy while keeping the user in control.
-
-## Coordinate Rule
-
-Every active task must map to this North Star through its G field. If G cannot identify an Outcome, Current Bet, Invariant, or Current Slice, the task is not ready for implementation.
-
-## Stop Triggers
-
-- A task cannot map to the North Star.
-- A code change has no task or trace link.
-- Handoff introduces a new direction but this file is unchanged.
-- A done task lacks verification evidence or manual acceptance.
-- User intent changes Outcome, Current Bet, or Invariants.
-- A high-risk GitHub mutation is requested without dry-run and confirmation.
-
-## Drift Signals
-
-- A task has T/S/V but no meaningful G.
-- S expands repeatedly without X triggering.
-- V passes but P is not synced.
-- `plan` and `apply` responsibilities start blending.
-- GitHub API calls appear outside the adapter layer.
-- High-risk settings are implemented before policy gates.
+- Stop when work cannot map to maturity/evidence, or a later stage enters without prerequisites and a new contract.
+- Stop when mutation lacks plan identity, confirmation, or recovery, or generated claims lack evidence.
+- Drift exists when the product becomes only a linter/template/API wrapper, claims hosted capability before P0, or makes users configure routine GitHub mechanics.
+- Drift exists when delivery adapters duplicate policy, deferred stages disappear, or `plan` and `apply` blend.

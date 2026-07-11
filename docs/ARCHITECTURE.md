@@ -2,225 +2,240 @@
 
 ## Direction
 
-gh-polish is CLI-first. The MVP runs locally, reads the current repository, authenticates through `gh auth token` or `GITHUB_TOKEN`, talks to GitHub through a dedicated adapter, creates a plan, applies approved changes through a branch and pull request, and monitors the resulting checks.
+gh-polish is an agent-native workflow with a deterministic execution kernel. The first adapter is a local CLI operated by an external AI coding agent. Future adapters include a human-oriented Web workspace and an installation-scoped GitHub App.
 
-The architecture intentionally avoids a hosted service, database, queue, or Web UI until the local workflow proves useful.
+The architecture must make later delivery surfaces possible without pretending their infrastructure exists today. P0 has no hosted service, shared database, queue, billing system, or Web runtime.
 
-## Primary Components
+## Responsibility Boundary
 
-- CLI: command entrypoint, argument parsing, user prompts, human-readable output.
-- Repository Context: local git state, remote URL, default branch, workspace paths.
-- GitHub API Adapter: all GitHub REST/GraphQL/gh CLI calls behind one boundary.
-- Analyzer: detects project stack, existing files, workflows, metadata, and GitHub capability state.
-- Planner: converts findings into a structured plan with risk, scope, confirmation, and verification metadata.
-- Policy: decides which operations are allowed, confirmation-gated, or refused.
-- Template Registry: stores README, workflow, issue, PR, security, and contribution templates.
-- Applier: executes approved file patches and GitHub API mutations.
-- Monitor: reads Actions, checks, alerts, and pull request status after apply.
-- Evidence Store: saves plans, dry-run snapshots, apply logs, and verification summaries.
+### External AI Coding Agent
 
-## C4 Context Diagram
+- Understands the project and conversation.
+- Asks product-level questions in ordinary language.
+- Drafts contextual prose, visuals, and remediation candidates.
+- Invokes gh-polish and explains structured results.
+- Does not decide whether mutation is authorized or whether evidence is sufficient.
 
-```mermaid
-flowchart LR
-    User["Builder\nVibe coder, solo builder, or small team maintainer"]
-    GHPolish["gh-polish CLI\nAgent-driven repository polish workflow"]
-    GitHub["GitHub\nRepositories, APIs, Actions, checks, security features"]
-    LocalGit["Local Git\nWorking tree, branches, commits, remotes"]
-    GHAuth["GitHub CLI/Auth\ngh auth token or GITHUB_TOKEN"]
+### Deterministic gh-polish Kernel
 
-    User -->|"runs inspect, plan, apply, monitor"| GHPolish
-    GHPolish -->|"reads repo and creates branches/commits"| LocalGit
-    GHPolish -->|"obtains token or auth context"| GHAuth
-    GHPolish -->|"reads and mutates approved repository state"| GitHub
-    GitHub -->|"shows pull requests, checks, and settings"| User
-```
+- Establishes repository and authentication context.
+- Normalizes inspection evidence.
+- Creates and validates versioned plans.
+- Applies policy, staleness, confirmation, and scope gates.
+- Executes approved operations through adapters.
+- Records per-operation evidence, recovery, and lifecycle state.
+- Never invents a successful check, deployment, or product claim.
 
-## Container Diagram
+## Context Diagram
 
 ```mermaid
 flowchart LR
-    User["Builder"]
-    CLI["CLI Commands"]
-    Repo["Repository Context"]
-    Analyzer["Analyzer Layer"]
-    Planner["Planner Layer"]
-    Policy["Policy Layer"]
-    Templates["Template Registry"]
-    Applier["Applier Layer"]
-    Monitor["Monitor Layer"]
-    Evidence["Evidence Store\n(.gh-polish or configured path)"]
-    Adapter["GitHub API Adapter"]
-    Git["Local Git"]
-    GitHub["GitHub REST/GraphQL APIs"]
+    Builder["Builder\nProduct intent and approvals"]
+    Agent["AI coding agent\nPrimary operator and explainer"]
+    Kernel["gh-polish kernel\nPlan, policy, execution, evidence"]
+    Local["Local project\nFiles and Git"]
+    GitHub["GitHub\nRepository, PRs, checks, releases"]
+    Web["Web platforms\nDemo, launch, feedback"]
 
-    User --> CLI
-    CLI --> Repo
-    CLI --> Analyzer
-    Analyzer --> Repo
-    Analyzer --> Adapter
-    Analyzer --> Templates
-    Analyzer --> Planner
-    Planner --> Policy
-    Planner --> Templates
-    Planner --> Evidence
-    CLI --> Applier
-    Applier --> Policy
-    Applier --> Templates
-    Applier --> Git
-    Applier --> Adapter
-    Applier --> Evidence
-    CLI --> Monitor
-    Monitor --> Adapter
-    Monitor --> Evidence
-    Adapter --> GitHub
-    Repo --> Git
+    Builder -->|"ordinary-language goal and decisions"| Agent
+    Agent -->|"structured commands and artifacts"| Kernel
+    Kernel -->|"read and approved local operations"| Local
+    Kernel -->|"read and approved remote operations"| GitHub
+    Kernel -.->|"later verified launch integrations"| Web
+    Kernel -->|"plan, evidence, recovery"| Agent
+    Agent -->|"plain-language outcome and next step"| Builder
 ```
 
-## Core Workflow Sequence Diagram
+## Logical Components
+
+- **Interaction Adapter:** CLI now; Web API and GitHub App event adapters later.
+- **Execution Context:** actor, repository identity, auth capability, environment, invocation source, and correlation identifiers.
+- **Repository Context:** local Git state, remotes, default branch, base revision, workspace paths, and dirty state.
+- **Inspectors:** local, GitHub, deployment, presentation, launch, and later growth signal providers.
+- **Finding Model:** normalized evidence, provenance, confidence, degraded states, and recovery instructions.
+- **Maturity Evaluator:** evidence-backed stage and unmet outcomes; not a single opaque score.
+- **Planner:** converts findings and builder intent into an identity-bound plan.
+- **Policy:** decides allowed, confirmation-gated, recommendation-only, or refused operations.
+- **Artifact Registry:** README, workflows, community files, screenshots, demo evidence, releases, launch assets, and future content types.
+- **Executor:** applies only validated operations through local and remote ports.
+- **Verifier:** binds evidence to the target plan, revision, pull request, deployment, or release.
+- **Plan Store / Evidence Store Ports:** local files in P0; hosted implementations only when later stages are contracted.
+
+## Ports and Adapters
+
+```mermaid
+flowchart LR
+    subgraph Delivery["Delivery adapters"]
+        CLI["Agent CLI\nP0"]
+        WebUI["Web workspace\nP3"]
+        App["GitHub App\nP4"]
+    end
+
+    subgraph Core["Shared domain kernel"]
+        Context["Execution and repository context"]
+        Inspect["Inspectors and findings"]
+        Maturity["Maturity evaluator"]
+        Plan["Planner and plan validator"]
+        Policy["Policy and confirmations"]
+        Execute["Executor and recovery"]
+        Verify["Verifier and evidence"]
+    end
+
+    subgraph Ports["Infrastructure ports"]
+        GitPort["Git port"]
+        GitHubPort["GitHub read/write ports"]
+        ArtifactPort["Artifact provider port"]
+        PlanPort["Plan store port"]
+        EvidencePort["Evidence store port"]
+        EventPort["Event source port"]
+    end
+
+    CLI --> Context
+    WebUI -.-> Context
+    App -.-> Context
+    Context --> Inspect --> Maturity --> Plan --> Policy --> Execute --> Verify
+    Inspect --> GitPort
+    Inspect --> GitHubPort
+    Plan --> ArtifactPort
+    Plan --> PlanPort
+    Execute --> GitPort
+    Execute --> GitHubPort
+    Verify --> EvidencePort
+    App -.-> EventPort
+```
+
+Dashed paths are planned adapters, not current runtime dependencies.
+
+## P0 Workflow
 
 ```mermaid
 sequenceDiagram
-    actor User
-    participant CLI
-    participant Repo as Repository Context
-    participant Analyzer
-    participant Adapter as GitHub API Adapter
-    participant Planner
-    participant Policy
-    participant Applier
-    participant Monitor
+    actor Builder
+    participant Agent as AI coding agent
+    participant CLI as gh-polish CLI
+    participant Core as deterministic kernel
+    participant Store as local plan/evidence store
     participant GitHub
 
-    User->>CLI: gh-polish plan
-    CLI->>Repo: read local git and project files
-    CLI->>Analyzer: analyze local and remote state
-    Analyzer->>Adapter: fetch repo metadata and capabilities
-    Adapter->>GitHub: REST/GraphQL requests
-    GitHub-->>Adapter: current repo state
-    Adapter-->>Analyzer: normalized state
-    Analyzer->>Planner: findings
-    Planner->>Policy: classify risk and confirmation needs
-    Policy-->>Planner: allowed/gated/refused operations
-    Planner-->>CLI: structured dry-run plan
-    CLI-->>User: show plan and confirmations
-
-    User->>CLI: gh-polish apply --plan <id>
-    CLI->>Policy: validate confirmations
-    Policy-->>CLI: approved operation set
-    CLI->>Applier: execute approved plan
-    Applier->>Repo: create branch and file patches
-    Applier->>Adapter: apply approved API updates
-    Adapter->>GitHub: create PR and update allowed settings
-    GitHub-->>Adapter: PR/check references
-    Applier-->>CLI: apply evidence
-
-    CLI->>Monitor: monitor PR checks
-    Monitor->>Adapter: read Actions/check status
-    Adapter->>GitHub: status requests
-    GitHub-->>Adapter: check results
-    Monitor-->>CLI: verification summary
-    CLI-->>User: success/failure and next actions
+    Builder->>Agent: Help me publish and prepare this project
+    Agent->>CLI: inspect --json
+    CLI->>Core: establish context and inspect
+    Core->>GitHub: read allowed repository state
+    GitHub-->>Core: state or typed degraded result
+    Core-->>Agent: findings, maturity, decisions, recovery
+    Agent->>Builder: explain product-level choices
+    Builder-->>Agent: provide intent and approvals
+    Agent->>CLI: plan --profile ... --json
+    CLI->>Core: create repository-bound plan
+    Core->>Store: persist plan and hashes
+    Core-->>Agent: plan, previews, confirmations
+    Agent->>Builder: explain impact and request confirmation
+    Builder-->>Agent: approve selected operations
+    Agent->>CLI: apply --plan ...
+    CLI->>Core: validate identity, state, payload, policy
+    Core->>GitHub: approved operations only
+    Core->>Store: per-operation evidence and recovery
+    Agent->>CLI: verify --plan ...
+    CLI->>Core: verify target revision and PR
+    Core-->>Agent: achieved stage and next executable step
+    Agent-->>Builder: plain-language result
 ```
 
-## Data Flow Diagram
+## Plan and Execution State Machine
 
 ```mermaid
-flowchart TD
-    A["Local repository files"] --> C["Analyzer"]
-    B["GitHub repository state"] --> C
-    T["Template registry"] --> C
-    C --> F["Findings"]
-    F --> P["Planner"]
-    R["Policy rules"] --> P
-    P --> D["Dry-run plan JSON"]
-    P --> H["Human summary"]
-    D --> E["Evidence store"]
-    H --> U["User review"]
-    U --> I["Confirmed plan"]
-    I --> AP["Applier"]
-    T --> AP
-    AP --> L["Local branch, commits, file patches"]
-    AP --> G["Approved GitHub API mutations"]
-    L --> PR["Pull request"]
-    G --> PR
-    PR --> M["Monitor"]
-    M --> V["Verification report"]
-    V --> E
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Ready: context and schema valid
+    Draft --> Rejected: unsupported or unsafe
+    Ready --> AwaitingConfirmation: gated operations exist
+    Ready --> Approved: no extra confirmation required
+    AwaitingConfirmation --> Approved: required approvals recorded
+    AwaitingConfirmation --> Cancelled: builder declines
+    Approved --> Stale: repository identity or base evidence changed
+    Approved --> Applying: execution begins
+    Applying --> Applied: all selected operations succeed
+    Applying --> PartiallyApplied: one or more operations fail after effects
+    Applying --> Failed: no committed effect and execution fails
+    PartiallyApplied --> Recovering: retry or compensate from evidence
+    Failed --> Ready: safe retry after cause resolved
+    Recovering --> Applied: recovery completes
+    Recovering --> Failed: unresolved recovery
+    Applied --> Verifying
+    Verifying --> Verified: required evidence passes
+    Verifying --> NeedsAttention: pending, failed, or missing evidence
+    NeedsAttention --> Verifying: follow-up completed
+    Verified --> [*]
+    Rejected --> [*]
+    Cancelled --> [*]
+    Stale --> [*]
 ```
 
-## GitHub Integration Boundary Diagram
+## Durable Domain Records
 
-```mermaid
-flowchart LR
-    subgraph Core["gh-polish core"]
-        Analyzer["Analyzer"]
-        Planner["Planner"]
-        Policy["Policy"]
-        Applier["Applier"]
-        Monitor["Monitor"]
-    end
+### Plan
 
-    subgraph Boundary["GitHub API adapter boundary"]
-        Adapter["GitHub API Adapter"]
-        Auth["Auth Provider\ngh token or GITHUB_TOKEN"]
-        Mapper["Response Mapper"]
-        Retry["Rate Limit and Retry Handler"]
-    end
+- schema and tool version;
+- repository identity and host;
+- base branch, revision, and relevant file hashes;
+- profile, builder intent, assumptions, and expiry policy;
+- immutable operation payloads and digests;
+- risk, confirmation, verification, recovery, and expected evidence;
+- lifecycle state and supersession links.
 
-    subgraph GitHub["GitHub"]
-        RepoAPI["Repository API"]
-        ContentsAPI["Contents/Git API"]
-        PullsAPI["Pull Requests API"]
-        ActionsAPI["Actions/Checks API"]
-        IssuesAPI["Issues/Labels/Milestones API"]
-        RulesAPI["Rulesets/Branch Protection API"]
-        SecurityAPI["Security Features API"]
-    end
+### Evidence
 
-    Analyzer --> Adapter
-    Applier --> Adapter
-    Monitor --> Adapter
-    Adapter --> Auth
-    Adapter --> Mapper
-    Adapter --> Retry
-    Adapter --> RepoAPI
-    Adapter --> ContentsAPI
-    Adapter --> PullsAPI
-    Adapter --> ActionsAPI
-    Adapter --> IssuesAPI
-    Adapter --> RulesAPI
-    Adapter --> SecurityAPI
-    RulesAPI -.->|"high-risk: dry-run + confirm"| Policy
-    SecurityAPI -.->|"high-risk: dry-run + confirm"| Policy
-```
+- operation identifier and before/after references;
+- target revision, pull request, check, deployment, release, or artifact;
+- observed result, timestamp, provenance, and confidence;
+- partial failure, retry, compensation, and next action;
+- no secrets or unnecessarily retained repository content.
 
-## Proposed Future Structure
+### Artifact
 
-This is illustrative only and should not be created until implementation starts.
+- type, target, source, generator, preview, and content digest;
+- evidence backing factual claims;
+- create, patch, replace, publish, or manual-review semantics;
+- builder approval when publication or replacement is consequential.
 
-```text
-src/
-  cli/
-  repo/
-  github/
-  analyzer/
-  planner/
-  policy/
-  applier/
-  monitor/
-  templates/
-test/
-  unit/
-  integration/
-  smoke/
-```
+## Delivery-Surface Evolution
 
-## Key Boundaries
+| Stage | Runtime | State | Trigger | Primary experience |
+|---|---|---|---|---|
+| P0-P2 | Local CLI invoked by coding agent | Local plan/evidence files | Explicit agent command | Conversational through coding agent |
+| P3 | Web workspace plus shared kernel service | Hosted per-user/project state | User session and explicit action | Visual decisions, previews, plans, evidence |
+| P4 | GitHub App workers plus shared kernel | Installation-scoped durable state | Webhook, schedule, user approval | GitHub checks/comments plus Web control |
+| P5-P6 | Multi-project services and integrations | Tenant-aware portfolio and campaign state | Events, schedules, explicit publication | Portfolio, growth, and team workflows |
 
-- Analyzer can read but must not mutate.
-- Planner can propose but must not mutate.
-- Policy is the only source of confirmation requirements.
-- Applier must only execute an approved plan.
-- GitHub API calls must go through the adapter.
-- Monitor can read status and propose follow-up actions, but should not auto-fix failures in MVP.
+The table is an architecture runway, not a vendor or implementation commitment.
+
+## Mutation Boundaries
+
+- Local file and branch changes, immediate GitHub metadata changes, merge/release actions, and external publication are separate operation groups.
+- A success in one group must not hide failure in another.
+- Immediate remote mutations must not be presented as reviewable PR contents.
+- Hosted execution must use least-privilege, short-lived installation or user authorization and preserve plan identity.
+- Webhooks and schedules may propose work; they do not grant implicit approval for high-impact mutation.
+
+## Reuse Boundaries
+
+- Prefer GitHub CLI and official APIs behind ports for authentication, pull requests, checks, and repository operations.
+- Prefer official workflow/community sources and mature inspectors over a proprietary checklist engine.
+- Use AI coding agents for project-specific creation; keep authorization and evidence deterministic.
+- Add an abstraction only when it supports an existing or explicitly planned delivery surface.
+
+## Current Implementation Mapping
+
+Existing modules approximate several logical components, but they are prototypes rather than the completed architecture:
+
+- `repositoryContext.ts` and `git.ts`: partial Repository Context and Git port.
+- `githubAdapter.ts`: partial read-only GitHub port.
+- `localAnalyzer.ts` and `remoteAnalyzer.ts`: initial inspectors.
+- `policy.ts`: initial policy decisions.
+- `planner.ts`: non-versioned plan prototype.
+- `templateRegistry.ts`: initial artifact provider prototype.
+- `applier.ts`: injected executor interfaces without durable plan loading or production clients.
+- `monitor.ts`: repository-wide workflow summary, not plan-bound verification.
+- `cli.ts`: command stub, not integrated delivery adapter.
+
+T-014 begins closing the gap with read-only CLI integration and a durable plan contract. It must not pretend P1-P4 adapters are already implemented.
