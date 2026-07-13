@@ -18,6 +18,10 @@ import {
   type LiveGitInvocation,
   type LiveGitRunner
 } from "../src/liveGitPushAdapter.js";
+import {
+  detectRemoteLocalVersion,
+  type RepositoryVersionGitRunner
+} from "../src/repositoryVersion.js";
 
 const TOKEN = "github_pat_NEVER_PERSIST_T022";
 
@@ -254,7 +258,96 @@ describe("T-022 live GitHub adapter non-live contract", () => {
       headSha: "c".repeat(40)
     }), /authorization|branch/i);
   });
+
+  it("classifies synchronized, ahead, behind, and diverged histories without fetch or mutation", async () => {
+    const localSha = "a".repeat(40);
+    const remoteSha = "b".repeat(40);
+    const cases = [
+      { counts: "0 0\n", relation: "synchronized", aheadBy: 0, behindBy: 0 },
+      { counts: "2 0\n", relation: "local-ahead", aheadBy: 2, behindBy: 0 },
+      { counts: "0 3\n", relation: "local-behind", aheadBy: 0, behindBy: 3 },
+      { counts: "2 3\n", relation: "diverged", aheadBy: 2, behindBy: 3 }
+    ] as const;
+
+    for (const expected of cases) {
+      const invocations: readonly string[][] = [];
+      const mutableInvocations = invocations as string[][];
+      const runner: RepositoryVersionGitRunner = async ({ args }) => {
+        mutableInvocations.push([...args]);
+        if (args[0] === "remote") return { stdout: "git@github.com:HaipingShi/stakespeak.git\n", stderr: "" };
+        if (args[0] === "branch") return { stdout: "main\n", stderr: "" };
+        if (args[0] === "rev-parse") return { stdout: `${localSha}\n`, stderr: "" };
+        if (args[0] === "cat-file") return { stdout: "", stderr: "" };
+        return { stdout: expected.counts, stderr: "" };
+      };
+
+      const result = await detectRemoteLocalVersion({
+        repositoryRoot: "stakespeak-checkout",
+        expectedRepository: "HaipingShi/stakespeak",
+        baseBranch: "main",
+        remoteSha,
+        runner
+      });
+
+      assert.equal(result.relation, expected.relation);
+      assert.equal(result.aheadBy, expected.aheadBy);
+      assert.equal(result.behindBy, expected.behindBy);
+      assert.equal(result.safeToExecute, expected.relation === "synchronized");
+      assert.ok(invocations.every((args) => !["fetch", "pull", "push", "checkout", "reset"].includes(args[0] ?? "")));
+    }
+  });
+
+  it("fails closed when remote history is unavailable and rejects identity or branch drift", async () => {
+    const remoteSha = "b".repeat(40);
+    const calls: string[][] = [];
+    const unavailableRunner: RepositoryVersionGitRunner = async ({ args }) => {
+      calls.push([...args]);
+      if (args[0] === "remote") return { stdout: "https://github.com/HaipingShi/stakespeak.git\n", stderr: "" };
+      if (args[0] === "branch") return { stdout: "main\n", stderr: "" };
+      if (args[0] === "rev-parse") return { stdout: `${"a".repeat(40)}\n`, stderr: "" };
+      throw new Error("unknown revision");
+    };
+    const unavailable = await detectRemoteLocalVersion({
+      repositoryRoot: "stakespeak-checkout",
+      expectedRepository: "HaipingShi/stakespeak",
+      baseBranch: "main",
+      remoteSha,
+      runner: unavailableRunner
+    });
+
+    assert.equal(unavailable.relation, "history-unavailable");
+    assert.equal(unavailable.safeToExecute, false);
+    assert.ok(calls.every((args) => args[0] !== "fetch" && args[0] !== "rev-list"));
+
+    const identityRunner = versionRunner({ remote: "https://github.com/HaipingShi/other.git" });
+    await assert.rejects(() => detectRemoteLocalVersion({
+      repositoryRoot: "stakespeak-checkout",
+      expectedRepository: "HaipingShi/stakespeak",
+      baseBranch: "main",
+      remoteSha,
+      runner: identityRunner
+    }), /remote|repository|identity/i);
+
+    const branchRunner = versionRunner({ branch: "trunk" });
+    await assert.rejects(() => detectRemoteLocalVersion({
+      repositoryRoot: "stakespeak-checkout",
+      expectedRepository: "HaipingShi/stakespeak",
+      baseBranch: "main",
+      remoteSha,
+      runner: branchRunner
+    }), /branch/i);
+  });
 });
+
+function versionRunner(overrides: { remote?: string; branch?: string } = {}): RepositoryVersionGitRunner {
+  return async ({ args }) => {
+    if (args[0] === "remote") return { stdout: `${overrides.remote ?? "https://github.com/HaipingShi/stakespeak.git"}\n`, stderr: "" };
+    if (args[0] === "branch") return { stdout: `${overrides.branch ?? "main"}\n`, stderr: "" };
+    if (args[0] === "rev-parse") return { stdout: `${"a".repeat(40)}\n`, stderr: "" };
+    if (args[0] === "cat-file") return { stdout: "", stderr: "" };
+    return { stdout: "0 1\n", stderr: "" };
+  };
+}
 
 function makeAuthorizationRequest(): LiveMutationAuthorizationRequest {
   return {

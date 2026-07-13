@@ -166,6 +166,8 @@ This gate is not authorized until CD-010 is explicitly accepted and one reposito
 - Git push uses an exact HTTPS remote, a deterministic non-default branch, no force flag, non-interactive credential delivery outside argv, exact remote-SHA reconciliation, and conflict refusal.
 - Draft PR creation lists before mutation, reuses one exact plan marker, refuses mismatched/multiple candidates, and performs read-after-write reconciliation after `422`.
 - Write adapters require the immutable authorization result at construction and revalidate repository, branch/base/plan, and effect identity before invoking injected effects.
+- Remote/local version detection reads only the configured remote URL, current branch, local HEAD, commit availability, and left/right counts. It validates the exact repository/branch/SHA, classifies synchronized/ahead/behind/diverged, returns `history-unavailable` when the remote commit is absent locally, and never fetches or mutates Git state.
+- Fixed-time workflow fixtures inject their validation clock through the existing execution input so plan expiry remains enforced while full CI stays deterministic after the fixture date.
 - Source/document secret scan and before/after worktree comparison accompany focused and full CI. Live dogfood remains a separate explicit confirmation gate.
 
 ## M2 Trust Ready Harness

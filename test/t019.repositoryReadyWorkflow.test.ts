@@ -89,7 +89,8 @@ describe("T-019 credential-free Repository Ready workflow", () => {
           planStore: fixture.store,
           branchName,
           confirmations: prepared.confirmations,
-          pullRequest: { title: "Repository Ready", body: `Apply ${prepared.artifactId}` }
+          pullRequest: { title: "Repository Ready", body: `Apply ${prepared.artifactId}` },
+          now: new Date("2026-07-11T08:31:00Z")
         }, createLocalGitExecutor(fixture.root), pullRequests, checks);
 
         assert.equal(first.status, "completed");
@@ -106,7 +107,8 @@ describe("T-019 credential-free Repository Ready workflow", () => {
           branchName,
           confirmations: prepared.confirmations,
           pullRequest: { title: "Repository Ready", body: `Apply ${prepared.artifactId}` },
-          previousEvidence: first
+          previousEvidence: first,
+          now: new Date("2026-07-11T08:31:00Z")
         }, createLocalGitExecutor(fixture.root), pullRequests, checks);
 
         assert.equal(retry.status, "completed");
@@ -138,7 +140,8 @@ describe("T-019 credential-free Repository Ready workflow", () => {
         planStore: fixture.store,
         branchName: "gh-polish/t019-guard",
         confirmations: [] as string[],
-        pullRequest: { title: "Guard", body: "Guard" }
+        pullRequest: { title: "Guard", body: "Guard" },
+        now: new Date("2026-07-11T08:31:00Z")
       };
 
       await assert.rejects(() => executeSavedRepositoryReadyWorkflow(
@@ -196,7 +199,8 @@ describe("T-019 credential-free Repository Ready workflow", () => {
         planStore: fixture.store,
         branchName: "gh-polish/t019-stale",
         confirmations: prepared.confirmations,
-        pullRequest: { title: "Stale", body: "must not execute" }
+        pullRequest: { title: "Stale", body: "must not execute" },
+        now: new Date("2026-07-11T08:31:00Z")
       }, createLocalGitExecutor(fixture.root), pullRequests, checks), /stale|changed/i);
       assert.equal(pullRequests.requests.length, 0);
       assert.equal(checks.requests.length, 0);

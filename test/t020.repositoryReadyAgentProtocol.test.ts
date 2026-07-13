@@ -109,7 +109,8 @@ describe("T-020 agent-facing Repository Ready protocol", () => {
         branchName: "gh-polish/t020",
         confirmations: prepared.plan.confirmations,
         reviewToken: "invalid",
-        pullRequest: { title: "Repository Ready", body: "Agent protocol" }
+        pullRequest: { title: "Repository Ready", body: "Agent protocol" },
+        now: new Date("2026-07-11T08:46:00Z")
       }, createLocalGitExecutor(fixture.root), pullRequests, checks), /review token/i);
       assert.equal(pullRequests.requests.length, 0);
       assert.equal(checks.requests.length, 0);
@@ -120,7 +121,8 @@ describe("T-020 agent-facing Repository Ready protocol", () => {
         branchName: "gh-polish/t020",
         confirmations: prepared.plan.confirmations,
         reviewToken: reviewed.review.token,
-        pullRequest: { title: "Repository Ready", body: "Agent protocol" }
+        pullRequest: { title: "Repository Ready", body: "Agent protocol" },
+        now: new Date("2026-07-11T08:46:00Z")
       }, createLocalGitExecutor(fixture.root), pullRequests, checks);
 
       assert.equal(completed.command, "repository-ready.execute");
@@ -174,7 +176,8 @@ describe("T-020 agent-facing Repository Ready protocol", () => {
         branchName: "gh-polish/t020-pending",
         confirmations: prepared.plan.confirmations,
         reviewToken: reviewed.review.token,
-        pullRequest: { title: "Repository Ready", body: "Pending checks" }
+        pullRequest: { title: "Repository Ready", body: "Pending checks" },
+        now: new Date("2026-07-11T08:46:00Z")
       }, createLocalGitExecutor(fixture.root), new MockPullRequests(), new MockChecks("pending"));
 
       assert.equal(completed.phase, "completed");

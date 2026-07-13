@@ -96,7 +96,8 @@ export async function executeAgentRepositoryReady(
     branchName: input.branchName,
     confirmations,
     pullRequest: input.pullRequest,
-    previousEvidence: input.previousEvidence
+    previousEvidence: input.previousEvidence,
+    now: input.now
   }, executor, pullRequests, revisionChecks);
   return {
     protocolVersion: AGENT_PROTOCOL_VERSION,

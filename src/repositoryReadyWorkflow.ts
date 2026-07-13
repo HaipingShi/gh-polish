@@ -46,6 +46,7 @@ export interface ExecuteSavedRepositoryReadyWorkflowInput {
   confirmations: readonly string[];
   pullRequest: { title: string; body: string };
   previousEvidence?: RepositoryReadyExecutionEvidence;
+  now?: Date;
 }
 
 export async function prepareRepositoryReadyWorkflow(
@@ -115,7 +116,7 @@ export async function executeSavedRepositoryReadyWorkflow(
   if (!input.previousEvidence) {
     const context = await detectRepositoryContext(artifact.repository.root);
     const local = await analyzeLocalRepository(artifact.repository.root);
-    await validatePlanForRepository(artifact, context, local);
+    await validatePlanForRepository(artifact, context, local, input.now);
   }
   return executeArtifactRepositoryReadyPullRequest(artifact, {
     branchName: input.branchName,
