@@ -1,21 +1,21 @@
 # Handoff
 
-Updated at: 2026-07-11
+Updated at: 2026-07-13
 Handoff Level: H1
 Current branch: master
-Current task: T-022 stakespeak allowlist amendment complete; private checkout unavailable to this process
-Next task: resume read-only artifact preparation from a user-authenticated local stakespeak checkout
+Current task: T-023 publish gh-polish remote blocked at divergence preflight
+Next task: decide whether to reconcile into remote main or deliberately create a second master branch
 Trace: docs/TRACELOG.jsonl
 Inspect status: docs/CODERAIL_STATUS.md
-Resume anchor: docs/CONTRACTS.md#CD-010-Live-GitHub-adapter-and-dogfood-boundary
+Resume anchor: docs/TASKS.md#T-023
 
 ## Coordinate Summary
 
 Rail: full
-Goal: Implement the accepted least-privilege, exact-repository, idempotent GitHub adapter boundary with non-live evidence.
-Boundary: Public unauthenticated read-only clone/inspection of `HaipingShi/stakespeak` and external plan-store writes are allowed; no PAT, target mutation, push, PR, or public CLI mutation.
-Acceptance: Red preceded implementation; focused 8/8 and full CI 72/72 prove the adapter. Read-only prepare produced artifact digest `26c1d12d...e9ef9e` at base `c699fb0...`, with integrity/binding passed and zero executable effects.
-Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
+Goal: Publish verified gh-polish history to its exact GitHub repository without force or ambiguous branch creation.
+Boundary: Only `HaipingShi/gh-polish` and one explicitly selected branch mapping; no force, deletion, tags, settings, or stakespeak mutation.
+Acceptance: Remote preflight found existing `main` at `9cd5917`; local is `master` at `e6a50a4`, with ancestry unproven. No remote was added and no push occurred.
+Persistence: TASKS, HANDOFF, TRACE/index/status.
 
 ## Contract State
 
@@ -26,6 +26,7 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 - Initial recommended credential: short-lived fine-grained PAT, one repository, `Contents: write`, `Pull requests: write`, `Actions: read`.
 - Initial live effects: create-only README, gitignore, contributing guide, and PR template; no workflows.
 - Default PR policy: deterministic branch, draft PR, reuse exact matches, no merge or cleanup.
+- T-023 push state: blocked before mutation because the non-empty remote uses `main` and local uses `master`; branch/reconciliation intent must be explicit.
 
 ## Handoff Trigger Check
 
@@ -38,4 +39,4 @@ Persistence: CONTRACTS, TASKS, BLUEPRINTS, HARNESS, HANDOFF, TRACE/index/status.
 
 ## Next Executable Step
 
-User clones `HaipingShi/stakespeak` with GitHub Desktop or another authenticated local tool and supplies only the local checkout path. Do not paste a token into chat; no live mutation is authorized yet.
+Choose one T-023 direction: reconcile the existing remote `main` into local history and then push a normal fast-forward (recommended), or explicitly authorize publishing local `master` as a second branch.
