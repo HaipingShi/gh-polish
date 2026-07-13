@@ -1603,12 +1603,13 @@ G — Goal:
 - Outcome served: Convert the accepted CD-010 boundary into a testable adapter without granting ambient or accidental GitHub write authority.
 
 T — Task:
-- Implement the real GitHub adapter boundary and prepare a reviewed live-dogfood artifact: credential resolution/redaction, independent mutation gates, exact repository/permission preflight, deterministic draft-PR idempotency/recovery, exact-SHA checks, and read-only artifact preparation before live confirmation.
+- Implement the real GitHub adapter boundary and prepare a reviewed live-dogfood artifact: credential resolution/redaction, independent mutation gates, exact repository/permission preflight, deterministic draft-PR idempotency/recovery, exact-SHA checks, read-only remote/local version classification, and artifact preparation before live confirmation.
 
 S — Scope:
 - Allowed:
   - narrowly scoped live-adapter, credential, preflight, mutation-guard, PR-idempotency, and check-read modules under `src/`;
   - `test/t022*.test.ts` with injected fetch/Git doubles and local bare remotes only;
+  - exact T-019/T-020 workflow input and tests solely to inject the validation clock after full CI exposed expired fixed-time artifacts; no TTL or production policy change;
   - minimal existing port wiring needed to keep live behavior behind injection and explicit authorization;
   - T-022-relevant `docs/TASKS.md`, `docs/BLUEPRINTS.md`, `docs/HARNESS_SPEC.md`, `docs/HANDOFF.md`, append-only trace, index, and generated status.
   - user-authorized read-only inspection of `G:\\codeRail\\coderail/**` and its Git metadata solely to prepare/review a repository-bound PlanArtifact for `HaipingShi/coderail`;
@@ -1624,6 +1625,7 @@ S — Scope:
 V — Verify:
 - TDD mode: required
 - Red check: failing tests cover missing enable flag/token, absent or wrong allowlist, repository ID/name/default/base mismatch, insufficient permissions, token redaction, forbidden effects, existing exact PR reuse, conflicting PR refusal, `422` read-after-write reconciliation, and retry without duplicate PR creation.
+- Remote/local Red check: failing tests cover synchronized, local-ahead, local-behind, diverged, missing-history, wrong remote, and wrong branch states before the detector exists.
 - Green check: injected non-live adapters pass all contract states; no test reads ambient credentials or reaches GitHub.
 - Refactor check: credential, authorization/preflight, HTTP mutation adapter, idempotency/recovery, and check verification remain separate from public CLI orchestration.
 - Regression check: existing credential-free M1 and GET-only read adapter tests remain green; public CLI mutation guard stays closed.
@@ -1669,6 +1671,7 @@ Acceptance:
 - [x] Artifact review truthfully reports zero create effects because all four CD-010 allowlisted paths already exist; review refuses an empty confirmation set instead of inventing a mutation.
 - [ ] Public read-only inspection of `HaipingShi/stakespeak` proves exact remote/base identity and produces a non-empty create-only artifact without target mutation.
 - [ ] Exact stakespeak effect IDs, content hashes, artifact digest, and review impacts are persisted before any live confirmation.
+- [x] A read-only detector validates canonical remote and branch, compares exact local/remote SHAs, classifies synchronized/ahead/behind/diverged states, and returns `history-unavailable` without fetching or mutating Git state.
 
 ### Stakespeak Access Evidence
 
