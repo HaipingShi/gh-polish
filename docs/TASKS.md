@@ -1759,8 +1759,8 @@ Depends on:
 - T-022 stage-complete with full CI passing and a clean local worktree.
 
 Acceptance:
-- [ ] `origin` is exactly `https://github.com/HaipingShi/gh-polish.git`.
-- [ ] `origin/main` is fetched and its commits/tree are reviewed before merge.
+- [x] `origin` is exactly `https://github.com/HaipingShi/gh-polish.git`.
+- [x] `origin/main` is fetched and its commits/tree are reviewed before merge.
 - [ ] Local and remote histories are preserved in a normal merge with no unreviewed conflict resolution.
 - [ ] `origin/main` equals the exact local HEAD after a non-force push.
 - [ ] CodeRail finish records the result and exact auto-commit action.
@@ -1779,12 +1779,19 @@ Acceptance:
 - Local branch is `master` at `e6a50a4f4c3790d7a24c0ccc26a078a2ce61ca29`, and the remote commit is not present in the local object database, so ancestry cannot be proven without a separately authorized fetch/reconciliation step.
 - No remote was added and no push occurred. Creating a parallel `master` or replacing `main` would exceed the exact preflight contract.
 
+### Remote Audit Evidence
+
+- User selected reconciliation into `main`; `origin` was added with the exact HTTPS URL and `origin/main` fetched successfully without tags.
+- Histories are unrelated: local has 42 commits not on remote; remote has one initial commit not on local.
+- Remote initial commit `9cd5917ca810450a106a7dec84e4ceaf91aad6b8` contains only an MIT `LICENSE` and a two-line placeholder `README.md`.
+- Reviewed merge resolution: preserve the remote initial commit and MIT license, retain the more complete local README, and make no other content resolution.
+
 Task result: active
-Harness result: remote main fetch/audit pending
+Harness result: remote main audit passed; history-preserving merge pending
 Handoff level: H3
 Inspect status: refreshed
 Resume anchor: docs/TASKS.md#T-023
-Next executable step: Add exact origin, fetch `origin/main`, and audit ancestry, commits, and tree diff before merge.
+Next executable step: Rename local branch to `main`, merge `origin/main` with unrelated histories allowed, retain local README plus remote LICENSE, run CI, and push without force.
 Auto commit: requested
 
 
