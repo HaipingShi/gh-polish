@@ -1588,7 +1588,7 @@ Next executable step: Authorize a ready task or provide terminal evidence; do no
 Auto commit: requested
 ## T-022 Live GitHub adapter non-live implementation
 
-Status: [~]
+Status: [ ]
 Type: feature
 Rail: full
 Priority: P1
@@ -1725,7 +1725,7 @@ Type: release
 Rail: full
 Priority: P1
 Owner: project maintainer
-Branch: master
+Branch: main
 Autonomy: exact push authorized by user
 
 ### CodeRail Coordinate
@@ -1734,20 +1734,20 @@ G — Goal:
 - Publish the fully verified gh-polish history to its exact project-owned GitHub repository without crossing into the stakespeak dogfood boundary.
 
 T — Task:
-- Configure `origin` as `https://github.com/HaipingShi/gh-polish.git` and push the current local `master` to `origin/master`.
+- Configure `origin` as `https://github.com/HaipingShi/gh-polish.git`, fetch and audit `origin/main`, preserve both histories through a normal merge, align the local branch to `main`, and push without force.
 
 S — Scope:
-- Allowed: T-023 state/trace/status documents, this repository's `.git/config`, and creation or fast-forward of `refs/heads/master` only at `HaipingShi/gh-polish`.
-- Forbidden: `HaipingShi/stakespeak`, force push, ref deletion, tags, other branches, GitHub settings, releases, workflows, pull requests, or file changes outside CodeRail state.
+- Allowed: T-023 state/trace/status documents; this repository's `.git/config`, fetched objects/refs, local branch rename, and merge commit; audit of exact remote commits/tree; normal update of `refs/heads/main` only at `HaipingShi/gh-polish`.
+- Forbidden: `HaipingShi/stakespeak`, force push, ref deletion, tags, other remote branches, GitHub settings, releases, workflows, pull requests, or manual conflict resolution/content replacement without a separately reviewed decision.
 
 V — Verify:
 - TDD mode: waived
 - Waiver reason: exact Git transport operation with no production code change.
-- Harness: clean worktree before transport; exact remote URL; non-interactive remote preflight; push succeeds without force; local HEAD equals `git ls-remote origin refs/heads/master`; final worktree clean.
+- Harness: clean worktree before transport; exact remote URL; fetch and inspect ancestry/commit/tree diff; conflict-free history-preserving merge; push succeeds without force; local HEAD equals `git ls-remote origin refs/heads/main`; final worktree clean.
 - CI check: rely on fresh T-022 `74/74` CI for the exact pre-push code revision and rerun CodeRail finish after push evidence is persisted.
 
 X — Stop:
-- Stop on authentication failure, unexpected remote identity, non-empty divergent remote history, protected-branch rejection, or any request for force/deletion/another repository.
+- Stop on authentication failure, unexpected remote identity, content conflicts requiring a product choice, protected-branch rejection, or any request for force/deletion/another repository.
 
 P — Persist:
 - TASKS/TRACE/index/status: exact remote, local/pushed SHA, verification, closeout, and commit evidence.
@@ -1760,8 +1760,9 @@ Depends on:
 
 Acceptance:
 - [ ] `origin` is exactly `https://github.com/HaipingShi/gh-polish.git`.
-- [ ] Remote preflight proves an empty repository or a compatible fast-forward boundary.
-- [ ] `origin/master` equals the exact local HEAD after a non-force push.
+- [ ] `origin/main` is fetched and its commits/tree are reviewed before merge.
+- [ ] Local and remote histories are preserved in a normal merge with no unreviewed conflict resolution.
+- [ ] `origin/main` equals the exact local HEAD after a non-force push.
 - [ ] CodeRail finish records the result and exact auto-commit action.
 
 ### Critical Check
@@ -1778,18 +1779,18 @@ Acceptance:
 - Local branch is `master` at `e6a50a4f4c3790d7a24c0ccc26a078a2ce61ca29`, and the remote commit is not present in the local object database, so ancestry cannot be proven without a separately authorized fetch/reconciliation step.
 - No remote was added and no push occurred. Creating a parallel `master` or replacing `main` would exceed the exact preflight contract.
 
-Task result: blocked
-Harness result: passed
+Task result: active
+Harness result: remote main fetch/audit pending
 Handoff level: H3
 Inspect status: refreshed
 Resume anchor: docs/TASKS.md#T-023
-Next executable step: Keep exactly one task active or record an explicit task-selection decision before continuing.
+Next executable step: Add exact origin, fetch `origin/main`, and audit ancestry, commits, and tree diff before merge.
 Auto commit: requested
 
 
 Handoff updated: no
 
-Drive decision: BLOCKED_DECISION
+Drive decision: CONTINUE
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
