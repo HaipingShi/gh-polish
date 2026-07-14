@@ -1,4 +1,8 @@
-import type { LiveGitHubCredential, LiveMutationAuthorization } from "./liveGitHubAuthorization.js";
+import type {
+  LiveGitHubCredential,
+  LiveMutationAuthorization,
+  LiveRepositoryPermissions
+} from "./liveGitHubAuthorization.js";
 import type { RemoteVerificationEvidence } from "./remoteVerification.js";
 
 export interface LiveGitHubResponse {
@@ -61,6 +65,7 @@ export interface LiveRepositoryPreflightResult {
   fullName: string;
   defaultBranch: string;
   baseSha: string;
+  permissions: LiveRepositoryPermissions;
 }
 
 export interface LiveRevisionCheckInput {
@@ -181,7 +186,8 @@ export class GitHubLiveRepositoryAdapter {
       id: readNumber(repository, "id"),
       fullName: readString(repository, "full_name"),
       defaultBranch: readString(repository, "default_branch"),
-      baseSha: ""
+      baseSha: "",
+      permissions: mapRepositoryPermissions(repository.permissions)
     };
     if (result.id !== input.expectedRepositoryId || result.fullName !== input.expectedFullName) {
       throw new Error("Fetched GitHub repository identity does not match the exact allowlist.");
@@ -380,6 +386,20 @@ function revisionEvidence(
     matchedRuns: runs.length,
     runs,
     nextStep
+  };
+}
+
+export function mapRepositoryPermissions(value: unknown): LiveRepositoryPermissions {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return { contents: "none", pullRequests: "none", actions: "none" };
+  }
+  const object = value as Record<string, unknown>;
+  const push = object.push === true;
+  const pull = object.pull === true;
+  return {
+    contents: push ? "write" : pull ? "read" : "none",
+    pullRequests: push ? "write" : pull ? "read" : "none",
+    actions: push ? "write" : pull ? "read" : "none"
   };
 }
 

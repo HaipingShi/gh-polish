@@ -152,7 +152,7 @@ describe("T-022 live GitHub adapter non-live contract", () => {
 
   it("preflights canonical repository identity/base and reads checks only for the exact head SHA", async () => {
     const mock = createFetch([
-      response(200, { id: 12345, full_name: "HaipingShi/coderail", default_branch: "main" }),
+      response(200, { id: 12345, full_name: "HaipingShi/coderail", default_branch: "main", permissions: { push: true, pull: true } }),
       response(200, { object: { sha: "b".repeat(40) } }),
       response(200, { workflow_runs: [
         workflowRun(1, "gh-polish/live/aaaaaaaaaaaa", "c".repeat(40), "completed", "success"),
@@ -184,7 +184,8 @@ describe("T-022 live GitHub adapter non-live contract", () => {
       id: 12345,
       fullName: "HaipingShi/coderail",
       defaultBranch: "main",
-      baseSha: "b".repeat(40)
+      baseSha: "b".repeat(40),
+      permissions: { contents: "write", pullRequests: "write", actions: "write" }
     });
     assert.equal(checks.status, "success");
     assert.equal(checks.matchedRuns, 1);
