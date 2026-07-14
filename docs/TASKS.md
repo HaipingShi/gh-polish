@@ -1720,7 +1720,7 @@ Auto commit: requested
 
 ## T-023 Publish gh-polish repository remote
 
-Status: [~]
+Status: [x]
 Type: release
 Rail: full
 Priority: P1
@@ -1737,8 +1737,10 @@ T — Task:
 - Configure `origin` as `https://github.com/HaipingShi/gh-polish.git`, fetch and audit `origin/main`, preserve both histories through a normal merge, align the local branch to `main`, and push without force.
 
 S — Scope:
-- Allowed: T-023 state/trace/status documents; this repository's `.git/config`, fetched objects/refs, local branch rename, and merge commit; audit of exact remote commits/tree; normal update of `refs/heads/main` only at `HaipingShi/gh-polish`.
-- Forbidden: `HaipingShi/stakespeak`, force push, ref deletion, tags, other remote branches, GitHub settings, releases, workflows, pull requests, or manual conflict resolution/content replacement without a separately reviewed decision.
+- Allowed:
+  - T-023 state/trace/status documents; this repository's `.git/config`, fetched objects/refs, local branch rename, and merge commit; audit of exact remote commits/tree; normal update of `refs/heads/main` only at `HaipingShi/gh-polish`.
+- Forbidden:
+  - `HaipingShi/stakespeak`, force push, ref deletion, tags, other remote branches, GitHub settings, releases, workflows, pull requests, or manual conflict resolution/content replacement without a separately reviewed decision.
 
 V — Verify:
 - TDD mode: waived
@@ -1762,8 +1764,8 @@ Acceptance:
 - [x] `origin` is exactly `https://github.com/HaipingShi/gh-polish.git`.
 - [x] `origin/main` is fetched and its commits/tree are reviewed before merge.
 - [x] Local and remote histories are preserved in a normal merge with no unreviewed conflict resolution.
-- [ ] `origin/main` equals the exact local HEAD after a non-force push.
-- [ ] CodeRail finish records the result and exact auto-commit action.
+- [x] `origin/main` equals the exact local HEAD after a non-force push.
+- [x] CodeRail finish records the result and exact auto-commit action.
 
 ### Critical Check
 
@@ -1786,18 +1788,18 @@ Acceptance:
 - Remote initial commit `9cd5917ca810450a106a7dec84e4ceaf91aad6b8` contains only an MIT `LICENSE` and a two-line placeholder `README.md`.
 - Reviewed merge resolution: preserve the remote initial commit and MIT license, retain the more complete local README, and make no other content resolution.
 
-Task result: active
-Harness result: merge commit `afcad704ab093155dddc1e12081842041019f48c` has both parents; CI 74/74 passed; push pending
-Handoff level: H3
+Task result: done
+Harness result: passed
+Handoff level: H0
 Inspect status: refreshed
 Resume anchor: docs/TASKS.md#T-023
-Next executable step: Commit merge/CI evidence, push local `main` to `origin/main` without force, and verify exact remote SHA equality.
+Next executable step: Authorize a ready task or provide terminal evidence; do not invent backlog work.
 Auto commit: requested
 
 
 Handoff updated: no
 
-Drive decision: CONTINUE
+Drive decision: BLOCKED_DECISION
 ## Task Template
 
 Copy this block and rename the heading to a real task ID when creating a real task.
