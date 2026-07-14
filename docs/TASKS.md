@@ -1761,7 +1761,7 @@ Depends on:
 Acceptance:
 - [x] `origin` is exactly `https://github.com/HaipingShi/gh-polish.git`.
 - [x] `origin/main` is fetched and its commits/tree are reviewed before merge.
-- [ ] Local and remote histories are preserved in a normal merge with no unreviewed conflict resolution.
+- [x] Local and remote histories are preserved in a normal merge with no unreviewed conflict resolution.
 - [ ] `origin/main` equals the exact local HEAD after a non-force push.
 - [ ] CodeRail finish records the result and exact auto-commit action.
 
@@ -1787,11 +1787,11 @@ Acceptance:
 - Reviewed merge resolution: preserve the remote initial commit and MIT license, retain the more complete local README, and make no other content resolution.
 
 Task result: active
-Harness result: remote main audit passed; history-preserving merge pending
+Harness result: merge commit `afcad704ab093155dddc1e12081842041019f48c` has both parents; CI 74/74 passed; push pending
 Handoff level: H3
 Inspect status: refreshed
 Resume anchor: docs/TASKS.md#T-023
-Next executable step: Rename local branch to `main`, merge `origin/main` with unrelated histories allowed, retain local README plus remote LICENSE, run CI, and push without force.
+Next executable step: Commit merge/CI evidence, push local `main` to `origin/main` without force, and verify exact remote SHA equality.
 Auto commit: requested
 
 
