@@ -5,9 +5,18 @@ export interface RecoveryStep {
   command?: string;
 }
 
+export type ProtocolCommand =
+  | "inspect"
+  | "plan"
+  | "apply"
+  | "verify"
+  | "ready.prepare"
+  | "ready.review"
+  | "ready.execute";
+
 export interface JsonEnvelope<T> {
   version: typeof PROTOCOL_VERSION;
-  command: "inspect" | "plan" | "apply" | "verify";
+  command: ProtocolCommand;
   ok: boolean;
   data?: T;
   error?: {
